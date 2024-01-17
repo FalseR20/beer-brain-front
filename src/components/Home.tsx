@@ -61,7 +61,7 @@ function Debts(): ReactNode {
   const [debts, setDebts] = useState<DebtJSON[]>([]);
 
   useEffect(() => {
-    fetch(URLS.get_events, {
+    fetch(URLS.get_event_list, {
       headers: getAuthHeader(),
     })
       .then((response) => response.json())

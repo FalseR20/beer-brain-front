@@ -17,7 +17,7 @@ export default function Event() {
   const params = useParams();
   const event_id = parseInt(params.event_id as string);
   useEffect(() => {
-    fetch(URLS.get_full_event(event_id), {
+    fetch(URLS.get_detailed_event(event_id), {
       headers: getAuthHeader(),
     })
       .then((response) => response.json())

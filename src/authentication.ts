@@ -37,7 +37,7 @@ export async function signUp(
   formData.append("first_name", firstname);
   formData.append("last_name", lastname);
   formData.append("password", password);
-  const response = await fetch(URLS.new_user, {
+  const response = await fetch(URLS.create_user, {
     method: "POST",
     body: formData,
   });
