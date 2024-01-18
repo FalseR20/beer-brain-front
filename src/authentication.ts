@@ -1,4 +1,25 @@
-import { URLS } from "./constants.ts";
+import {make_url, UrlPatterns} from "./constants.ts";
+
+// async function fetchWithAuthorization(
+//   urlPattern: UrlPatterns,
+//   values?: Record<string, string | number>,
+//   method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
+//   body?: BodyInit,
+// ): Promise<Response> {
+//   const url = make_url(urlPattern, values);
+//   const requestOptions: RequestInit = {
+//     method: method,
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': `Token ${localStorage["token"]}`,
+//     },
+//     body: body,
+//   };
+//   // if (!response.ok) {
+//   //   throw new Error(`Request failed with status ${response.status}`);
+//   // }
+//   return await fetch(url, requestOptions);
+// }
 
 export async function signIn(
   username: string,
@@ -8,10 +29,8 @@ export async function signIn(
   const formData = new FormData();
   formData.append("username", username);
   formData.append("password", password);
-  const response = await fetch(URLS.get_token, {
-    method: "POST",
-    body: formData,
-  });
+  const url = make_url(UrlPatterns.GET_TOKEN);
+  const response = await fetch(url, {method: "POST", body: formData});
   if (!response.ok) {
     return false;
   }
@@ -23,24 +42,16 @@ export async function signIn(
 
 export async function signUp(
   username: string,
-  email: string,
-  firstname: string,
-  lastname: string,
   password: string,
 ): Promise<boolean> {
   console.log(
-    `SignUp ${username} at ${email} of ${firstname} ${lastname} and password ${password}`,
+    `SignUp ${username}`,
   );
   const formData = new FormData();
   formData.append("username", username);
-  formData.append("email", email);
-  formData.append("first_name", firstname);
-  formData.append("last_name", lastname);
   formData.append("password", password);
-  const response = await fetch(URLS.create_user, {
-    method: "POST",
-    body: formData,
-  });
+  const url = make_url(UrlPatterns.CREATE_USER)
+  const response = await fetch(url, {method: "POST", body: formData});
   if (!response.ok) {
     return false;
   }
@@ -60,3 +71,5 @@ export default function getAuthHeader() {
     Authorization: `Token ${localStorage["token"]}`,
   };
 }
+
+

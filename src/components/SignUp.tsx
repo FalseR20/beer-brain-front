@@ -11,9 +11,6 @@ export default function SignIn() {
         <h1> Sign Up</h1>
         <Formik
           validationSchema={yup.object().shape({
-            email: yup.string().email().required(),
-            firstname: yup.string().required(),
-            lastname: yup.string().required(),
             username: yup.string().required(),
             password: yup.string().required().min(8),
             passwordConfirmation: yup
@@ -25,9 +22,6 @@ export default function SignIn() {
             console.log(values);
             signUp(
               values.username,
-              values.email,
-              values.firstname,
-              values.lastname,
               values.password,
             ).then((is_success) => {
               if (is_success) {
@@ -39,9 +33,6 @@ export default function SignIn() {
             });
           }}
           initialValues={{
-            email: "",
-            firstname: "",
-            lastname: "",
             username: "",
             password: "",
             passwordConfirmation: "",
@@ -51,64 +42,6 @@ export default function SignIn() {
         >
           {({ handleSubmit, handleBlur, handleChange, errors }) => (
             <Form noValidate onSubmit={handleSubmit}>
-              <Row>
-                <Col>
-                  <Form.Group controlId="validationFormikFirstname">
-                    <Form.Label>Firstname</Form.Label>
-                    <InputGroup hasValidation>
-                      <Form.Control
-                        type="text"
-                        placeholder="Firstname"
-                        aria-describedby="inputGroupPrepend"
-                        name="firstname"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        isInvalid={!!errors.firstname}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.firstname}
-                      </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="validationFormikLastname">
-                    <Form.Label>Lastname</Form.Label>
-                    <InputGroup hasValidation>
-                      <Form.Control
-                        type="text"
-                        placeholder="Lastname"
-                        aria-describedby="inputGroupPrepend"
-                        name="lastname"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        isInvalid={!!errors.lastname}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.lastname}
-                      </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Form.Group controlId="validationFormikEmail">
-                <Form.Label>Email</Form.Label>
-                <InputGroup hasValidation>
-                  <Form.Control
-                    type="email"
-                    placeholder="Email"
-                    aria-describedby="inputGroupPrepend"
-                    name="email"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isInvalid={!!errors.email}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.email}
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
               <Form.Group controlId="validationFormikUsername">
                 <Form.Label>Username</Form.Label>
                 <InputGroup hasValidation>
