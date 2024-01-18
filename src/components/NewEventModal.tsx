@@ -1,15 +1,16 @@
 import "../css/CreateEvent.css";
 import getAuthHeader from "../authentication.ts";
-import { Button, Form, InputGroup, Modal } from "react-bootstrap";
-import { Formik } from "formik";
+import {Button, Form, InputGroup, Modal} from "react-bootstrap";
+import {Formik} from "formik";
 import * as yup from "yup";
-import { URLS } from "../constants.ts";
+import {make_url, UrlPatterns} from "../constants.ts";
 
-async function createEventAPI(inputs: { description: string }) {
+async function createEventAPI(inputs: { name: string }) {
   console.log(`Create event ${inputs}`);
   const formData = new FormData();
-  formData.append("description", inputs.description);
-  const response = await fetch(URLS.create_event, {
+  formData.append("name", inputs.name);
+  formData.append("date", "2000-01-01");
+  const response = await fetch(make_url(UrlPatterns.CREATE_EVENT), {
     method: "POST",
     headers: getAuthHeader(),
     body: formData,
@@ -33,7 +34,7 @@ export default function NewEventModal(props: {
       <Modal.Body>
         <Formik
           validationSchema={yup.object().shape({
-            description: yup.string().required(),
+            name: yup.string().required(),
           })}
           onSubmit={(values) => {
             console.log(values);
@@ -42,25 +43,25 @@ export default function NewEventModal(props: {
             });
           }}
           initialValues={{
-            description: "",
+            name: "",
           }}
         >
           {({ handleSubmit, handleChange, values, errors }) => (
             <Form noValidate onSubmit={handleSubmit}>
-              <Form.Group controlId="validationFormikDescription">
-                <Form.Label>Description</Form.Label>
+              <Form.Group controlId="validationFormikName">
+                <Form.Label>Name</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
                     placeholder="Chill-Out"
                     aria-describedby="inputGroupPrepend"
-                    name="description"
-                    value={values.description}
+                    name="name"
+                    value={values.name}
                     onChange={handleChange}
-                    isInvalid={!!errors.description}
+                    isInvalid={!!errors.name}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {errors.description}
+                    {errors.name}
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>

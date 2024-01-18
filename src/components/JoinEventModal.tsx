@@ -1,21 +1,17 @@
 import "../css/CreateEvent.css";
 import getAuthHeader from "../authentication.ts";
-import { Button, Form, InputGroup, Modal } from "react-bootstrap";
-import { Formik } from "formik";
+import {Button, Form, InputGroup, Modal} from "react-bootstrap";
+import {Formik} from "formik";
 import * as yup from "yup";
-import { URLS } from "../constants.ts";
+import {make_url, UrlPatterns} from "../constants.ts";
 
-async function joinEventAPI(inputs: { id: number | string }) {
-  console.log(`Create event ${inputs}`);
-  const response = await fetch(URLS.join_event(inputs.id), {
+async function joinEventAPI(event_id: string) {
+  console.log(`Join event ${event_id}`);
+  const response = await fetch(make_url(UrlPatterns.JOIN_EVENT, {eventId: event_id}), {
     method: "POST",
     headers: getAuthHeader(),
   });
-  if (response.ok) {
-    const json = await response.json();
-    console.log(`Joined, ${JSON.stringify(json)}`);
-    return json;
-  }
+  return response.ok;
 }
 
 export default function JoinEventModal(props: {
@@ -30,16 +26,16 @@ export default function JoinEventModal(props: {
       <Modal.Body>
         <Formik
           validationSchema={yup.object().shape({
-            id: yup.number().required(),
+            event_id: yup.string().required(),
           })}
           onSubmit={(values) => {
             console.log(values);
-            joinEventAPI(values).then((json) => {
-              window.location.href = `/events/${json.event}`;
+            joinEventAPI(values.event_id).then(() => {
+              window.location.href = `/events/${values.event_id}`;
             });
           }}
           initialValues={{
-            id: "",
+            event_id: "",
           }}
         >
           {({ handleSubmit, handleChange, values, errors }) => (
@@ -52,12 +48,12 @@ export default function JoinEventModal(props: {
                     placeholder="12"
                     aria-describedby="inputGroupPrepend"
                     name="id"
-                    value={values.id}
+                    value={values.event_id}
                     onChange={handleChange}
-                    isInvalid={!!errors.id}
+                    isInvalid={!!errors.event_id}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {errors.id}
+                    {errors.event_id}
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>

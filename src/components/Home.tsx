@@ -1,18 +1,10 @@
 import Template from "./Template.tsx";
-import { ReactNode, useEffect, useState } from "react";
+import {ReactNode, useEffect, useState} from "react";
 import getAuthHeader from "../authentication.ts";
-import { Alert, Button, Card, Col, Row } from "react-bootstrap";
+import {Alert, Button, Card, Col, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
-import { URLS } from "../constants.ts";
-
-interface DebtJSON {
-  id: number;
-  members_count: number;
-  date: string;
-  description: string;
-  is_closed: boolean;
-}
+import {make_url, UrlPatterns} from "../constants.ts";
 
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
@@ -26,7 +18,7 @@ export default function Home() {
           There are all debts. You can create a new one or join to the existed
           one.
         </p>
-        <hr />
+        <hr/>
         <div className={"d-flex flex-row justify-content-end"}>
           <Button
             className={"fs-6"}
@@ -52,16 +44,32 @@ export default function Home() {
         show={showJoinEventModal}
         onHide={() => setShowJoinEventModal(false)}
       />
-      <Debts />
+      <Debts/>
     </Template>
   );
+}
+
+interface UserJson {
+  username: string;
+  full_name: string;
+}
+
+interface DebtJSON {
+  id: number;
+  name: string,
+  description: string;
+  date: string;
+  created_at: string;
+  is_closed: boolean;
+  users: UserJson[];
+  host: UserJson;
 }
 
 function Debts(): ReactNode {
   const [debts, setDebts] = useState<DebtJSON[]>([]);
 
   useEffect(() => {
-    fetch(URLS.get_event_list, {
+    fetch(make_url(UrlPatterns.GET_EVENT_LIST), {
       headers: getAuthHeader(),
     })
       .then((response) => response.json())
@@ -80,12 +88,12 @@ function Debts(): ReactNode {
                   <Col>
                     <span>{debt.date}</span>
                   </Col>
-                  <Col className={"text-end"}>#{debt.id}</Col>
+                  <Col className={"text-end"}>Host: {debt.host.username}</Col>
                 </Row>
               </Card.Header>
               <Card.Body>
-                <Card.Title>{debt.description}</Card.Title>
-                <Card.Text>{debt.members_count} members</Card.Text>
+                <Card.Title>{debt.name}</Card.Title>
+                <Card.Text>{debt.users.length} members</Card.Text>
                 <Row className={"mx-0"}>
                   <Button
                     variant={variant}

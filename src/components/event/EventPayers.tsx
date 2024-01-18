@@ -1,8 +1,8 @@
-import { IEvent } from "./interfaces.ts";
+import { IDetailedEvent } from "../../interfaces.ts";
 import { Button, ListGroup } from "react-bootstrap";
 
-export function EventPayers({ event }: { event: IEvent }) {
-  const membersWithDeposits = event.members.filter((member) => member.deposits.length > 0);
+export function EventPayers({ event }: { event: IDetailedEvent }) {
+  const membersWithDeposits = event.users.filter((member) => member.deposits.length > 0);
   return (<>
     <div className={"d-flex justify-content-between align-items-center"}>
       <h2 className={"my-3"}>Payers</h2>
@@ -10,7 +10,7 @@ export function EventPayers({ event }: { event: IEvent }) {
     </div>
     <div className={"border border-secondary rounded-3 p-2"}>
       <ListGroup className={""} variant={"flush"}>
-        {membersWithDeposits.length > 0 ? (event.members.map((member) => member.deposits.map((deposit) => (
+        {membersWithDeposits.length > 0 ? (event.users.map((member) => member.deposits.map((deposit) => (
           <ListGroup.Item key={deposit.id}>
                   <span>
                     {deposit.description} for {deposit.value}

@@ -1,11 +1,11 @@
-import { IEvent } from "./interfaces.ts";
+import { IDetailedEvent } from "../../interfaces.ts";
 import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Button, Form, Modal } from "react-bootstrap";
 
-export function EventHeader({ event }: { event: IEvent }) {
+export function EventHeader({ event }: { event: IDetailedEvent }) {
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
-  const [description, setDescription] = useState(event.description);
+  const [description, setDescription] = useState(event.name);
   const [newDescription, setNewDescription] = useState<string | null>(null);
 
   return (<div className={"border border-top-0 rounded-bottom-5 bg-body-tertiary mb-2"}>
@@ -23,7 +23,7 @@ export function EventHeader({ event }: { event: IEvent }) {
           <div className={"fs-4"}>{description}</div>
           <div
             className={"fs-6"}
-          >{`${event.date}, ${event.members.length} members`}</div>
+          >{`${event.date}, ${event.users.length} members`}</div>
         </div>
       </div>
 
