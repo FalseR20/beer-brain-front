@@ -1,11 +1,10 @@
 import Template from "./Template.tsx";
 import {ReactNode, useEffect, useState} from "react";
-import getAuthHeaders from "../tokens.ts";
 import {Alert, Button, Card, Col, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
-import {make_url, UrlPatterns} from "../constants.ts";
 import {IEvent} from "../interfaces.ts";
+import {getEventList} from "../fetches.tsx";
 
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
@@ -54,11 +53,7 @@ function Debts(): ReactNode {
   const [events, setEvents] = useState<IEvent[]>([]);
 
   useEffect(() => {
-    fetch(make_url(UrlPatterns.GET_EVENT_LIST), {
-      headers: getAuthHeaders(),
-    })
-      .then((response) => response.json())
-      .then((data) => setEvents(data));
+    getEventList().then(setEvents);
   }, []);
 
   return (

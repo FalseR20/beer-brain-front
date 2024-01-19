@@ -1,26 +1,8 @@
 import "../css/CreateEvent.css";
-import getAuthHeaders from "../tokens.ts";
 import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
-import {make_url, UrlPatterns} from "../constants.ts";
-
-async function createEventAPI(inputs: { name: string }) {
-  console.log(`Create event ${inputs}`);
-  const formData = new FormData();
-  formData.append("name", inputs.name);
-  formData.append("date", "2000-01-01");
-  const response = await fetch(make_url(UrlPatterns.CREATE_EVENT), {
-    method: "POST",
-    headers: getAuthHeaders(),
-    body: formData,
-  });
-  if (response.ok) {
-    const json = await response.json();
-    console.log(`Created, ${JSON.stringify(json)}`);
-    return json;
-  }
-}
+import {createEventAPI} from "../fetches.tsx";
 
 export default function NewEventModal(props: {
   show: boolean;
@@ -38,8 +20,8 @@ export default function NewEventModal(props: {
           })}
           onSubmit={(values) => {
             console.log(values);
-            createEventAPI(values).then((json) => {
-              window.location.href = `/events/${json.id}`;
+            createEventAPI(values).then((event) => {
+              window.location.href = `/events/${event.id}`;
             });
           }}
           initialValues={{

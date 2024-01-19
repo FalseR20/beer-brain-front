@@ -1,6 +1,6 @@
 const TOKEN = "token"
 
-class TokenError extends Error {
+export class TokenError extends Error {
 }
 
 

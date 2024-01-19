@@ -1,5 +1,6 @@
 import {make_url, UrlPatterns} from "./constants.ts";
-import {deleteToken, setToken} from "./tokens.ts";
+import getAuthHeaders, {deleteToken, setToken, TokenError} from "./tokens.ts";
+import {IEvent} from "./interfaces.ts";
 
 class FetchError extends Error {
 }
@@ -38,3 +39,54 @@ export async function fetchSignUp(username: string, password: string): Promise<v
 export function signOut(): void {
   deleteToken()
 }
+
+async function fetchWithAuthorization(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  if (init == undefined) {
+    init = {}
+  }
+  init.headers = getAuthHeaders()
+  const response = await fetch(input, init)
+  if (response.status == 401) {
+    deleteToken();
+    throw new TokenError("Token is expired.")
+  }
+  return response
+}
+
+export async function getEventList() {
+  const response = await fetchWithAuthorization(make_url(UrlPatterns.GET_EVENT_LIST))
+  return await response.json() as IEvent[]
+}
+
+export async function createEventAPI(inputs: { name: string }) {
+  const formData = new FormData();
+  formData.append("name", inputs.name);
+  formData.append("date", "2000-01-01");
+  const response = await fetchWithAuthorization(make_url(UrlPatterns.CREATE_EVENT), {
+    method: "POST",
+    body: formData,
+  });
+  if (!response.ok) {
+    throw new FetchError("Cannot to create event")
+  }
+  return await response.json() as IEvent;
+}
+
+export async function joinEvent(event_id: string) {
+  const response = await fetchWithAuthorization(make_url(UrlPatterns.JOIN_EVENT, {eventId: event_id}), {
+    method: "POST",
+  });
+  if (!response.ok) {
+    throw new FetchError("Cannot join event");
+  }
+}
+
+export async function leaveEvent(event_id: string) {
+  const response = await fetchWithAuthorization(make_url(UrlPatterns.LEAVE_EVENT, {eventId: event_id}), {
+    method: "POST",
+  });
+  if (!response.ok) {
+    throw new FetchError("Cannot leave event");
+  }
+}
+
