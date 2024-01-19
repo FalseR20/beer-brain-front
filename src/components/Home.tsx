@@ -5,6 +5,7 @@ import {Alert, Button, Card, Col, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
 import {make_url, UrlPatterns} from "../constants.ts";
+import {IEvent} from "../interfaces.ts";
 
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
@@ -49,56 +50,40 @@ export default function Home() {
   );
 }
 
-interface UserJson {
-  username: string;
-  full_name: string;
-}
-
-interface DebtJSON {
-  id: number;
-  name: string,
-  description: string;
-  date: string;
-  created_at: string;
-  is_closed: boolean;
-  users: UserJson[];
-  host: UserJson;
-}
-
 function Debts(): ReactNode {
-  const [debts, setDebts] = useState<DebtJSON[]>([]);
+  const [events, setEvents] = useState<IEvent[]>([]);
 
   useEffect(() => {
     fetch(make_url(UrlPatterns.GET_EVENT_LIST), {
       headers: getAuthHeader(),
     })
       .then((response) => response.json())
-      .then((data) => setDebts(data));
+      .then((data) => setEvents(data));
   }, []);
 
   return (
     <Row xs={1} md={2} className={"g-3"}>
-      {debts.map((debt) => {
-        const variant = debt.is_closed ? "secondary" : "primary";
+      {events.map((event) => {
+        const variant = event.is_closed ? "secondary" : "primary";
         return (
-          <Col key={`Debt${debt.id}`}>
+          <Col key={`Debt${event.id}`}>
             <Card className={"p-0"} border={variant}>
               <Card.Header>
                 <Row>
                   <Col>
-                    <span>{debt.date}</span>
+                    <span>{event.date}</span>
                   </Col>
-                  <Col className={"text-end"}>Host: {debt.host.username}</Col>
+                  <Col className={"text-end"}>Host: {event.host.username}</Col>
                 </Row>
               </Card.Header>
               <Card.Body>
-                <Card.Title>{debt.name}</Card.Title>
-                <Card.Text>{debt.users.length} members</Card.Text>
+                <Card.Title>{event.name}</Card.Title>
+                <Card.Text>{event.users.length} members</Card.Text>
                 <Row className={"mx-0"}>
                   <Button
                     variant={variant}
                     size={"lg"}
-                    href={`/events/${debt.id}/`}
+                    href={`/events/${event.id}/`}
                   >
                     Look
                   </Button>

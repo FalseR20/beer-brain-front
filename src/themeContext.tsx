@@ -1,15 +1,11 @@
 import React, {createContext, useState} from "react";
 
-interface ITheme {
-  isDark: boolean;
-  switchTheme: () => void;
-}
 
 export const ThemeContext = createContext({
   isDark: true,
-  switchTheme: () => {
+  switchTheme: (): void => {
   },
-} as ITheme);
+});
 
 export default function ThemeContextWrapper(props: {
   children: React.ReactNode;
