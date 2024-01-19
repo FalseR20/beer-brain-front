@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import {ReactNode} from "react";
 import "../css/Template.css";
-import { isAuthorized } from "../authentication.ts";
+import {isAuthorized} from "../authentication.ts";
 import Guest from "./Guest.tsx";
 import Header from "./Header.tsx";
 
@@ -22,7 +22,7 @@ export default function Template(props: PageProps) {
   }
   return (
     <div className={"d-flex flex-column min-vh-100"}>
-      <Header />
+      <Header/>
       <div className={"d-flex flex-row justify-content-center flex-grow-1"}>
         {inner}
       </div>

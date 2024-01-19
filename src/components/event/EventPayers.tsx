@@ -1,7 +1,7 @@
-import { IDetailedEvent } from "../../interfaces.ts";
-import { Button, ListGroup } from "react-bootstrap";
+import {IDetailedEvent} from "../../interfaces.ts";
+import {Button, ListGroup} from "react-bootstrap";
 
-export function EventPayers({ event }: { event: IDetailedEvent }) {
+export function EventPayers({event}: { event: IDetailedEvent }) {
   const membersWithDeposits = event.users.filter((member) => member.deposits.length > 0);
   return (<>
     <div className={"d-flex justify-content-between align-items-center"}>

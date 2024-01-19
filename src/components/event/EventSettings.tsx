@@ -1,4 +1,4 @@
-import { Button, ListGroup } from "react-bootstrap";
+import {Button, ListGroup} from "react-bootstrap";
 
 export function EventSettings() {
   return (<>

@@ -6,7 +6,7 @@ import ThemeContextWrapper from "./themeContext.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ThemeContextWrapper>
     <React.StrictMode>
-      <App />
+      <App/>
     </React.StrictMode>
   </ThemeContextWrapper>,
 );

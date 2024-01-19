@@ -1,27 +1,26 @@
 import randomColor from "randomcolor";
-import { RxAvatar } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import {RxAvatar} from "react-icons/rx";
+import {Link} from "react-router-dom";
 import Template from "./Template.tsx";
 
 export interface IProfile {
-  id: number;
-  firstName: string;
-  lastName: string;
+  username: string;
+  full_name: string;
 }
 
 export default function Profile() {
   const profile: IProfile = {
-    id: 1, firstName: "User", lastName: "1",
+    username: "user1", full_name: "User 1",
   };
   return (<Template>
-    <h1>{`${profile.firstName} ${profile.lastName}`}</h1>
+    <h1>{`${profile.full_name}`}</h1>
     <h3>Avatar and linked avatar</h3>
     <div className={"d-flex flex-row gap-2"}>
-      <RoundedAvatar profile={profile} sizeMultiplier={0.4} />
-      <RoundedAvatar profile={profile} sizeMultiplier={0.5} />
-      <RoundedAvatar profile={profile} sizeMultiplier={1} />
-      <RoundedAvatarLink profile={profile} sizeMultiplier={0.4} />
-      <RoundedAvatarLink profile={profile} sizeMultiplier={0.5} />
+      <RoundedAvatar profile={profile} sizeMultiplier={0.4}/>
+      <RoundedAvatar profile={profile} sizeMultiplier={0.5}/>
+      <RoundedAvatar profile={profile} sizeMultiplier={1}/>
+      <RoundedAvatarLink profile={profile} sizeMultiplier={0.4}/>
+      <RoundedAvatarLink profile={profile} sizeMultiplier={0.5}/>
     </div>
   </Template>);
 }
@@ -33,13 +32,13 @@ interface IAvatarProps {
 }
 
 export function RoundedAvatarLink(props: IAvatarProps) {
-  const letters = (props.profile.firstName.slice(0, 1) + props.profile.lastName.slice(0, 1)).toUpperCase();
+  const letters = props.profile.full_name.slice(0, 2).toUpperCase();
   if (props.className == undefined) {
     props.className = "";
   }
   return (<>
     <Link
-      to={`/profile/${props.profile.id}`}
+      to={`/profile/${props.profile.username}`}
       className={`text-decoration-none border rounded-circle border-secondary text-secondary ${props.className}`}
       style={{
         width: `${props.sizeMultiplier * 7}rem`,
@@ -54,8 +53,8 @@ export function RoundedAvatarLink(props: IAvatarProps) {
   </>);
 }
 
-export function RoundedAvatar({ profile, sizeMultiplier }: IAvatarProps) {
-  const letters = (profile.firstName.slice(0, 1) + profile.lastName.slice(0, 1)).toUpperCase();
+export function RoundedAvatar({profile, sizeMultiplier}: IAvatarProps) {
+  const letters = profile.full_name.slice(0, 2).toUpperCase();
   return (<>
     <div
       className={"border rounded-circle border-secondary text-secondary"}
@@ -73,13 +72,13 @@ export function RoundedAvatar({ profile, sizeMultiplier }: IAvatarProps) {
 }
 
 // To remove
-export function Avatar48({ id }: { id: number }) {
+export function Avatar48({username}: { username: string }) {
   return (<RxAvatar
     size={48}
-    aria-label={`User ${id}`}
+    aria-label={`User ${username}`}
     style={{
       color: randomColor({
-        seed: id, luminosity: "light",
+        seed: username, luminosity: "light",
       }),
     }}
   />);

@@ -1,9 +1,9 @@
-import { IDetailedEvent } from "../../interfaces.ts";
-import { useState } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { Button, Form, Modal } from "react-bootstrap";
+import {IDetailedEvent} from "../../interfaces.ts";
+import {useState} from "react";
+import {BsThreeDotsVertical} from "react-icons/bs";
+import {Button, Form, Modal} from "react-bootstrap";
 
-export function EventHeader({ event }: { event: IDetailedEvent }) {
+export function EventHeader({event}: { event: IDetailedEvent }) {
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [description, setDescription] = useState(event.name);
   const [newDescription, setNewDescription] = useState<string | null>(null);
@@ -13,7 +13,11 @@ export function EventHeader({ event }: { event: IDetailedEvent }) {
       <div
         className={"border rounded-5 my-1 me-3"}
         style={{
-          height: "3.5rem", width: "3.5rem", fontSize: "1.5rem", padding: "0.5rem", textAlign: "center",
+          height: "3.5rem",
+          width: "3.5rem",
+          fontSize: "1.5rem",
+          padding: "0.5rem",
+          textAlign: "center",
         }}
       >
         {parseInt(event.date.slice(8, 10))}
@@ -33,7 +37,7 @@ export function EventHeader({ event }: { event: IDetailedEvent }) {
           className={"text-body fs-2 hover-cursor-pointer"}
           onClick={() => setShowDescriptionModal(true)}
         >
-          <BsThreeDotsVertical />
+          <BsThreeDotsVertical/>
         </a>
         <Modal
           show={showDescriptionModal}

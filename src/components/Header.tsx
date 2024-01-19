@@ -1,8 +1,8 @@
-import { Button, Modal, Navbar } from "react-bootstrap";
-import { isAuthorized, signOut } from "../authentication.ts";
-import { ThemeContext } from "../themeContext.tsx";
-import { BsMoon, BsSun } from "react-icons/bs";
-import { useState } from "react";
+import {Button, Modal, Navbar} from "react-bootstrap";
+import {isAuthorized, signOut} from "../authentication.ts";
+import {ThemeContext} from "../themeContext.tsx";
+import {BsMoon, BsSun} from "react-icons/bs";
+import {useState} from "react";
 
 export default function Header() {
   return (
@@ -16,8 +16,8 @@ export default function Header() {
           BeerBrain
         </Navbar.Brand>
         <Navbar.Collapse className={"justify-content-end"}>
-          <SignGroup />
-          <ThemeSwitcher />
+          <SignGroup/>
+          <ThemeSwitcher/>
         </Navbar.Collapse>
       </Navbar>
     </header>
@@ -30,7 +30,7 @@ export function ThemeSwitcher() {
   return (
     <>
       <ThemeContext.Consumer>
-        {({ isDark, switchTheme }) => (
+        {({isDark, switchTheme}) => (
           <>
             <a
               className={"fs-2 text-body pb-2 hover-cursor-pointer"}
@@ -42,7 +42,7 @@ export function ThemeSwitcher() {
                 }
               }}
             >
-              {isDark ? <BsSun /> : <BsMoon />}
+              {isDark ? <BsSun/> : <BsMoon/>}
             </a>
             <Modal
               show={show}
@@ -59,8 +59,8 @@ export function ThemeSwitcher() {
                 Do you really wanna use this eye destroyer? Are you sure about
                 this? Are you a masochist? Do you know what progress is? This is
                 not about a light theme!
-                <br />
-                <br />
+                <br/>
+                <br/>
                 Do you know an app called Discord? It uses a dark theme from the
                 very beginning. And do you know why people decide to turn on the
                 reverse? They got lost in the settings and discovered a{" "}

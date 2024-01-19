@@ -46,7 +46,7 @@ export default function NewEventModal(props: {
             name: "",
           }}
         >
-          {({ handleSubmit, handleChange, values, errors }) => (
+          {({handleSubmit, handleChange, values, errors}) => (
             <Form noValidate onSubmit={handleSubmit}>
               <Form.Group controlId="validationFormikName">
                 <Form.Label>Name</Form.Label>

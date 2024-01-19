@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, {createContext, useState} from "react";
 
 interface ITheme {
   isDark: boolean;
@@ -7,7 +7,8 @@ interface ITheme {
 
 export const ThemeContext = createContext({
   isDark: true,
-  switchTheme: () => {},
+  switchTheme: () => {
+  },
 } as ITheme);
 
 export default function ThemeContextWrapper(props: {
@@ -26,7 +27,7 @@ export default function ThemeContextWrapper(props: {
 
   return (
     <ThemeContext.Provider
-      value={{ isDark: isDarkTheme, switchTheme: switchTheme }}
+      value={{isDark: isDarkTheme, switchTheme: switchTheme}}
     >
       {props.children}
     </ThemeContext.Provider>

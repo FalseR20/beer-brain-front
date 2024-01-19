@@ -1,4 +1,4 @@
-<code_scheme name="front ts" version="173">
+<code_scheme name="Style TypeScript" version="173">
     <HTMLCodeStyleSettings>
         <option name="HTML_SPACE_INSIDE_EMPTY_TAG" value="true"/>
         <option name="HTML_ENFORCE_QUOTES" value="true"/>
@@ -32,7 +32,7 @@
         </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="JavaScript">
-        <option name="RIGHT_MARGIN" value="80"/>
+        <option name="RIGHT_MARGIN" value="99"/>
         <option name="KEEP_BLANK_LINES_IN_CODE" value="1"/>
         <option name="ALIGN_MULTILINE_PARAMETERS" value="false"/>
         <option name="ALIGN_MULTILINE_FOR" value="false"/>
@@ -48,11 +48,11 @@
         <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true"/>
         <option name="ARRAY_INITIALIZER_WRAP" value="5"/>
         <option name="ARRAY_INITIALIZER_LBRACE_ON_NEXT_LINE" value="true"/>
-        <option name="SOFT_MARGINS" value="80"/>
+        <option name="SOFT_MARGINS" value="99"/>
     </codeStyleSettings>
     <codeStyleSettings language="TypeScript">
         <option name="KEEP_LINE_BREAKS" value="false"/>
-        <option name="SOFT_MARGINS" value="120"/>
+        <option name="SOFT_MARGINS" value="99"/>
         <indentOptions>
             <option name="INDENT_SIZE" value="2"/>
             <option name="CONTINUATION_INDENT_SIZE" value="2"/>
@@ -60,7 +60,7 @@
         </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="Vue">
-        <option name="SOFT_MARGINS" value="80"/>
+        <option name="SOFT_MARGINS" value="99"/>
         <indentOptions>
             <option name="INDENT_SIZE" value="4"/>
             <option name="TAB_SIZE" value="4"/>

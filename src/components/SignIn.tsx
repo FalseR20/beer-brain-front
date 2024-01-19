@@ -1,7 +1,7 @@
 import Template from "./Template.tsx";
-import { Button, Form, InputGroup } from "react-bootstrap";
-import { signIn } from "../authentication.ts";
-import { Formik } from "formik";
+import {Button, Form, InputGroup} from "react-bootstrap";
+import {signIn} from "../authentication.ts";
+import {Formik} from "formik";
 import * as yup from "yup";
 
 export default function SignIn() {
@@ -32,7 +32,7 @@ export default function SignIn() {
             password: "",
           }}
         >
-          {({ handleSubmit, handleChange, values, errors }) => (
+          {({handleSubmit, handleChange, values, errors}) => (
             <Form noValidate onSubmit={handleSubmit}>
               <Form.Group controlId="validationFormikUsername">
                 <Form.Label>Username</Form.Label>

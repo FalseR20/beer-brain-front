@@ -38,7 +38,7 @@ export default function JoinEventModal(props: {
             event_id: "",
           }}
         >
-          {({ handleSubmit, handleChange, values, errors }) => (
+          {({handleSubmit, handleChange, values, errors}) => (
             <Form noValidate onSubmit={handleSubmit}>
               <Form.Group controlId="validationFormikDescription">
                 <Form.Label>Event id</Form.Label>
