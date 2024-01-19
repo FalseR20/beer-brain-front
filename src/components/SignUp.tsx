@@ -1,8 +1,8 @@
-import {signUp} from "../authentication.ts";
 import Template from "./Template.tsx";
 import {Button, Col, Form, InputGroup, Row} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
+import {fetchSignUp} from "../fetches.tsx";
 
 export default function SignIn() {
   return (
@@ -20,16 +20,14 @@ export default function SignIn() {
           })}
           onSubmit={(values, formikHelpers) => {
             console.log(values);
-            signUp(
+            fetchSignUp(
               values.username,
               values.password,
-            ).then((is_success) => {
-              if (is_success) {
-                window.location.href = "/";
-              } else {
-                formikHelpers.setSubmitting(false);
-                formikHelpers.setFieldError("username", "User already exists");
-              }
+            ).then(() => {
+              window.location.href = "/";
+            }).catch(() => {
+              formikHelpers.setSubmitting(false);
+              formikHelpers.setFieldError("username", "User already exists");
             });
           }}
           initialValues={{

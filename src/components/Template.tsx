@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import "../css/Template.css";
-import {isAuthorized} from "../authentication.ts";
+import {isAuthorized} from "../tokens.ts";
 import Guest from "./Guest.tsx";
 import Header from "./Header.tsx";
 

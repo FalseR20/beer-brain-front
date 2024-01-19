@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import Template from "../Template.tsx";
 import {useEffect, useState} from "react";
 import NotFound from "../NotFound.tsx";
-import getAuthHeader from "../../authentication.ts";
+import getAuthHeaders from "../../tokens.ts";
 import "../../css/Event.css";
 import {make_url, UrlPatterns} from "../../constants.ts";
 import {IDetailedEvent} from "../../interfaces.ts";
@@ -17,7 +17,7 @@ export default function Event() {
   const event_id = params.event_id;
   useEffect(() => {
     fetch(make_url(UrlPatterns.GET_DETAILED_EVENT, {eventId: event_id as string}), {
-      headers: getAuthHeader(),
+      headers: getAuthHeaders(),
     })
       .then((response) => response.json())
       .then((data) => {

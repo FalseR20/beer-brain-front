@@ -1,8 +1,8 @@
 import Template from "./Template.tsx";
 import {Button, Form, InputGroup} from "react-bootstrap";
-import {signIn} from "../authentication.ts";
 import {Formik} from "formik";
 import * as yup from "yup";
+import {fetchSignIn} from "../fetches.tsx";
 
 export default function SignIn() {
   return (
@@ -15,16 +15,13 @@ export default function SignIn() {
             password: yup.string().required(),
           })}
           onSubmit={(values, formikHelpers) => {
-            console.log(values);
-            signIn(values.username, values.password).then((is_success) => {
-              if (is_success) {
-                window.location.href = "/";
-              } else {
-                formikHelpers.setSubmitting(false);
-                const message = "Wrong password or login";
-                formikHelpers.setFieldError("username", message);
-                formikHelpers.setFieldError("password", message);
-              }
+            fetchSignIn(values.username, values.password).then(() => {
+              window.location.href = "/";
+            }).catch(() => {
+              formikHelpers.setSubmitting(false);
+              const message = "Wrong password or login";
+              formikHelpers.setFieldError("username", message);
+              formikHelpers.setFieldError("password", message);
             });
           }}
           initialValues={{

@@ -1,5 +1,5 @@
 import "../css/CreateEvent.css";
-import getAuthHeader from "../authentication.ts";
+import getAuthHeaders from "../tokens.ts";
 import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
@@ -9,7 +9,7 @@ async function joinEventAPI(event_id: string) {
   console.log(`Join event ${event_id}`);
   const response = await fetch(make_url(UrlPatterns.JOIN_EVENT, {eventId: event_id}), {
     method: "POST",
-    headers: getAuthHeader(),
+    headers: getAuthHeaders(),
   });
   return response.ok;
 }

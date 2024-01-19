@@ -1,6 +1,6 @@
 import Template from "./Template.tsx";
 import {ReactNode, useEffect, useState} from "react";
-import getAuthHeader from "../authentication.ts";
+import getAuthHeaders from "../tokens.ts";
 import {Alert, Button, Card, Col, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
@@ -55,7 +55,7 @@ function Debts(): ReactNode {
 
   useEffect(() => {
     fetch(make_url(UrlPatterns.GET_EVENT_LIST), {
-      headers: getAuthHeader(),
+      headers: getAuthHeaders(),
     })
       .then((response) => response.json())
       .then((data) => setEvents(data));

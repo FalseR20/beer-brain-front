@@ -1,8 +1,9 @@
 import {Button, Modal, Navbar} from "react-bootstrap";
-import {isAuthorized, signOut} from "../authentication.ts";
+import {isAuthorized} from "../tokens.ts";
 import {ThemeContext} from "../themeContext.tsx";
 import {BsMoon, BsSun} from "react-icons/bs";
 import {useState} from "react";
+import {signOut} from "../fetches.tsx";
 
 export default function Header() {
   return (

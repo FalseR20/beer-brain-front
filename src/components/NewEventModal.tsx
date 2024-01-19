@@ -1,5 +1,5 @@
 import "../css/CreateEvent.css";
-import getAuthHeader from "../authentication.ts";
+import getAuthHeaders from "../tokens.ts";
 import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
@@ -12,7 +12,7 @@ async function createEventAPI(inputs: { name: string }) {
   formData.append("date", "2000-01-01");
   const response = await fetch(make_url(UrlPatterns.CREATE_EVENT), {
     method: "POST",
-    headers: getAuthHeader(),
+    headers: getAuthHeaders(),
     body: formData,
   });
   if (response.ok) {
