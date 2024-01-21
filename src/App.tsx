@@ -17,7 +17,7 @@ function App() {
         <Route path="/sign_in" element={<SignIn/>}/>
         <Route path="/sign_up" element={<SignUp/>}/>
         <Route path="/events/:event_id" element={<Event/>}/>
-        {/*<Route path="/users/me" element={<User me={true}}/>}/>*/}
+        <Route path="/users/me" element={<User me={true}/>}/>
         <Route path="/users/id/:username" element={<User/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>

@@ -99,3 +99,11 @@ export async function getUser(username: string): Promise<IUser> {
   return data as IUser;
 }
 
+export async function getMyUser(): Promise<IUser> {
+  const response = await fetchWithAuthorization(make_url(UrlPatterns.GET_MY_USER));
+  if (!response.ok) {
+    throw new FetchError();
+  }
+  const data = await response.json()
+  return data as IUser;
+}
