@@ -1,7 +1,7 @@
 import {IDetailedEvent} from "../../interfaces.ts";
 import {ListGroup} from "react-bootstrap";
-import {Avatar48} from "../Profile.tsx";
 import {RxPlus} from "react-icons/rx";
+import {UserAvatar} from "../user/UserAvatar.tsx";
 
 export function EventMembers({event}: { event: IDetailedEvent }) {
   return <div className={"mb-1"}>
@@ -10,7 +10,7 @@ export function EventMembers({event}: { event: IDetailedEvent }) {
     </h5>
     <ListGroup horizontal={true}>
       {event.users.map((user) => <div key={user.username}>
-        <Avatar48 username={user.username}/>
+        <UserAvatar user={user} size={"64"} round={true}/>
       </div>)}
       <div className={"m-2"}>
         <RxPlus size={48}/>

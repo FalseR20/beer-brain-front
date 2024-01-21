@@ -6,7 +6,7 @@ import Event from "./components/event/Event.tsx";
 import NotFound from "./components/NotFound.tsx";
 import Guest from "./components/Guest.tsx";
 import "./css/App.scss";
-import Profile from "./components/Profile.tsx";
+import User from "./components/user/User.tsx";
 
 function App() {
   return (
@@ -17,8 +17,8 @@ function App() {
         <Route path="/sign_in" element={<SignIn/>}/>
         <Route path="/sign_up" element={<SignUp/>}/>
         <Route path="/events/:event_id" element={<Event/>}/>
-        <Route path="/profile/me" element={<Profile/>}/>
-        <Route path="/profile/:profile_id" element={<Profile/>}/>
+        {/*<Route path="/users/me" element={<User me={true}}/>}/>*/}
+        <Route path="/users/id/:username" element={<User/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
     </Router>

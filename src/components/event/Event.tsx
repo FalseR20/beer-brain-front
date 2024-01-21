@@ -14,9 +14,9 @@ import {EventSettings} from "./EventSettings.tsx";
 export default function Event() {
   const [event, setEvent] = useState<IDetailedEvent | undefined>(undefined);
   const params = useParams();
-  const event_id = params.event_id;
+  const event_id = params.event_id as string;
   useEffect(() => {
-    fetch(make_url(UrlPatterns.GET_DETAILED_EVENT, {eventId: event_id as string}), {
+    fetch(make_url(UrlPatterns.GET_DETAILED_EVENT, {eventId: event_id}), {
       headers: getAuthHeaders(),
     })
       .then((response) => response.json())

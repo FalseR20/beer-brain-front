@@ -13,7 +13,7 @@ export enum UrlPatterns {
   CREATE_USER = "users/new/",
   GET_MY_USER = "users/me/",
   CHANGE_PASSWORD = "users/me/change-password/",
-  GET_USER = "users/me/id/:username/",
+  GET_USER = "users/id/:username/",
 
   GET_EVENT_LIST = "events/",
   CREATE_EVENT = "events/new/",

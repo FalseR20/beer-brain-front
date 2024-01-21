@@ -1,6 +1,6 @@
 import {make_url, UrlPatterns} from "./constants.ts";
 import getAuthHeaders, {deleteToken, setToken, TokenError} from "./tokens.ts";
-import {IEvent} from "./interfaces.ts";
+import {IEvent, IUser} from "./interfaces.ts";
 
 class FetchError extends Error {
 }
@@ -53,12 +53,12 @@ async function fetchWithAuthorization(input: RequestInfo | URL, init?: RequestIn
   return response
 }
 
-export async function getEventList() {
+export async function getEventList(): Promise<IEvent[]> {
   const response = await fetchWithAuthorization(make_url(UrlPatterns.GET_EVENT_LIST))
   return await response.json() as IEvent[]
 }
 
-export async function createEventAPI(inputs: { name: string }) {
+export async function createEventAPI(inputs: { name: string }): Promise<IEvent> {
   const formData = new FormData();
   formData.append("name", inputs.name);
   formData.append("date", "2000-01-01");
@@ -72,7 +72,7 @@ export async function createEventAPI(inputs: { name: string }) {
   return await response.json() as IEvent;
 }
 
-export async function joinEvent(event_id: string) {
+export async function joinEvent(event_id: string): Promise<void> {
   const response = await fetchWithAuthorization(make_url(UrlPatterns.JOIN_EVENT, {eventId: event_id}), {
     method: "POST",
   });
@@ -81,12 +81,21 @@ export async function joinEvent(event_id: string) {
   }
 }
 
-export async function leaveEvent(event_id: string) {
+export async function leaveEvent(event_id: string): Promise<void> {
   const response = await fetchWithAuthorization(make_url(UrlPatterns.LEAVE_EVENT, {eventId: event_id}), {
     method: "POST",
   });
   if (!response.ok) {
     throw new FetchError("Cannot leave event");
   }
+}
+
+export async function getUser(username: string): Promise<IUser> {
+  const response = await fetchWithAuthorization(make_url(UrlPatterns.GET_USER, {username: username}));
+  if (!response.ok) {
+    throw new FetchError("Cannot find user with that username");
+  }
+  const data = await response.json()
+  return data as IUser;
 }
 
