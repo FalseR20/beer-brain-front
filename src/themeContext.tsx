@@ -11,7 +11,7 @@ export default function ThemeContextWrapper(props: {
   children: React.ReactNode;
 }) {
   const [isDarkTheme, changeIsDarkTheme] = useState(
-    localStorage.getItem("theme") != "ligh",
+    localStorage.getItem("theme") != "light",
   );
   const theme = isDarkTheme ? "dark" : "light";
   document.body.setAttribute("data-bs-theme", theme);
