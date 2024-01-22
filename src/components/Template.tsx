@@ -2,7 +2,7 @@ import {ReactNode} from "react";
 import "../css/Template.css";
 import {isAuthorized} from "../tokens.ts";
 import Guest from "./Guest.tsx";
-import Header from "./Header.tsx";
+import Header from "./header/Header.tsx";
 
 interface PageProps {
   children?: ReactNode;

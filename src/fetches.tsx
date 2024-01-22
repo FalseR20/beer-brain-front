@@ -36,7 +36,7 @@ export async function fetchSignUp(username: string, password: string): Promise<v
   return await fetchSignIn(username, password);
 }
 
-export function signOut(): void {
+export async function signOut(): Promise<void> {
   deleteToken()
 }
 
