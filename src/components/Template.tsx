@@ -1,30 +1,26 @@
 import {ReactNode} from "react";
 import "../css/Template.css";
-import {isAuthorized} from "../tokens.ts";
-import Guest from "./Guest.tsx";
 import Header from "./header/Header.tsx";
 
-interface PageProps {
+export interface TemplateProps {
   children?: ReactNode;
-  isAuthRequired?: boolean;
+  // checkAuthorization?: boolean;
   doAddWrapping?: boolean;
 }
 
-export default function Template(props: PageProps) {
-  let inner: ReactNode =
-    props.isAuthRequired == true && !isAuthorized() ? Guest() : props.children;
-  if (props.doAddWrapping != false) {
-    inner = (
-      <div id={"common-field"} className={"width-60 m-3"}>
-        {inner}
-      </div>
-    );
-  }
+export default function Template(props: TemplateProps) {
+  // if (props.checkAuthorization == true && !isAuthorized()) {
+  //   window.location.href = "/guest"
+  // }
   return (
     <div className={"d-flex flex-column min-vh-100"}>
       <Header/>
       <div className={"d-flex flex-row justify-content-center flex-grow-1"}>
-        {inner}
+        {props.doAddWrapping == false ? props.children : <>
+          <div id={"common-field"} className={"width-60 m-3"}>
+            {props.children}
+          </div>
+        </>}
       </div>
       <footer className="bg-body-tertiary border-top text-center text-white-50 p-2">
         &copy; FalseR / Bebra Bebrou

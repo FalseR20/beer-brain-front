@@ -4,7 +4,7 @@ export interface IUser {
 }
 
 export interface IEvent {
-  id: number;
+  id: string;
   name: string,
   description: string;
   date: string;

@@ -1,17 +1,27 @@
 import Template from "./Template.tsx";
-import {ReactNode, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Alert, Button, Card, Col, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
 import {IEvent} from "../interfaces.ts";
-import {getEventList} from "../fetches.tsx";
+import {catchUnauthorized, getEventList} from "../fetches.tsx";
 
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
   const [showJoinEventModal, setShowJoinEventModal] = useState(false);
+  const [events, setEvents] = useState<IEvent[]>();
 
+  useEffect(() => {
+    getEventList()
+      .then(setEvents)
+      .catch(catchUnauthorized)
+  }, []);
+
+  if (events == undefined) {
+    return <Template/>
+  }
   return (
-    <Template isAuthRequired={true}>
+    <Template>
       <Alert variant="light" className={"mb-3 bg-body-tertiary"}>
         <Alert.Heading>All events</Alert.Heading>
         <p>
@@ -44,50 +54,38 @@ export default function Home() {
         show={showJoinEventModal}
         onHide={() => setShowJoinEventModal(false)}
       />
-      <Debts/>
+      <Row xs={1} md={2} className={"g-3"}>
+        {events.map((event) => {
+          const variant = event.is_closed ? "secondary" : "primary";
+          return (
+            <Col key={`Debt${event.id}`}>
+              <Card className={"p-0"} border={variant}>
+                <Card.Header>
+                  <Row>
+                    <Col>
+                      <span>{event.date}</span>
+                    </Col>
+                    <Col className={"text-end"}>Host: {event.host.username}</Col>
+                  </Row>
+                </Card.Header>
+                <Card.Body>
+                  <Card.Title>{event.name}</Card.Title>
+                  <Card.Text>{event.users.length} members</Card.Text>
+                  <Row className={"mx-0"}>
+                    <Button
+                      variant={variant}
+                      size={"lg"}
+                      href={`/events/${event.id}/`}
+                    >
+                      Look
+                    </Button>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          );
+        })}
+      </Row>
     </Template>
-  );
-}
-
-function Debts(): ReactNode {
-  const [events, setEvents] = useState<IEvent[]>([]);
-
-  useEffect(() => {
-    getEventList().then(setEvents);
-  }, []);
-
-  return (
-    <Row xs={1} md={2} className={"g-3"}>
-      {events.map((event) => {
-        const variant = event.is_closed ? "secondary" : "primary";
-        return (
-          <Col key={`Debt${event.id}`}>
-            <Card className={"p-0"} border={variant}>
-              <Card.Header>
-                <Row>
-                  <Col>
-                    <span>{event.date}</span>
-                  </Col>
-                  <Col className={"text-end"}>Host: {event.host.username}</Col>
-                </Row>
-              </Card.Header>
-              <Card.Body>
-                <Card.Title>{event.name}</Card.Title>
-                <Card.Text>{event.users.length} members</Card.Text>
-                <Row className={"mx-0"}>
-                  <Button
-                    variant={variant}
-                    size={"lg"}
-                    href={`/events/${event.id}/`}
-                  >
-                    Look
-                  </Button>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        );
-      })}
-    </Row>
   );
 }

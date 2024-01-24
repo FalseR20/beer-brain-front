@@ -1,6 +1,8 @@
+import Template from "./Template.tsx";
+
 export default function Guest() {
   return (
-    <>
+    <Template>
       <div className={"d-flex flex-column align-items-center "}>
         <h1 className={"fw-bold mt-4"} style={{fontSize: "5rem"}}>
           BeerBrain
@@ -19,6 +21,6 @@ export default function Guest() {
           Don't forget to remind your friends that the <b>beer</b> was not free!
         </p>
       </div>
-    </>
+    </Template>
   );
 }
