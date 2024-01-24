@@ -2,7 +2,7 @@ import Template from "../Template.tsx";
 import {IUser} from "../../interfaces.ts";
 import {useParams} from "react-router-dom";
 import {getMyUser, getUser} from "../../fetches.tsx";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {UserAvatar} from "./UserAvatar.tsx";
 import {Button, Card, ListGroup} from "react-bootstrap";
 
@@ -20,17 +20,7 @@ export default function User({me = false}: { me?: boolean }) {
   return (<Template>
     <Card>
       <Card.Body>
-        <div className={"d-flex flex-row gap-3 align-items-center"}>
-          <UserAvatar user={user} round={true} size={"4rem"}/>
-          <div className={"d-flex flex-column justify-content-center flex-grow-1"}>
-            <Card.Title>
-              {`@${user.username}`}
-            </Card.Title>
-            {user.full_name == "" ? "" : <>
-              <Card.Subtitle className={"text-muted"}>{user.full_name}</Card.Subtitle>
-            </>}
-          </div>
-        </div>
+        <UserTemplate user={user}/>
       </Card.Body>
     </Card>
 
@@ -60,3 +50,18 @@ export default function User({me = false}: { me?: boolean }) {
   </Template>);
 }
 
+
+export function UserTemplate({user, children}: { user: IUser, children?: ReactNode }) {
+  return <div className={"d-flex flex-row gap-3 align-items-center"}>
+    <UserAvatar user={user} round={true} size={"4rem"}/>
+    <div className={"d-flex flex-column justify-content-center flex-grow-1"}>
+      <Card.Title>
+        {`@${user.username}`}
+      </Card.Title>
+      {user.full_name == "" ? "" : <>
+        <Card.Subtitle className={"text-muted"}>{user.full_name}</Card.Subtitle>
+      </>}
+    </div>
+    {children}
+  </div>
+}

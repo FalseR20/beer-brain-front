@@ -4,20 +4,17 @@ import {useEffect, useState} from "react";
 import NotFound from "../NotFound.tsx";
 import "../../css/Event.css";
 import {IDetailedEvent} from "../../interfaces.ts";
-import {EventHeader} from "./EventHeader.tsx";
-import {EventMembers} from "./EventMembers.tsx";
-import {EventPayers} from "./EventPayers.tsx";
-import {EventSettings} from "./EventSettings.tsx";
 import {catchUnauthorized, FetchError, getDetailedEvent} from "../../fetches.tsx";
+import {Card, ListGroup} from "react-bootstrap";
+import {UserTemplate} from "../user/User.tsx";
 
 export default function Event() {
   const [event, setEvent] = useState<IDetailedEvent>();
   const [is404, setIs404] = useState<boolean>(false)
 
-  const params = useParams();
-  const event_id = params.event_id as string;
+  const params = useParams<{ event_id: string }>();
   useEffect(() => {
-    getDetailedEvent(event_id)
+    getDetailedEvent(params.event_id!)
       .then(setEvent)
       .catch(async (reason: FetchError) => {
         const error = await catchUnauthorized(reason)
@@ -25,21 +22,38 @@ export default function Event() {
           setIs404(true)
         }
       })
-  }, [event_id]);
-
+  }, [params.event_id]);
 
   if (event == undefined) {
     return is404 ? <NotFound/> : <Template/>;
   }
-  return (<Template doAddWrapping={false}>
-    <div id={"common-field"} className={"width-60"}>
-      <EventHeader event={event}/>
+  return (<Template>
+    <Card>
+      <Card.Body>
+        <Card.Title>
+          {event.name}
+        </Card.Title>
+        <Card.Subtitle className={"text-muted"}>
+          {event.description}
+        </Card.Subtitle>
+      </Card.Body>
+    </Card>
 
-      <div style={{display: "none"}}>
-        <EventMembers event={event}/>
-        <EventPayers event={event}/>
-        <EventSettings/>
-      </div>
-    </div>
+    <Card className={"mt-3"}>
+      <Card.Header>
+        Members
+      </Card.Header>
+      <ListGroup variant={"flush"}>
+        {event.users.map((user) => <>
+          <ListGroup.Item action={true} className={"p-3"} onClick={() => {
+            window.location.href += `/actions/${user.username}`
+          }}>
+            <UserTemplate user={user}>
+              {`${user.deposits.length} deposits, ${user.repayments.length} repayments`}
+            </UserTemplate>
+          </ListGroup.Item>
+        </>)}
+      </ListGroup>
+    </Card>
   </Template>);
 }

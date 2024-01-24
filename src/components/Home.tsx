@@ -75,7 +75,7 @@ export default function Home() {
                     <Button
                       variant={variant}
                       size={"lg"}
-                      href={`/events/${event.id}/`}
+                      href={`/events/${event.id}`}
                     >
                       Look
                     </Button>
