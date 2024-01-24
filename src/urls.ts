@@ -21,7 +21,6 @@ export enum UrlsBack {
   JOIN_EVENT = "events/:eventId/join/",
   LEAVE_EVENT = "events/:eventId/leave/",
   CHANGE_EVENT_HOST = "events/:eventId/change-host/",
-  GET_DETAILED_EVENT = "events/:eventId/detailed/",
 
   GET_DEPOSIT_LIST = "events/:eventId/deposits/",
   CREATE_DEPOSIT = "events/:eventId/deposits/new/",

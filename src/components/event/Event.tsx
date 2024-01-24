@@ -46,8 +46,8 @@ export default function Event() {
         Members
       </Card.Header>
       <ListGroup variant={"flush"}>
-        {event.users.map((user) => <>
-          <ListGroup.Item action={true} className={"p-3"} onClick={() => {
+        {event.users.map((user) => (
+          <ListGroup.Item key={user.username} action={true} className={"p-3"} onClick={() => {
             window.location.href = new UrlPattern(UrlsFront.EVENT_ACTION).stringify({
               "eventId": event.id,
               "username": user.username
@@ -57,7 +57,7 @@ export default function Event() {
               {`${user.deposits.length} deposits, ${user.repayments.length} repayments`}
             </UserTemplate>
           </ListGroup.Item>
-        </>)}
+        ))}
       </ListGroup>
     </Card>
   </Template>);

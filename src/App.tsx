@@ -7,7 +7,7 @@ import NotFound from "./components/NotFound.tsx";
 import Guest from "./components/Guest.tsx";
 import "./css/App.scss";
 import User from "./components/user/User.tsx";
-import {EventAction} from "./components/event/EventAction.tsx";
+import EventAction from "./components/event/EventAction.tsx";
 import {UrlsFront} from "./urls.ts";
 
 function App() {

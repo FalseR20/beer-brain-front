@@ -1,6 +1,6 @@
 import {make_url, UrlsBack} from "./urls.ts";
 import getAuthHeaders, {deleteToken, setToken, TokenError} from "./tokens.ts";
-import {IDetailedEvent, IEvent, IUser} from "./interfaces.ts";
+import {IDetailedEvent, IDetailedUser, IEvent, IUser} from "./interfaces.ts";
 
 export class ResponseError extends Error {
   status: number;
@@ -107,8 +107,50 @@ export async function getMyUser(): Promise<IUser> {
   return await response.json()
 }
 
-export async function getDetailedEvent(eventId: string): Promise<IDetailedEvent> {
-  const url = make_url(UrlsBack.GET_DETAILED_EVENT, {eventId: eventId})
+export async function getEvent(eventId: string): Promise<IEvent> {
+  const url = make_url(UrlsBack.RUD_EVENT, {eventId: eventId})
   const response = await fetchWithAuthorization(url)
   return await response.json()
+}
+
+export async function getDetailedEvent(eventId: string): Promise<IDetailedEvent> {
+  const event = await getEvent(eventId)
+
+  const detailedUsersMap = new Map<string, IDetailedUser>();
+  const detailedUsers = event.users.map(user => {
+    const detailedUser: IDetailedUser = {
+      ...user,
+      balance: 0,
+      deposits: [],
+      repayments: [],
+      backRepayments: [],
+    };
+    detailedUsersMap.set(detailedUser.username, detailedUser);
+    return detailedUser;
+  });
+  let bank: number = 0
+  event.deposits.forEach(deposit => {
+    bank += deposit.value;
+    const detailedUser = detailedUsersMap.get(deposit.user.username)!;
+    detailedUser.deposits.push(deposit);
+    detailedUser.balance += deposit.value;
+  });
+  event.repayments.forEach(repayment => {
+    const payer = detailedUsersMap.get(repayment.payer.username)!;
+    const recipient = detailedUsersMap.get(repayment.recipient.username)!;
+    payer.balance += repayment.value;
+    recipient.balance -= repayment.value;
+    payer.repayments.push(repayment);
+    recipient.backRepayments.push(repayment);
+  });
+  return {
+    ...event,
+    bank,
+    users: detailedUsers,
+  }
+}
+
+export async function getDetailedUser(eventId: string, username: string): Promise<IDetailedUser> {
+  const detailedEvent = await getDetailedEvent(eventId)
+  return detailedEvent.users.find(detailedUser => detailedUser.username == username)!
 }

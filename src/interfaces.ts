@@ -12,30 +12,8 @@ export interface IEvent {
   is_closed: boolean;
   users: IUser[];
   host: IUser;
-}
-
-export interface IDetailedEvent extends IEvent {
-  users: IDetailedUser[];
-}
-
-export interface IDetailedUser extends IUser {
-  deposits: IDetailedDeposit[];
-  repayments: IDetailedRepayment[];
-}
-
-export interface IDetailedDeposit {
-  id: string;
-  user: IUser;
-  value: number;
-  description: string;
-}
-
-export interface IDetailedRepayment {
-  id: string;
-  payer: IUser;
-  recipient: IUser;
-  value: number;
-  description: string;
+  deposits: IDeposit[],
+  repayments: IRepayment[],
 }
 
 export interface IDeposit {
@@ -55,3 +33,14 @@ export interface IRepayment {
   event: string
 }
 
+export interface IDetailedUser extends IUser {
+  balance: number,
+  deposits: IDeposit[],
+  repayments: IRepayment[],
+  backRepayments: IRepayment[],
+}
+
+export interface IDetailedEvent extends IEvent {
+  users: IDetailedUser[];
+  bank: number,
+}
