@@ -5,10 +5,10 @@ import NotFound from "../NotFound.tsx";
 import "../../css/Event.css";
 import {IDetailedEvent} from "../../interfaces.ts";
 import {catchUnauthorized, FetchError, getDetailedEvent} from "../../fetches.tsx";
-import {Card, ListGroup} from "react-bootstrap";
-import {UserTemplate} from "../user/User.tsx";
+import {Badge, Card, ListGroup} from "react-bootstrap";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
+import {UserAvatar} from "../user/UserAvatar.tsx";
 
 export default function Event() {
   const [event, setEvent] = useState<IDetailedEvent>();
@@ -29,6 +29,13 @@ export default function Event() {
   if (event == undefined) {
     return is404 ? <NotFound/> : <Template/>;
   }
+
+  event.users.sort((a, b) => a.balance - b.balance)
+  const balanceFormat = new Intl.NumberFormat("en-us", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    signDisplay: "exceptZero",
+  })
   return (<Template>
     <Card>
       <Card.Body>
@@ -53,9 +60,31 @@ export default function Event() {
               "username": user.username
             })
           }}>
-            <UserTemplate user={user}>
-              {`${user.deposits.length} deposits, ${user.repayments.length} repayments`}
-            </UserTemplate>
+            <div className={"d-flex flex-row gap-3 align-items-center"}>
+              <UserAvatar user={user} round={true} size={"4rem"}/>
+              <div className={"d-flex flex-column justify-content-center flex-grow-1"}>
+                <Card.Title className={"mb-0"}>
+                  {`@${user.username} `}
+                  {!user.deposits.length ? "" : <>
+                    <Badge bg={"success"}>
+                      {`${user.deposits.length} deposits`}
+                    </Badge>
+                    {""}
+                  </>}
+                  {!user.repayments.length ? "" : <>
+                    <Badge bg={"secondary"}>
+                      {`${user.repayments.length} repayments`}
+                    </Badge>
+                  </>}
+                </Card.Title>
+                {user.full_name == "" ? "" : <>
+                  <Card.Subtitle className={"text-muted mt-1"}>{user.full_name}</Card.Subtitle>
+                </>}
+              </div>
+              <h2 className={user.balance > 0 ? "" : "text-danger"}>
+                {balanceFormat.format(user.balance)}
+              </h2>
+            </div>
           </ListGroup.Item>
         ))}
       </ListGroup>
