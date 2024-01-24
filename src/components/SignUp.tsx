@@ -3,6 +3,7 @@ import {Button, Col, Form, InputGroup, Row} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {fetchSignUp} from "../fetches.tsx";
+import {UrlsFront} from "../urls.ts";
 
 export default function SignIn() {
   return (
@@ -24,7 +25,7 @@ export default function SignIn() {
               values.username,
               values.password,
             ).then(() => {
-              window.location.href = "/";
+              window.location.href = UrlsFront.HOME;
             }).catch(() => {
               formikHelpers.setSubmitting(false);
               formikHelpers.setFieldError("username", "User already exists");

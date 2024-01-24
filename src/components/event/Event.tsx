@@ -7,14 +7,16 @@ import {IDetailedEvent} from "../../interfaces.ts";
 import {catchUnauthorized, FetchError, getDetailedEvent} from "../../fetches.tsx";
 import {Card, ListGroup} from "react-bootstrap";
 import {UserTemplate} from "../user/User.tsx";
+import UrlPattern from "url-pattern";
+import {UrlsFront} from "../../urls.ts";
 
 export default function Event() {
   const [event, setEvent] = useState<IDetailedEvent>();
   const [is404, setIs404] = useState<boolean>(false)
 
-  const params = useParams<{ event_id: string }>();
+  const params = useParams<{ eventId: string }>();
   useEffect(() => {
-    getDetailedEvent(params.event_id!)
+    getDetailedEvent(params.eventId!)
       .then(setEvent)
       .catch(async (reason: FetchError) => {
         const error = await catchUnauthorized(reason)
@@ -22,7 +24,7 @@ export default function Event() {
           setIs404(true)
         }
       })
-  }, [params.event_id]);
+  }, [params.eventId]);
 
   if (event == undefined) {
     return is404 ? <NotFound/> : <Template/>;
@@ -46,7 +48,10 @@ export default function Event() {
       <ListGroup variant={"flush"}>
         {event.users.map((user) => <>
           <ListGroup.Item action={true} className={"p-3"} onClick={() => {
-            window.location.href += `/actions/${user.username}`
+            window.location.href = new UrlPattern(UrlsFront.EVENT_ACTION).stringify({
+              "eventId": event.id,
+              "username": user.username
+            })
           }}>
             <UserTemplate user={user}>
               {`${user.deposits.length} deposits, ${user.repayments.length} repayments`}

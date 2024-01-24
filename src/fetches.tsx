@@ -1,4 +1,4 @@
-import {make_url, UrlPatterns} from "./constants.ts";
+import {make_url, UrlsBack} from "./urls.ts";
 import getAuthHeaders, {deleteToken, setToken, TokenError} from "./tokens.ts";
 import {IDetailedEvent, IEvent, IUser} from "./interfaces.ts";
 
@@ -29,7 +29,7 @@ export async function fetchSignIn(
   formData.append("username", username);
   formData.append("password", password);
 
-  const url = make_url(UrlPatterns.GET_TOKEN);
+  const url = make_url(UrlsBack.GET_TOKEN);
   const response = await fetch(url, {method: "POST", body: formData})
   if (!response.ok) {
     throw new ResponseError(response);
@@ -43,7 +43,7 @@ export async function fetchSignUp(username: string, password: string): Promise<v
   formData.append("username", username);
   formData.append("password", password);
 
-  const url = make_url(UrlPatterns.CREATE_USER);
+  const url = make_url(UrlsBack.CREATE_USER);
   const response = await fetch(url, {method: "POST", body: formData});
   if (!response.ok) {
     throw new ResponseError(response);
@@ -72,47 +72,43 @@ async function fetchWithAuthorization(input: RequestInfo | URL, init?: RequestIn
 }
 
 export async function getEventList(): Promise<IEvent[]> {
-  const response = await fetchWithAuthorization(make_url(UrlPatterns.GET_EVENT_LIST))
-  return await response.json() as IEvent[]
+  const response = await fetchWithAuthorization(make_url(UrlsBack.GET_EVENT_LIST))
+  return await response.json()
 }
 
 export async function createEventAPI(inputs: { name: string }): Promise<IEvent> {
   const formData = new FormData();
   formData.append("name", inputs.name);
   formData.append("date", "2000-01-01");
-  const response = await fetchWithAuthorization(make_url(UrlPatterns.CREATE_EVENT), {
-    method: "POST",
-    body: formData,
-  });
-  return await response.json() as IEvent;
+  const url = make_url(UrlsBack.CREATE_EVENT)
+  const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
+  return await response.json();
 }
 
 export async function joinEvent(event_id: string): Promise<void> {
-  await fetchWithAuthorization(make_url(UrlPatterns.JOIN_EVENT, {eventId: event_id}), {
-    method: "POST",
-  });
+  const url = make_url(UrlsBack.JOIN_EVENT, {eventId: event_id})
+  await fetchWithAuthorization(url, {method: "POST"});
 }
 
 export async function leaveEvent(event_id: string): Promise<void> {
-  await fetchWithAuthorization(make_url(UrlPatterns.LEAVE_EVENT, {eventId: event_id}), {
-    method: "POST",
-  });
+  const url = make_url(UrlsBack.LEAVE_EVENT, {eventId: event_id})
+  await fetchWithAuthorization(url, {method: "POST"});
 }
 
 export async function getUser(username: string): Promise<IUser> {
-  const response = await fetchWithAuthorization(make_url(UrlPatterns.GET_USER, {username: username}));
-  const data = await response.json()
-  return data as IUser;
+  const url = make_url(UrlsBack.GET_USER, {username: username})
+  const response = await fetchWithAuthorization(url);
+  return await response.json()
 }
 
 export async function getMyUser(): Promise<IUser> {
-  const response = await fetchWithAuthorization(make_url(UrlPatterns.GET_MY_USER));
-  const data = await response.json()
-  return data as IUser;
+  const url = make_url(UrlsBack.GET_MY_USER)
+  const response = await fetchWithAuthorization(url);
+  return await response.json()
 }
 
 export async function getDetailedEvent(eventId: string): Promise<IDetailedEvent> {
-  const response = await fetchWithAuthorization(make_url(UrlPatterns.GET_DETAILED_EVENT, {eventId: eventId}))
-  const data = await response.json()
-  return data as IDetailedEvent
+  const url = make_url(UrlsBack.GET_DETAILED_EVENT, {eventId: eventId})
+  const response = await fetchWithAuthorization(url)
+  return await response.json()
 }

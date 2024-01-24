@@ -7,19 +7,22 @@ import NotFound from "./components/NotFound.tsx";
 import Guest from "./components/Guest.tsx";
 import "./css/App.scss";
 import User from "./components/user/User.tsx";
+import {EventAction} from "./components/event/EventAction.tsx";
+import {UrlsFront} from "./urls.ts";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/guest" element={<Guest/>}/>
-        <Route path="/sign_in" element={<SignIn/>}/>
-        <Route path="/sign_up" element={<SignUp/>}/>
-        <Route path="/events/:event_id" element={<Event/>}/>
-        <Route path="/users/me" element={<User me={true}/>}/>
-        <Route path="/users/id/:username" element={<User/>}/>
-        <Route path="*" element={<NotFound/>}/>
+        <Route path={UrlsFront.HOME} element={<Home/>}/>
+        <Route path={UrlsFront.GUEST} element={<Guest/>}/>
+        <Route path={UrlsFront.SIGN_IN} element={<SignIn/>}/>
+        <Route path={UrlsFront.SIGN_UP} element={<SignUp/>}/>
+        <Route path={UrlsFront.EVENT} element={<Event/>}/>
+        <Route path={UrlsFront.EVENT_ACTION} element={<EventAction/>}/>
+        <Route path={UrlsFront.USER_ME} element={<User me={true}/>}/>
+        <Route path={UrlsFront.USER} element={<User/>}/>
+        <Route path={"*"} element={<NotFound/>}/>
       </Routes>
     </Router>
   );

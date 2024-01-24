@@ -3,6 +3,7 @@ import {Button, Form, InputGroup} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {fetchSignIn} from "../fetches.tsx";
+import {UrlsFront} from "../urls.ts";
 
 export default function SignIn() {
   return (
@@ -16,7 +17,7 @@ export default function SignIn() {
           })}
           onSubmit={(values, formikHelpers) => {
             fetchSignIn(values.username, values.password).then(() => {
-              window.location.href = "/";
+              window.location.href = UrlsFront.HOME;
             }).catch(() => {
               formikHelpers.setSubmitting(false);
               const message = "Wrong password or login";

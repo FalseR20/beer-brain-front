@@ -1,6 +1,7 @@
 import {isAuthorized} from "../../tokens.ts";
 import {Button} from "react-bootstrap";
 import {signOut} from "../../fetches.tsx";
+import {UrlsFront} from "../../urls.ts";
 
 export function SignGroup() {
   return isAuthorized() ? (
@@ -17,10 +18,10 @@ export function SignGroup() {
     </Button>
   ) : (
     <>
-      <Button variant={"outline-success"} className={"me-3"} href={"/sign_in"}>
+      <Button variant={"outline-success"} className={"me-3"} href={UrlsFront.SIGN_IN}>
         Sign In
       </Button>
-      <Button variant={"success"} className={"me-3"} href={"/sign_up"}>
+      <Button variant={"success"} className={"me-3"} href={UrlsFront.SIGN_UP}>
         Sign Up
       </Button>
     </>

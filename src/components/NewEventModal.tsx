@@ -3,6 +3,8 @@ import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {createEventAPI} from "../fetches.tsx";
+import UrlPattern from "url-pattern";
+import {UrlsFront} from "../urls.ts";
 
 export default function NewEventModal(props: {
   show: boolean;
@@ -21,7 +23,7 @@ export default function NewEventModal(props: {
           onSubmit={(values) => {
             console.log(values);
             createEventAPI(values).then((event) => {
-              window.location.href = `/events/${event.id}`;
+              window.location.href = new UrlPattern(UrlsFront.EVENT).stringify({"eventId": event.id});
             });
           }}
           initialValues={{

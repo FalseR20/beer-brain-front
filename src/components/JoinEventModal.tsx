@@ -3,6 +3,8 @@ import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {joinEvent} from "../fetches.tsx";
+import UrlPattern from "url-pattern";
+import {UrlsFront} from "../urls.ts";
 
 export default function JoinEventModal(props: {
   show: boolean;
@@ -20,7 +22,7 @@ export default function JoinEventModal(props: {
           })}
           onSubmit={(values) => {
             joinEvent(values.event_id).then(() => {
-              window.location.href = `/events/${values.event_id}`;
+              window.location.href = new UrlPattern(UrlsFront.EVENT).stringify({"eventId": values.event_id});
             });
           }}
           initialValues={{

@@ -5,6 +5,8 @@ import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
 import {IEvent} from "../interfaces.ts";
 import {catchUnauthorized, getEventList} from "../fetches.tsx";
+import UrlPattern from "url-pattern";
+import {UrlsFront} from "../urls.ts";
 
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
@@ -75,7 +77,7 @@ export default function Home() {
                     <Button
                       variant={variant}
                       size={"lg"}
-                      href={`/events/${event.id}`}
+                      href={new UrlPattern(UrlsFront.EVENT).stringify({"eventId": event.id})}
                     >
                       Look
                     </Button>
