@@ -22,6 +22,7 @@ export interface IDeposit {
   value: number;
   description: string;
   event: string
+  payed_at: string
 }
 
 export interface IRepayment {
@@ -31,6 +32,7 @@ export interface IRepayment {
   value: number;
   description: string;
   event: string
+  payed_at: string
 }
 
 export interface IDetailedUser extends IUser {
