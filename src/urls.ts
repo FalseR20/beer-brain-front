@@ -16,7 +16,7 @@ export enum UrlsBack {
   GET_USER = "users/id/:username/",
 
   GET_EVENT_LIST = "events/",
-  CREATE_EVENT = "new/",
+  CREATE_EVENT = "events/new/",
   RUD_EVENT = "events/:eventId/",
   JOIN_EVENT = "events/:eventId/join/",
   LEAVE_EVENT = "events/:eventId/leave/",
