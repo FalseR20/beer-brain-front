@@ -3,7 +3,7 @@ import Template from "../Template.tsx";
 import {useEffect, useState} from "react";
 import NotFound from "../NotFound.tsx";
 import "../../css/Event.css";
-import { IAction, IDetailedEvent } from "../../interfaces.ts";
+import {IAction, IDetailedEvent} from "../../interfaces.ts";
 import {catchUnauthorized, FetchError, getDetailedEvent} from "../../fetches.tsx";
 import {Badge, Card, ListGroup} from "react-bootstrap";
 import UrlPattern from "url-pattern";
@@ -32,6 +32,7 @@ export default function Event() {
 
   event.users.sort((a, b) => a.balance - b.balance)
   const actions: IAction[] = [...event.deposits, ...event.repayments]
+  actions.sort((a, b) => a.payedAt.getTimezoneOffset() - b.payedAt.getTimezoneOffset())
   const balanceFormat = new Intl.NumberFormat("en-us", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -98,7 +99,11 @@ export default function Event() {
       <ListGroup variant={"flush"}>
         {actions.map(action => (
           <ListGroup.Item>
-            {action.description}
+            <div className={"d-flex flex-row gap-3 align-items-center my-1"}>
+              <Card.Title className={"mb-0"}>
+                {action.description == "" ? <i>undefined</i> : action.description}
+              </Card.Title>
+            </div>
           </ListGroup.Item>
         ))}
       </ListGroup>
