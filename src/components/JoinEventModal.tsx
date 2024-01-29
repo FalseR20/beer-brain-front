@@ -36,9 +36,9 @@ export default function JoinEventModal(props: {
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
-                    placeholder="12"
+                    placeholder="00000000-0000-0000-0000-000000000000"
                     aria-describedby="inputGroupPrepend"
-                    name="id"
+                    name="event_id"
                     value={values.event_id}
                     onChange={handleChange}
                     isInvalid={!!errors.event_id}

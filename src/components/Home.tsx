@@ -58,14 +58,14 @@ export default function Home() {
       />
       <Row xs={1} md={2} className={"g-3"}>
         {events.map((event) => {
-          const variant = event.is_closed ? "secondary" : "primary";
+          const variant = event.isClosed ? "secondary" : "primary";
           return (
             <Col key={`Debt${event.id}`}>
               <Card className={"p-0"} border={variant}>
                 <Card.Header>
                   <Row>
                     <Col>
-                      <span>{event.date}</span>
+                      <span>{event.date.toDateString()}</span>
                     </Col>
                     <Col className={"text-end"}>Host: {event.host.username}</Col>
                   </Row>

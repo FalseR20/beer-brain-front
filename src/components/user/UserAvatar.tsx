@@ -9,7 +9,7 @@ export interface UserAvatarProps extends ReactAvatarProps {
 }
 
 export function UserAvatar(props: UserAvatarProps) {
-  return <Avatar name={props.user.full_name || props.user.username} {...props}/>
+  return <Avatar name={props.user.fullName || props.user.username} {...props}/>
 }
 
 export function LinkUserAvatar(props: UserAvatarProps) {

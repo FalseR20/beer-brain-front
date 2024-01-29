@@ -3,7 +3,7 @@ import Template from "../Template.tsx";
 import {useEffect, useState} from "react";
 import NotFound from "../NotFound.tsx";
 import "../../css/Event.css";
-import {IDetailedEvent} from "../../interfaces.ts";
+import { IAction, IDetailedEvent } from "../../interfaces.ts";
 import {catchUnauthorized, FetchError, getDetailedEvent} from "../../fetches.tsx";
 import {Badge, Card, ListGroup} from "react-bootstrap";
 import UrlPattern from "url-pattern";
@@ -31,6 +31,7 @@ export default function Event() {
   }
 
   event.users.sort((a, b) => a.balance - b.balance)
+  const actions: IAction[] = [...event.deposits, ...event.repayments]
   const balanceFormat = new Intl.NumberFormat("en-us", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -77,14 +78,27 @@ export default function Event() {
                     </Badge>
                   </>}
                 </Card.Title>
-                {user.full_name == "" ? "" : <>
-                  <Card.Subtitle className={"text-muted mt-1"}>{user.full_name}</Card.Subtitle>
+                {user.fullName == "" ? "" : <>
+                  <Card.Subtitle className={"text-muted mt-1"}>{user.fullName}</Card.Subtitle>
                 </>}
               </div>
-              <h2 className={user.balance > 0 ? "" : "text-danger"}>
+              <h2 className={user.balance < 0 ? "text-danger" : ""}>
                 {balanceFormat.format(user.balance)}
               </h2>
             </div>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+    </Card>
+
+    <Card className={"mt-3"}>
+      <Card.Header>
+        Actions
+      </Card.Header>
+      <ListGroup variant={"flush"}>
+        {actions.map(action => (
+          <ListGroup.Item>
+            {action.description}
           </ListGroup.Item>
         ))}
       </ListGroup>

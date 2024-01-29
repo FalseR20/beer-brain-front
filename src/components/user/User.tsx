@@ -9,7 +9,7 @@ import {Button, Card, ListGroup} from "react-bootstrap";
 
 export default function User({me = false}: { me?: boolean }) {
   const [user, setUser] = useState<IUser>(
-    {username: "", full_name: ""}
+    {username: "", fullName: ""}
   );
   const params = useParams();
   const promise = me ? getMyUser() : getUser(params.username as string);
@@ -58,8 +58,8 @@ export function UserTemplate({user, children}: { user: IUser, children?: ReactNo
       <Card.Title>
         {`@${user.username}`}
       </Card.Title>
-      {user.full_name == "" ? "" : <>
-        <Card.Subtitle className={"text-muted"}>{user.full_name}</Card.Subtitle>
+      {user.fullName == "" ? "" : <>
+        <Card.Subtitle className={"text-muted"}>{user.fullName}</Card.Subtitle>
       </>}
     </div>
     {children}
