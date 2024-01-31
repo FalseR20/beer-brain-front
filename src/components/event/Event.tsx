@@ -10,6 +10,7 @@ import {UserAvatar} from "../user/UserAvatar.tsx";
 import {BsGear} from "react-icons/bs";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
+import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 
 export default function Event() {
   const [event, setEvent] = useState<IDetailedEvent>();
@@ -33,16 +34,6 @@ export default function Event() {
 
   event.users.sort((a, b) => a.balance - b.balance)
   event.deposits.sort((a, b) => a.payedAt.getTimezoneOffset() - b.payedAt.getTimezoneOffset())
-  const balanceFormat = new Intl.NumberFormat("en-us", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-    signDisplay: "exceptZero",
-  })
-  const bankFormat = new Intl.NumberFormat("en-us", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
-
 
   return (<Template>
     {/* Event header */}
@@ -60,7 +51,7 @@ export default function Event() {
           <div>
             <Card.Title className={"text-end"}>
               <span className={"fs-5 text-muted"}>Bank </span>
-              <span className={"fs-2"}>{bankFormat.format(event.bank)}</span>
+              <span className={"fs-2"}>{BANK_FORMAT.format(event.bank)}</span>
             </Card.Title>
             <Card.Subtitle className={"text-muted text-end"}>
               {event.date.toDateString()}
@@ -87,7 +78,7 @@ export default function Event() {
           <ListGroup variant={"flush"}>
             {event.users.map((user) => (
               <ListGroup.Item key={user.username} action={true} className={"p-3"}
-                              href={new UrlPattern(UrlsFront.EVENT_ACTION).stringify({
+                              href={new UrlPattern(UrlsFront.EVENT_MEMBER).stringify({
                                 "eventId": event.id,
                                 "username": user.username
                               })}>
@@ -113,7 +104,7 @@ export default function Event() {
                   <div className={"flex-grow-1"}/>
                   <div className={"d-flex flex-column justify-content-center align-items-end"}>
                     <h3 className={`mb-0 ${user.balance < 0 ? "text-danger" : ""}`}>
-                      {balanceFormat.format(user.balance)}
+                      {BALANCE_FORMAT.format(user.balance)}
                     </h3>
                   </div>
                 </div>
@@ -143,7 +134,7 @@ export default function Event() {
                     </span>
                   </div>
                   <span className={"fs-3"}>
-                    {bankFormat.format(deposit.value)}
+                    {BANK_FORMAT.format(deposit.value)}
                   </span>
                 </div>
               </ListGroup.Item>

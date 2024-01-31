@@ -7,7 +7,7 @@ import NotFound from "./components/NotFound.tsx";
 import Guest from "./components/Guest.tsx";
 import "./css/App.scss";
 import User from "./components/user/User.tsx";
-import EventAction from "./components/event/EventAction.tsx";
+import EventMember from "./components/event/EventMember.tsx";
 import {UrlsFront} from "./urls.ts";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         <Route path={UrlsFront.SIGN_IN} element={<SignIn/>}/>
         <Route path={UrlsFront.SIGN_UP} element={<SignUp/>}/>
         <Route path={UrlsFront.EVENT} element={<Event/>}/>
-        <Route path={UrlsFront.EVENT_ACTION} element={<EventAction/>}/>
+        <Route path={UrlsFront.EVENT_MEMBER} element={<EventMember/>}/>
         <Route path={UrlsFront.USER_ME} element={<User me={true}/>}/>
         <Route path={UrlsFront.USER} element={<User/>}/>
         <Route path={"*"} element={<NotFound/>}/>
