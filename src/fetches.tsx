@@ -1,7 +1,7 @@
 import {make_url, UrlsBack} from "./urls.ts";
 import getAuthHeaders, {deleteToken, setToken, TokenError} from "./tokens.ts";
-import {IDetailedEvent, IDetailedUser, IEvent, IUser} from "./interfaces.ts";
-import {IRawEvent, IRawUser, rawToEvent, rawToUser} from "./rawInterfaces.ts";
+import {CDetailedEvent, CDetailedUser, CEvent, CUser} from "./dataclasses.ts";
+import {IEvent, IUser} from "./interfaces.ts";
 
 export class ResponseError extends Error {
   status: number;
@@ -72,20 +72,20 @@ async function fetchWithAuthorization(input: RequestInfo | URL, init?: RequestIn
   return response
 }
 
-export async function getEventList(): Promise<IEvent[]> {
+export async function getEventList(): Promise<CEvent[]> {
   const response = await fetchWithAuthorization(make_url(UrlsBack.GET_EVENT_LIST))
-  const json: IRawEvent[] = await response.json()
-  return json.map(rawToEvent)
+  const json: IEvent[] = await response.json()
+  return json.map(event => new CEvent(event))
 }
 
-export async function createEventAPI(inputs: { name: string }): Promise<IEvent> {
+export async function createEventAPI(inputs: { name: string }): Promise<CEvent> {
   const formData = new FormData();
   formData.append("name", inputs.name);
   formData.append("date", "2000-01-01");
   const url = make_url(UrlsBack.CREATE_EVENT)
   const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
-  const json: IRawEvent = await response.json();
-  return rawToEvent(json)
+  const json: IEvent = await response.json();
+  return new CEvent(json)
 }
 
 export async function joinEvent(event_id: string): Promise<void> {
@@ -98,71 +98,35 @@ export async function leaveEvent(event_id: string): Promise<void> {
   await fetchWithAuthorization(url, {method: "POST"});
 }
 
-export async function getUser(username: string): Promise<IUser> {
+export async function getUser(username: string): Promise<CUser> {
   const url = make_url(UrlsBack.GET_USER, {username: username})
   const response = await fetchWithAuthorization(url);
-  const json: IRawUser = await response.json()
-  return rawToUser(json)
+  const json: IUser = await response.json()
+  return new CUser(json)
 }
 
-export async function getMyUser(): Promise<IUser> {
+export async function getMyUser(): Promise<CUser> {
   const url = make_url(UrlsBack.GET_MY_USER)
   const response = await fetchWithAuthorization(url);
-  const json: IRawUser = await response.json()
-  return rawToUser(json)
+  const json: IUser = await response.json()
+  return new CUser(json)
 }
 
-export async function getEvent(eventId: string): Promise<IEvent> {
+export async function getEvent(eventId: string): Promise<CEvent> {
   const url = make_url(UrlsBack.RUD_EVENT, {eventId: eventId})
   const response = await fetchWithAuthorization(url)
-  const json: IRawEvent = await response.json()
-  return rawToEvent(json)
+  const json: IEvent = await response.json()
+  return new CEvent(json)
 }
 
-export async function getDetailedEvent(eventId: string): Promise<IDetailedEvent> {
-  const event = await getEvent(eventId)
-
-  const detailedUsersMap = new Map<string, IDetailedUser>();
-  const detailedUsers = event.users.map(user => {
-    const detailedUser: IDetailedUser = {
-      ...user,
-      balance: 0,
-      deposits: [],
-      repayments: [],
-      backRepayments: [],
-    };
-    detailedUsersMap.set(detailedUser.username, detailedUser);
-    return detailedUser;
-  });
-  let bank: number = 0
-  event.deposits.forEach(deposit => {
-    bank += deposit.value;
-    const detailedUser = detailedUsersMap.get(deposit.user.username)!;
-    detailedUser.deposits.push(deposit);
-    detailedUser.balance += deposit.value;
-  });
-
-  event.repayments.forEach(repayment => {
-    const payer = detailedUsersMap.get(repayment.payer.username)!;
-    const recipient = detailedUsersMap.get(repayment.recipient.username)!;
-    payer.balance += repayment.value;
-    recipient.balance -= repayment.value;
-    payer.repayments.push(repayment);
-    recipient.backRepayments.push(repayment);
-  });
-  const bankPart: number = bank / detailedUsers.length
-  console.log(`bankPart: ${bankPart} = ${bank} / ${detailedUsers.length}`)
-  detailedUsers.map(user => {
-    user.balance -= bankPart
-  })
-  return {
-    ...event,
-    bank,
-    users: detailedUsers,
-  }
+export async function getDetailedEvent(eventId: string): Promise<CDetailedEvent> {
+  const url = make_url(UrlsBack.RUD_EVENT, {eventId: eventId})
+  const response = await fetchWithAuthorization(url)
+  const json: IEvent = await response.json()
+  return new CDetailedEvent(json)
 }
 
-export async function getDetailedUser(eventId: string, username: string): Promise<IDetailedUser> {
+export async function getDetailedUser(eventId: string, username: string): Promise<CDetailedUser> {
   const detailedEvent = await getDetailedEvent(eventId)
   return detailedEvent.users.find(detailedUser => detailedUser.username == username)!
 }

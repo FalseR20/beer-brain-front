@@ -1,9 +1,9 @@
-import {IDetailedEvent} from "../../interfaces.ts";
+import {CDetailedEvent} from "../../dataclasses.ts";
 import {useState} from "react";
 import {BsThreeDotsVertical} from "react-icons/bs";
 import {Button, Form, Modal} from "react-bootstrap";
 
-export function EventHeader({event}: { event: IDetailedEvent }) {
+export function EventHeader({event}: { event: CDetailedEvent }) {
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [description, setDescription] = useState(event.name);
   const [newDescription, setNewDescription] = useState<string | null>(null);

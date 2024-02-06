@@ -1,9 +1,9 @@
-import {IDetailedEvent} from "../../interfaces.ts";
+import {CDetailedEvent} from "../../dataclasses.ts";
 import {ListGroup} from "react-bootstrap";
 import {RxPlus} from "react-icons/rx";
 import {UserAvatar} from "../user/UserAvatar.tsx";
 
-export function EventMembers({event}: { event: IDetailedEvent }) {
+export function EventMembers({event}: { event: CDetailedEvent }) {
   return <div className={"mb-1"}>
     <h5>
       {event.date}, {event.users.length} people

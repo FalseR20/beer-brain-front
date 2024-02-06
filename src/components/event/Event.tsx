@@ -3,7 +3,7 @@ import Template from "../Template.tsx";
 import {useEffect, useState} from "react";
 import NotFound from "../NotFound.tsx";
 import "../../css/Event.css";
-import {IDetailedEvent} from "../../interfaces.ts";
+import {CDetailedEvent} from "../../dataclasses.ts";
 import {catchUnauthorized, FetchError, getDetailedEvent} from "../../fetches.tsx";
 import {Badge, Button, Card, Col, ListGroup, Row} from "react-bootstrap";
 import {UserAvatar} from "../user/UserAvatar.tsx";
@@ -13,7 +13,7 @@ import {UrlsFront} from "../../urls.ts";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 
 export default function Event() {
-  const [event, setEvent] = useState<IDetailedEvent>();
+  const [event, setEvent] = useState<CDetailedEvent>();
   const [is404, setIs404] = useState<boolean>(false)
 
   const params = useParams<{ eventId: string }>();

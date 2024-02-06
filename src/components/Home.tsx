@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {Alert, Button, Card, Col, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
-import {IEvent} from "../interfaces.ts";
+import {CEvent} from "../dataclasses.ts";
 import {catchUnauthorized, getEventList} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
@@ -11,7 +11,7 @@ import {UrlsFront} from "../urls.ts";
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
   const [showJoinEventModal, setShowJoinEventModal] = useState(false);
-  const [events, setEvents] = useState<IEvent[]>();
+  const [events, setEvents] = useState<CEvent[]>();
 
   useEffect(() => {
     getEventList()

@@ -1,5 +1,5 @@
 import Template from "../Template.tsx";
-import {IUser} from "../../interfaces.ts";
+import {CUser} from "../../dataclasses.ts";
 import {useParams} from "react-router-dom";
 import {getMyUser, getUser} from "../../fetches.tsx";
 import {ReactNode, useEffect, useState} from "react";
@@ -8,7 +8,7 @@ import {Button, Card, ListGroup} from "react-bootstrap";
 
 
 export default function User({me = false}: { me?: boolean }) {
-  const [user, setUser] = useState<IUser>(
+  const [user, setUser] = useState<CUser>(
     {username: "", fullName: ""}
   );
   const params = useParams();
@@ -51,7 +51,7 @@ export default function User({me = false}: { me?: boolean }) {
 }
 
 
-export function UserTemplate({user, children}: { user: IUser, children?: ReactNode }) {
+export function UserTemplate({user, children}: { user: CUser, children?: ReactNode }) {
   return <div className={"d-flex flex-row gap-3 align-items-center"}>
     <UserAvatar user={user} round={true} size={"4rem"}/>
     <div className={"d-flex flex-column justify-content-center flex-grow-1"}>

@@ -1,6 +1,6 @@
 import Template from "../Template.tsx";
 import {useEffect, useState} from "react";
-import {IDetailedEvent, IDetailedUser} from "../../interfaces.ts";
+import {CDetailedEvent, CDetailedUser} from "../../dataclasses.ts";
 import {useParams} from "react-router-dom";
 import {catchUnauthorized, FetchError, getDetailedEvent, getDetailedUser} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
@@ -12,8 +12,8 @@ import {UserAvatar} from "../user/UserAvatar.tsx";
 import {BALANCE_FORMAT} from "../../constants.ts";
 
 export default function EventMember() {
-  const [event, setEvent] = useState<IDetailedEvent>();
-  const [user, setUser] = useState<IDetailedUser>()
+  const [event, setEvent] = useState<CDetailedEvent>();
+  const [user, setUser] = useState<CDetailedUser>()
   const [is404, setIs404] = useState<boolean>(false)
 
   const params = useParams<{ eventId: string, username: string }>();
@@ -48,7 +48,11 @@ export default function EventMember() {
   if (user == undefined) {
     return <NotFound/>;
   }
+  return render(event, user)
+}
 
+function render(event: CDetailedEvent, user: CDetailedUser) {
+  // const actions = user.getSortedActions()
   return <Template>
     {/* Event member header */}
     <Card>
@@ -86,5 +90,15 @@ export default function EventMember() {
       </Card.Body>
     </Card>
 
+    {/* Actions */}
+    {/*<Card className={"mt-3"}>*/}
+    {/*  <Card.Header>Actions</Card.Header>*/}
+    {/*  <Card.Body>*/}
+    {/*    /!*{actions.map(action => {*!/*/}
+    {/*    /!*  if (action )*!/*/}
+    {/*    /!*})}*!/*/}
+    {/*  </Card.Body>*/}
+    {/*  <Card.Footer>Debt of event</Card.Footer>*/}
+    {/*</Card>*/}
   </Template>
 }

@@ -1,46 +1,34 @@
 export interface IUser {
-  username: string,
-  fullName: string,
-}
-
-export interface IEvent {
-  id: string,
-  name: string,
-  description: string,
-  date: Date,
-  created_at: Date,
-  isClosed: boolean,
-  users: IUser[],
-  host: IUser,
-  deposits: IDeposit[],
-  repayments: IRepayment[],
+  username: string
+  full_name: string
 }
 
 export interface IAction {
-  id: string,
-  value: number,
-  description: string,
-  payedAt: Date,
-  event: string,
+  id: string
+  value: string
+  description: string
+  payed_at: string
+  event: string
 }
 
 export interface IDeposit extends IAction {
-  user: IUser,
+  user: IUser
 }
 
 export interface IRepayment extends IAction {
-  payer: IUser,
-  recipient: IUser,
+  payer: IUser
+  recipient: IUser
 }
 
-export interface IDetailedUser extends IUser {
-  balance: number,
-  deposits: IDeposit[],
-  repayments: IRepayment[],
-  backRepayments: IRepayment[],
-}
-
-export interface IDetailedEvent extends IEvent {
-  users: IDetailedUser[],
-  bank: number,
+export interface IEvent {
+  id: string
+  name: string
+  description: string
+  date: string
+  created_at: string
+  is_closed: boolean
+  users: IUser[]
+  host: IUser
+  deposits: IDeposit[]
+  repayments: IRepayment[]
 }

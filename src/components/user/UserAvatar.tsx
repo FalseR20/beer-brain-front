@@ -1,11 +1,11 @@
 import Avatar, {ReactAvatarProps} from "react-avatar";
-import {IUser} from "../../interfaces.ts";
+import {CUser} from "../../dataclasses.ts";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
 
 
 export interface UserAvatarProps extends ReactAvatarProps {
-  user: IUser,
+  user: CUser,
 }
 
 export function UserAvatar(props: UserAvatarProps) {
