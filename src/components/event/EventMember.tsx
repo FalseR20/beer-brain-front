@@ -1,11 +1,11 @@
 import Template from "../Template.tsx";
 import {useEffect, useState} from "react";
-import {CDetailedEvent, CDetailedUser} from "../../dataclasses.ts";
+import {CDeposit, CDetailedEvent, CDetailedUser, CRepayment} from "../../dataclasses.ts";
 import {useParams} from "react-router-dom";
 import {catchUnauthorized, FetchError, getDetailedEvent, getDetailedUser} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
-import {Button, Card} from "react-bootstrap";
-import {BsArrowLeft} from "react-icons/bs";
+import {Button, Card, ListGroup} from "react-bootstrap";
+import {BsArrowDownCircle, BsArrowLeft, BsArrowLeftCircle, BsArrowUpCircle} from "react-icons/bs";
 import {UrlsFront} from "../../urls.ts";
 import UrlPattern from "url-pattern";
 import {UserAvatar} from "../user/UserAvatar.tsx";
@@ -52,7 +52,7 @@ export default function EventMember() {
 }
 
 function render(event: CDetailedEvent, user: CDetailedUser) {
-  // const actions = user.getSortedActions()
+  const actions = user.getSortedActions()
   return <Template>
     {/* Event member header */}
     <Card>
@@ -91,14 +91,59 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
     </Card>
 
     {/* Actions */}
-    {/*<Card className={"mt-3"}>*/}
-    {/*  <Card.Header>Actions</Card.Header>*/}
-    {/*  <Card.Body>*/}
-    {/*    /!*{actions.map(action => {*!/*/}
-    {/*    /!*  if (action )*!/*/}
-    {/*    /!*})}*!/*/}
-    {/*  </Card.Body>*/}
-    {/*  <Card.Footer>Debt of event</Card.Footer>*/}
-    {/*</Card>*/}
+    <Card className={"mt-3"}>
+      <Card.Header>Actions</Card.Header>
+      <ListGroup variant={"flush"}>
+        {actions.map(action => (
+          <ListGroup.Item key={action.id}
+                          className={"d-flex flex-row align-items-center gap-3"}>
+            {action instanceof CDeposit ? (
+              <div className={"d-flex align-items-center gap-2"}>
+                <div style={{width: "3rem", height: "3rem"}}/>
+                <BsArrowUpCircle size={"1.5rem"}/>
+                <UserAvatar user={action.user} round={true} size={"3rem"}/>
+              </div>
+            ) : (
+              <div className={"d-flex align-items-center gap-2"}>
+                <UserAvatar user={action.recipient} round={true} size={"3rem"}/>
+                <BsArrowLeftCircle size={"1.5rem"}/>
+                <UserAvatar user={action.payer} round={true} size={"3rem"}/>
+              </div>
+            )
+            }
+            <div className={"d-flex flex-column flex-grow-1"}>
+              <span>{action.description}</span>
+              <span>{action.payedAt.toLocaleString()}</span>
+            </div>
+            {(action instanceof CRepayment && action.recipient.username == user.username) ? (
+              <h4 className={`mb-0 ${user.balance < 0 ? "text-danger" : ""}`}>
+                {BALANCE_FORMAT.format(-action.value)}
+              </h4>
+            ) : (
+              <h4 className={"m-0"}>
+                {BALANCE_FORMAT.format(action.value)}
+              </h4>
+            )}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+      <Card.Footer>
+        <div className="d-flex align-items-center gap-3" style={{height: "3rem"}}>
+          <div className={"d-flex align-items-center gap-2"}>
+            <div style={{width: "3rem", height: "3rem"}}/>
+            <BsArrowDownCircle size={"1.5rem"}/>
+            <UserAvatar user={user} round={true} size={"3rem"}/>
+          </div>
+          <div className={"d-flex flex-column flex-grow-1"}>
+            <span>Event debt</span>
+            <span>{event.created_at.toLocaleString()}</span>
+          </div>
+          <h4 className={`mb-0 text-danger`}>
+            {BALANCE_FORMAT.format(-event.bankPart)}
+          </h4>
+        </div>
+
+      </Card.Footer>
+    </Card>
   </Template>
 }

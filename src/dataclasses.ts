@@ -87,8 +87,8 @@ export class CDetailedUser extends CUser {
     this.backRepayments = []
   }
 
-  public getSortedActions(): CAction[] {
-    const actions: CAction[] = [...this.deposits, ...this.repayments, ...this.backRepayments]
+  public getSortedActions(): (CDeposit | CRepayment)[] {
+    const actions: (CDeposit | CRepayment)[] = [...this.deposits, ...this.repayments, ...this.backRepayments]
     actions.sort((a, b) => a.payedAt.getTimezoneOffset() - b.payedAt.getTimezoneOffset())
     return actions
   }
