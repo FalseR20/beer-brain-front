@@ -1,7 +1,8 @@
 import {make_url, UrlsBack} from "./urls.ts";
 import getAuthHeaders, {deleteToken, setToken, TokenError} from "./tokens.ts";
-import {CDetailedEvent, CDetailedUser, CEvent, CUser} from "./dataclasses.ts";
-import {IEvent, IUser} from "./interfaces.ts";
+import {CDeposit, CDetailedEvent, CDetailedUser, CEvent, CUser} from "./dataclasses.ts";
+import {IDeposit, IEvent, IUser} from "./interfaces.ts";
+import {BANK_FORMAT} from "./constants.ts";
 
 export class ResponseError extends Error {
   status: number;
@@ -129,4 +130,17 @@ export async function getDetailedEvent(eventId: string): Promise<CDetailedEvent>
 export async function getDetailedUser(eventId: string, username: string): Promise<CDetailedUser> {
   const detailedEvent = await getDetailedEvent(eventId)
   return detailedEvent.users.find(detailedUser => detailedUser.username == username)!
+}
+
+export async function createDeposit(inputs: {
+  value: number,
+  description: string
+}, event: CEvent): Promise<CDeposit> {
+  const formData = new FormData();
+  formData.append("value", BANK_FORMAT.format(inputs.value));
+  formData.append("description", inputs.description);
+  const url = make_url(UrlsBack.CREATE_DEPOSIT, {eventId: event.id})
+  const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
+  const json: IDeposit = await response.json();
+  return new CDeposit(json)
 }

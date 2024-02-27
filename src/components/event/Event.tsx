@@ -11,10 +11,12 @@ import {BsGear} from "react-icons/bs";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
+import NewDepositModal from "./NewDepositModal.tsx";
 
 export default function Event() {
   const [event, setEvent] = useState<CDetailedEvent>();
   const [is404, setIs404] = useState<boolean>(false)
+  const [showDepositModal, setShowDepositModal] = useState(false)
 
   const params = useParams<{ eventId: string }>();
   useEffect(() => {
@@ -142,7 +144,7 @@ export default function Event() {
           </ListGroup>
         </Card>
         <div className={"d-flex flex-row gap-3 my-3 justify-content-center"}>
-          <Button variant={"primary"}>
+          <Button variant={"primary"} onClick={() => setShowDepositModal(true)}>
             Add deposit
           </Button>
           <Button variant={"success"}>
@@ -152,5 +154,6 @@ export default function Event() {
         </div>
       </Col>
     </Row>
+    <NewDepositModal event={event} show={showDepositModal} setShow={setShowDepositModal}/>
   </Template>);
 }
