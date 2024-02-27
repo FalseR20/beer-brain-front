@@ -11,11 +11,11 @@ export default function User({me = false}: { me?: boolean }) {
   const [user, setUser] = useState<CUser>(
     {username: "", fullName: ""}
   );
-  const params = useParams();
-  const promise = me ? getMyUser() : getUser(params.username as string);
+  const params = useParams<{ username: string }>();
   useEffect(() => {
+    const promise = me ? getMyUser() : getUser(params.username!);
     promise.then(setUser)
-  }, [promise]);
+  }, [me, params.username]);
 
   return (<Template>
     <Card>
