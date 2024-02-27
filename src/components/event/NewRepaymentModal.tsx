@@ -34,7 +34,7 @@ export default function NewRepaymentModal({event, show, setShow}: {
         value: 0,
         description: "",
         type: "to",
-        user: usersNotMe[0].username,
+        user: usersNotMe[0]?.username
       }}
     >
       {({handleSubmit, handleChange, values, errors}) => (
