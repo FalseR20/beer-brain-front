@@ -12,11 +12,13 @@ import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import NewDepositModal from "./NewDepositModal.tsx";
+import NewRepaymentModal from "./NewRepaymentModal.tsx";
 
 export default function Event() {
   const [event, setEvent] = useState<CDetailedEvent>();
   const [is404, setIs404] = useState<boolean>(false)
   const [showDepositModal, setShowDepositModal] = useState(false)
+  const [showRepaymentModal, setShowRepaymentModal] = useState(false)
 
   const params = useParams<{ eventId: string }>();
   useEffect(() => {
@@ -147,7 +149,7 @@ export default function Event() {
           <Button variant={"primary"} onClick={() => setShowDepositModal(true)}>
             Add deposit
           </Button>
-          <Button variant={"success"}>
+          <Button variant={"success"} onClick={() => setShowRepaymentModal(true)}>
             Add repayment
           </Button>
 
@@ -155,5 +157,6 @@ export default function Event() {
       </Col>
     </Row>
     <NewDepositModal event={event} show={showDepositModal} setShow={setShowDepositModal}/>
+    <NewRepaymentModal event={event} show={showRepaymentModal} setShow={setShowRepaymentModal}/>
   </Template>);
 }

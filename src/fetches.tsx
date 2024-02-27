@@ -1,7 +1,14 @@
 import {make_url, UrlsBack} from "./urls.ts";
 import getAuthHeaders, {deleteToken, setToken, TokenError} from "./tokens.ts";
-import {CDeposit, CDetailedEvent, CDetailedUser, CEvent, CUser} from "./dataclasses.ts";
-import {IDeposit, IEvent, IUser} from "./interfaces.ts";
+import {
+  CDeposit,
+  CDetailedEvent,
+  CDetailedUser,
+  CEvent,
+  CRepayment,
+  CUser
+} from "./dataclasses.ts";
+import {IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
 import {BANK_FORMAT} from "./constants.ts";
 
 export class ResponseError extends Error {
@@ -143,4 +150,21 @@ export async function createDeposit(inputs: {
   const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
   const json: IDeposit = await response.json();
   return new CDeposit(json)
+}
+
+export async function createRepayment(inputs: {
+  value: number,
+  description: string,
+  type: string,
+  user: string,
+}, event: CEvent): Promise<CRepayment> {
+  const formData = new FormData();
+  formData.append("value", BANK_FORMAT.format(inputs.value));
+  formData.append("description", inputs.description);
+  formData.append("recipient_username", inputs.user);
+
+  const url = make_url(UrlsBack.CREATE_REPAYMENT, {eventId: event.id})
+  const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
+  const json: IRepayment = await response.json();
+  return new CRepayment(json)
 }
