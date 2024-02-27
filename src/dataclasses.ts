@@ -8,6 +8,10 @@ export class CUser {
     this.username = user.username
     this.fullName = user.full_name
   }
+
+  public equals(other: CUser): boolean {
+    return this.username == other.username
+  }
 }
 
 export class CAction {
