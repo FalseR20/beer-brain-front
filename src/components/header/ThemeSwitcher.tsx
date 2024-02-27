@@ -1,8 +1,7 @@
-import {ThemeContext} from "../../themeContext.tsx";
+import {ThemeContext} from "../../contexts/themeContext.tsx";
 import {BsMoon, BsSun} from "react-icons/bs";
 
 export function ThemeSwitcher() {
-
   return (
     <ThemeContext.Consumer>
       {({isDark, switchTheme}) => (

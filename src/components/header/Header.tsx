@@ -14,12 +14,11 @@ export default function Header() {
         <Navbar.Brand href={UrlsFront.HOME} className={"fs-3"}>
           BeerBrain
         </Navbar.Brand>
-        <Navbar.Collapse className={"justify-content-end"}>
-          <SignGroup/>
+        <Navbar.Collapse className={"justify-content-end d-flex gap-3"}>
           <ThemeSwitcher/>
+          <SignGroup/>
         </Navbar.Collapse>
       </Navbar>
     </header>
   );
 }
-

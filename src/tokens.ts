@@ -12,7 +12,7 @@ export function deleteToken(): void {
   localStorage.removeItem(TOKEN)
 }
 
-export function isAuthorized(): boolean {
+export function isTokenExist(): boolean {
   return TOKEN in localStorage;
 }
 

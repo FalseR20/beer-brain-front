@@ -1,4 +1,4 @@
-import React, {createContext, useState} from "react";
+import {createContext, ReactNode, useState} from "react";
 
 
 export const ThemeContext = createContext({
@@ -8,7 +8,7 @@ export const ThemeContext = createContext({
 });
 
 export default function ThemeContextWrapper(props: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const [isDarkTheme, changeIsDarkTheme] = useState(
     localStorage.getItem("theme") != "light",

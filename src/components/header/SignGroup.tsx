@@ -1,13 +1,14 @@
-import {isAuthorized} from "../../tokens.ts";
 import {Button} from "react-bootstrap";
 import {signOut} from "../../fetches.tsx";
 import {UrlsFront} from "../../urls.ts";
+import {useContext} from "react";
+import {UserContext} from "../../contexts/userContext.tsx";
 
 export function SignGroup() {
-  return isAuthorized() ? (
+  const user = useContext(UserContext)
+  return user != null ? (
     <Button
       variant={"outline-secondary"}
-      className={"me-3"}
       onClick={() => {
         signOut().then(() => {
           window.location.replace("/");
@@ -17,13 +18,13 @@ export function SignGroup() {
       Sign Out
     </Button>
   ) : (
-    <>
-      <Button variant={"outline-success"} className={"me-3"} href={UrlsFront.SIGN_IN}>
+    <div className={"d-flex gap-3"}>
+      <Button variant={"outline-success"} href={UrlsFront.SIGN_IN}>
         Sign In
       </Button>
-      <Button variant={"success"} className={"me-3"} href={UrlsFront.SIGN_UP}>
+      <Button variant={"success"} href={UrlsFront.SIGN_UP}>
         Sign Up
       </Button>
-    </>
+    </div>
   );
 }
