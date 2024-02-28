@@ -53,6 +53,7 @@ export default function EventMember() {
 
 function render(event: CDetailedEvent, user: CDetailedUser) {
   const actions = user.getSortedActions();
+  console.log(actions)
   return <Template>
     {/* Event member header */}
     <Card>

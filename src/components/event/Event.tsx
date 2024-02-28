@@ -36,9 +36,6 @@ export default function Event() {
     return is404 ? <NotFound/> : <Template/>;
   }
 
-  event.users.sort((a, b) => a.balance - b.balance)
-  event.deposits.sort((a, b) => a.payedAt.getTimezoneOffset() - b.payedAt.getTimezoneOffset())
-
   return (<Template>
     {/* Event header */}
     <div className={"d-flex flex-row gap-3"}>

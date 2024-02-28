@@ -73,6 +73,11 @@ export class CEvent {
     this.host = new CUser(event.host)
     this.deposits = event.deposits.map(deposit => new CDeposit(deposit))
     this.repayments = event.repayments.map(repayment => new CRepayment(repayment))
+    this.sortDeposits()
+  }
+
+  public sortDeposits() {
+    this.deposits.sort((a, b) => b.payedAt.getTime() - a.payedAt.getTime())
   }
 }
 
@@ -93,7 +98,7 @@ export class CDetailedUser extends CUser {
 
   public getSortedActions(): (CDeposit | CRepayment)[] {
     const actions: (CDeposit | CRepayment)[] = [...this.deposits, ...this.repayments, ...this.backRepayments]
-    actions.sort((a, b) => a.payedAt.getTimezoneOffset() - b.payedAt.getTimezoneOffset())
+    actions.sort((a, b) => b.payedAt.getTime() - a.payedAt.getTime())
     return actions
   }
 }
@@ -129,5 +134,10 @@ export class CDetailedEvent extends CEvent {
     });
     this.bankPart = this.bank / this.users.length
     this.users.map(user => user.balance -= this.bankPart)
+    this.sortUsers()
+  }
+
+  public sortUsers() {
+    this.users.sort((a, b) => a.balance - b.balance)
   }
 }
