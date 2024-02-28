@@ -5,7 +5,7 @@ import {UserProvider} from "../contexts/userContext.tsx";
 
 export interface TemplateProps {
   children?: ReactNode;
-  doAddWrapping?: boolean;
+  noWrap?: boolean;
 }
 
 export default function Template(props: TemplateProps) {
@@ -14,8 +14,8 @@ export default function Template(props: TemplateProps) {
       <div className={"d-flex flex-column min-vh-100"}>
         <Header/>
         <div className={"d-flex flex-row justify-content-center flex-grow-1"}>
-          {props.doAddWrapping == false ? props.children : <>
-            <div id={"common-field"} className={"width-60 m-3"}>
+          {props.noWrap == true ? props.children : <>
+            <div id={"common-field"} className={"m-3 width-60"}>
               {props.children}
             </div>
           </>}

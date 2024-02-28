@@ -7,16 +7,16 @@ import {UrlsFront} from "../urls.ts";
 
 export default function SignIn() {
   return (
-    <Template>
-      <div id={"form-back"}>
-        <h1> Sign In</h1>
+    <Template noWrap={true}>
+      <div id={"common-field"} className={"m-3 mt-5 width-30"}>
+        <h1 className={"text-center"}> Sign In</h1>
         <Formik
           validationSchema={yup.object().shape({
             username: yup.string().required(),
             password: yup.string().required(),
           })}
           onSubmit={(values, formikHelpers) => {
-            fetchSignIn(values.username, values.password).then(() => {
+            fetchSignIn(values).then(() => {
               window.location.href = UrlsFront.HOME;
             }).catch(() => {
               formikHelpers.setSubmitting(false);
@@ -31,7 +31,7 @@ export default function SignIn() {
           }}
         >
           {({handleSubmit, handleChange, values, errors}) => (
-            <Form noValidate onSubmit={handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3"}>
               <Form.Group controlId="validationFormikUsername">
                 <Form.Label>Username</Form.Label>
                 <InputGroup hasValidation>
@@ -66,7 +66,7 @@ export default function SignIn() {
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
-              <Button type="submit">Submit</Button>
+              <Button className={"mt-3"} size={"lg"} type="submit">Login</Button>
             </Form>
           )}
         </Formik>

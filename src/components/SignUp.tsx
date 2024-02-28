@@ -1,5 +1,5 @@
 import Template from "./Template.tsx";
-import {Button, Col, Form, InputGroup, Row} from "react-bootstrap";
+import {Button, Form, InputGroup} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {fetchSignUp} from "../fetches.tsx";
@@ -7,24 +7,17 @@ import {UrlsFront} from "../urls.ts";
 
 export default function SignIn() {
   return (
-    <Template>
-      <div id={"form-back"}>
-        <h1> Sign Up</h1>
+    <Template noWrap={true}>
+      <div id={"common-field"} className={"m-3 mt-5 width-30"}>
+        <h1 className={"text-center"}> Sign Up</h1>
         <Formik
           validationSchema={yup.object().shape({
             username: yup.string().required(),
             password: yup.string().required().min(8),
-            passwordConfirmation: yup
-              .string()
-              .required()
-              .oneOf([yup.ref("password")]),
+            fullName: yup.string(),
           })}
           onSubmit={(values, formikHelpers) => {
-            console.log(values);
-            fetchSignUp(
-              values.username,
-              values.password,
-            ).then(() => {
+            fetchSignUp(values).then(() => {
               window.location.href = UrlsFront.HOME;
             }).catch(() => {
               formikHelpers.setSubmitting(false);
@@ -34,13 +27,13 @@ export default function SignIn() {
           initialValues={{
             username: "",
             password: "",
-            passwordConfirmation: "",
+            fullName: "",
           }}
           // validateOnChange={false}
           // validateOnBlur={false}
         >
           {({handleSubmit, handleBlur, handleChange, errors}) => (
-            <Form noValidate onSubmit={handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3"}>
               <Form.Group controlId="validationFormikUsername">
                 <Form.Label>Username</Form.Label>
                 <InputGroup hasValidation>
@@ -59,47 +52,41 @@ export default function SignIn() {
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
-              <Row>
-                <Col>
-                  <Form.Group controlId="validationFormikPassword">
-                    <Form.Label>Password</Form.Label>
-                    <InputGroup hasValidation>
-                      <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        aria-describedby="inputGroupPrepend"
-                        name="password"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        isInvalid={!!errors.password}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.password}
-                      </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="validationFormikPasswordConfirmation">
-                    <Form.Label>Password confirmation</Form.Label>
-                    <InputGroup hasValidation>
-                      <Form.Control
-                        type="password"
-                        placeholder="Repeat password"
-                        aria-describedby="inputGroupPrepend"
-                        name="passwordConfirmation"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        isInvalid={!!errors.passwordConfirmation}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.passwordConfirmation}
-                      </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Button type="submit">Submit</Button>
+              <Form.Group controlId="validationFormikPassword">
+                <Form.Label>Password</Form.Label>
+                <InputGroup hasValidation>
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    aria-describedby="inputGroupPrepend"
+                    name="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    isInvalid={!!errors.password}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.password}
+                  </Form.Control.Feedback>
+                </InputGroup>
+              </Form.Group>
+              <Form.Group controlId="validationFormikFullname">
+                <Form.Label>Full name (optional)</Form.Label>
+                <InputGroup hasValidation>
+                  <Form.Control
+                    type="text"
+                    placeholder="CuCum Bear"
+                    aria-describedby="inputGroupPrepend"
+                    name="fullName"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    isInvalid={!!errors.fullName}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.fullName}
+                  </Form.Control.Feedback>
+                </InputGroup>
+              </Form.Group>
+              <Button className={"mt-3"} size={"lg"} type="submit">Register</Button>
             </Form>
           )}
         </Formik>

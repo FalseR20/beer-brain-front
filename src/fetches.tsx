@@ -30,10 +30,10 @@ export async function catchUnauthorized(reason: FetchError): Promise<ResponseErr
   return reason
 }
 
-export async function fetchSignIn(
+export async function fetchSignIn({username, password}: {
   username: string,
-  password: string,
-): Promise<void> {
+  password: string
+}): Promise<void> {
   const formData = new FormData();
   formData.append("username", username);
   formData.append("password", password);
@@ -47,17 +47,24 @@ export async function fetchSignIn(
   setToken(json["token"]);
 }
 
-export async function fetchSignUp(username: string, password: string): Promise<void> {
+export async function fetchSignUp({fullName, password, username}: {
+  username: string,
+  password: string,
+  fullName: string
+}): Promise<void> {
   const formData = new FormData();
   formData.append("username", username);
   formData.append("password", password);
+  if (fullName != "") {
+    formData.append("full_name", fullName);
+  }
 
   const url = make_url(UrlsBack.CREATE_USER);
   const response = await fetch(url, {method: "POST", body: formData});
   if (!response.ok) {
     throw new ResponseError(response);
   }
-  return await fetchSignIn(username, password);
+  return await fetchSignIn({username, password});
 }
 
 export async function signOut(): Promise<void> {

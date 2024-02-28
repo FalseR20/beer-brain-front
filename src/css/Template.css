@@ -2,6 +2,10 @@
     width: 60rem;
 }
 
+.width-30 {
+    width: 30rem;
+}
+
 .hover-cursor-pointer:hover {
     cursor: pointer;
 }
