@@ -6,32 +6,32 @@ import {createEventAPI} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
 
-export default function NewEventModal(props: {
+export default function NewEventModal({show, setShow}: {
   show: boolean;
-  onHide: () => void;
+  setShow: (show: boolean) => void,
 }) {
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Create event</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Formik
-          validationSchema={yup.object().shape({
-            name: yup.string().required(),
-          })}
-          onSubmit={(values) => {
-            console.log(values);
-            createEventAPI(values).then((event) => {
-              window.location.href = new UrlPattern(UrlsFront.EVENT).stringify({"eventId": event.id});
-            });
-          }}
-          initialValues={{
-            name: "",
-          }}
-        >
-          {({handleSubmit, handleChange, values, errors}) => (
-            <Form noValidate onSubmit={handleSubmit}>
+      <Formik
+        validationSchema={yup.object().shape({
+          name: yup.string().required(),
+        })}
+        onSubmit={(values) => {
+          console.log(values);
+          createEventAPI(values).then((event) => {
+            window.location.href = new UrlPattern(UrlsFront.EVENT).stringify({"eventId": event.id});
+          });
+        }}
+        initialValues={{
+          name: "",
+        }}
+      >
+        {({handleSubmit, handleChange, values, errors}) => (
+          <Form noValidate onSubmit={handleSubmit}>
+            <Modal.Body>
               <Form.Group controlId="validationFormikName">
                 <Form.Label>Name</Form.Label>
                 <InputGroup hasValidation>
@@ -49,11 +49,13 @@ export default function NewEventModal(props: {
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
               <Button type="submit">Create</Button>
-            </Form>
-          )}
-        </Formik>
-      </Modal.Body>
+            </Modal.Footer>
+          </Form>
+        )}
+      </Formik>
     </Modal>
   );
 }

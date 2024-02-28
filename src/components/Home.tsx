@@ -50,11 +50,11 @@ export default function Home() {
       </Alert>
       <NewEventModal
         show={showNewEventModal}
-        onHide={() => setShowNewEventModal(false)}
+        setShow={setShowNewEventModal}
       />
       <JoinEventModal
         show={showJoinEventModal}
-        onHide={() => setShowJoinEventModal(false)}
+        setShow={setShowJoinEventModal}
       />
       <Row xs={1} md={2} className={"g-3"}>
         {events.map((event) => {

@@ -6,31 +6,31 @@ import {joinEvent} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
 
-export default function JoinEventModal(props: {
+export default function JoinEventModal({show, setShow}: {
   show: boolean;
-  onHide: () => void;
+  setShow: (show: boolean) => void,
 }) {
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Join event</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Formik
-          validationSchema={yup.object().shape({
-            event_id: yup.string().required(),
-          })}
-          onSubmit={(values) => {
-            joinEvent(values.event_id).then(() => {
-              window.location.href = new UrlPattern(UrlsFront.EVENT).stringify({"eventId": values.event_id});
-            });
-          }}
-          initialValues={{
-            event_id: "",
-          }}
-        >
-          {({handleSubmit, handleChange, values, errors}) => (
-            <Form noValidate onSubmit={handleSubmit}>
+      <Formik
+        validationSchema={yup.object().shape({
+          event_id: yup.string().required(),
+        })}
+        onSubmit={(values) => {
+          joinEvent(values.event_id).then(() => {
+            window.location.href = new UrlPattern(UrlsFront.EVENT).stringify({"eventId": values.event_id});
+          });
+        }}
+        initialValues={{
+          event_id: "",
+        }}
+      >
+        {({handleSubmit, handleChange, values, errors}) => (
+          <Form noValidate onSubmit={handleSubmit}>
+            <Modal.Body>
               <Form.Group controlId="validationFormikDescription">
                 <Form.Label>Event id</Form.Label>
                 <InputGroup hasValidation>
@@ -48,11 +48,13 @@ export default function JoinEventModal(props: {
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
               <Button type="submit">Join</Button>
-            </Form>
-          )}
-        </Formik>
-      </Modal.Body>
+            </Modal.Footer>
+          </Form>
+        )}
+      </Formik>
     </Modal>
   );
 }
