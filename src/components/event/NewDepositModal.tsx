@@ -33,7 +33,7 @@ export default function NewDepositModal({event, show, setShow}: {
     >
       {({handleSubmit, handleChange, values, errors}) => (
         <Form noValidate onSubmit={handleSubmit}>
-          <Modal.Body>
+          <Modal.Body className={"d-flex flex-column gap-3"}>
             <Form.Group controlId="validationFormikValue">
               <Form.Label>Value</Form.Label>
               <InputGroup hasValidation>
