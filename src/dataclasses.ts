@@ -4,7 +4,7 @@ export class CUser {
   username: string
   fullName: string
 
-  constructor(user: IUser) {
+  constructor(user: IUser = {username: "", full_name: ""}) {
     this.username = user.username
     this.fullName = user.full_name
   }

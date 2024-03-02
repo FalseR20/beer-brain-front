@@ -8,7 +8,10 @@ export interface UserAvatarProps extends ReactAvatarProps {
   user: CUser,
 }
 
-export function UserAvatar(props: UserAvatarProps) {
+export function UserAvatar(props: Partial<UserAvatarProps>) {
+  if (!props.user) {
+    return <div style={{width: props.size, height: props.size}}/>
+  }
   return <Avatar name={props.user.fullName || props.user.username} {...props}/>
 }
 

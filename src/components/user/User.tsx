@@ -8,9 +8,7 @@ import {Button, Card, ListGroup} from "react-bootstrap";
 
 
 export default function User({me = false}: { me?: boolean }) {
-  const [user, setUser] = useState<CUser>(
-    {username: "", fullName: ""}
-  );
+  const [user, setUser] = useState<CUser>(new CUser());
   const params = useParams<{ username: string }>();
   useEffect(() => {
     const promise = me ? getMyUser() : getUser(params.username!);
