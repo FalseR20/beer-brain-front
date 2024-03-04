@@ -93,10 +93,15 @@ export async function getEventList(): Promise<CEvent[]> {
   return json.map(event => new CEvent(event))
 }
 
-export async function createEventAPI(inputs: { name: string }): Promise<CEvent> {
+export async function createEventAPI(inputs: {
+  name: string,
+  description: string,
+  date: string
+}): Promise<CEvent> {
   const formData = new FormData();
   formData.append("name", inputs.name);
-  formData.append("date", "2000-01-01");
+  formData.append("description", inputs.description);
+  formData.append("date", inputs.date);
   const url = make_url(UrlsBack.CREATE_EVENT)
   const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
   const json: IEvent = await response.json();
