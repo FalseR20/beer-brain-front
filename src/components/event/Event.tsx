@@ -7,12 +7,12 @@ import {CDetailedEvent} from "../../dataclasses.ts";
 import {catchUnauthorized, FetchError, getDetailedEvent} from "../../fetches.tsx";
 import {Badge, Button, Card, Col, ListGroup, Row} from "react-bootstrap";
 import {UserAvatar} from "../user/UserAvatar.tsx";
-import {BsGear} from "react-icons/bs";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import NewDepositModal from "./NewDepositModal.tsx";
 import NewRepaymentModal from "./NewRepaymentModal.tsx";
+import {BsArrowDown, BsArrowLeftRight, BsGear} from "react-icons/bs";
 
 export default function Event() {
   const [event, setEvent] = useState<CDetailedEvent>();
@@ -37,37 +37,42 @@ export default function Event() {
   }
 
   return (<Template>
-    {/* Event header */}
-    <div className={"d-flex flex-row gap-3"}>
-      <Card className={"flex-grow-1"}>
-        <Card.Body className={"d-flex justify-content-between align-items-center px-3 py-2"}>
-          <div>
-            <Card.Title>
-              {event.name}
-            </Card.Title>
-            <Card.Subtitle className={"text-muted"}>
-              {event.description}
-            </Card.Subtitle>
-          </div>
-          <div>
-            <Card.Title className={"text-end"}>
-              <span className={"fs-5 text-muted"}>Bank </span>
-              <span className={"fs-2"}>{BANK_FORMAT.format(event.bank)}</span>
-            </Card.Title>
-            <Card.Subtitle className={"text-muted text-end"}>
-              {event.date.toDateString()}
-            </Card.Subtitle>
-          </div>
-
-        </Card.Body>
-      </Card>
-      <Button variant={"outline-secondary"}
-              className={"d-flex justify-content-center align-items-center"}
-      >
-        <BsGear size={"2.5rem"}/>
-      </Button>
+    <div id={"event-header"}>
+      <div id={"event-header-top"}
+           className={"border-bottom color-border-muted pb-3 d-flex justify-content-between"}>
+        <div className={"d-flex flex-column"}>
+          <span className={"fs-4 fw-bold"}>
+            {event.name}
+          </span>
+          <span className={"fs-6"}>
+            {event.description}
+          </span>
+        </div>
+        <div className={"d-flex flex-column align-items-end"}>
+          <span className={"fw-bold fs-4"}>
+            <span className={"text-muted"}>Bank </span>
+            {BANK_FORMAT.format(event.bank)}
+            </span>
+          <span className={"fs-6"}>
+            {BANK_FORMAT.format(event.bankPart)}
+            <span className={"text-muted"}> each</span>
+          </span>
+        </div>
+      </div>
+      <div id={"event-header-bottom"} className={"py-3 d-flex flex-row justify-content-between gap-3"}>
+        <div className={"d-flex flex-row gap-3 justify-content-start"}>
+          <Button variant={"primary"} className={"d-flex align-items-center"} onClick={() => setShowDepositModal(true)}>
+            <BsArrowDown/>&nbsp;Deposit
+          </Button>
+          <Button variant={"success"} className={"d-flex align-items-center gap-1"} onClick={() => setShowRepaymentModal(true)}>
+            <BsArrowLeftRight/>&nbsp;Repayment
+          </Button>
+        </div>
+        <Button variant={"secondary"} className={"d-flex align-items-center gap-1"}>
+          <BsGear/>&nbsp;Settings
+        </Button>
+      </div>
     </div>
-
 
     <Row className={"m-0 my-3 gap-3"}>
       {/* Members card */}
@@ -142,15 +147,6 @@ export default function Event() {
             ))}
           </ListGroup>
         </Card>
-        <div className={"d-flex flex-row gap-3 my-3 justify-content-center"}>
-          <Button variant={"primary"} onClick={() => setShowDepositModal(true)}>
-            Add deposit
-          </Button>
-          <Button variant={"success"} onClick={() => setShowRepaymentModal(true)}>
-            Add repayment
-          </Button>
-
-        </div>
       </Col>
     </Row>
     <NewDepositModal event={event} show={showDepositModal} setShow={setShowDepositModal}/>
