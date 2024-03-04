@@ -9,6 +9,7 @@ import "./css/App.scss";
 import User from "./components/user/User.tsx";
 import EventMember from "./components/event/EventMember.tsx";
 import {UrlsFront} from "./urls.ts";
+import {EventSettings} from "./components/event/EventSettings.tsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path={UrlsFront.SIGN_IN} element={<SignIn/>}/>
         <Route path={UrlsFront.SIGN_UP} element={<SignUp/>}/>
         <Route path={UrlsFront.EVENT} element={<Event/>}/>
+        <Route path={UrlsFront.EVENT_SETTINGS} element={<EventSettings/>}/>
         <Route path={UrlsFront.EVENT_MEMBER} element={<EventMember/>}/>
         <Route path={UrlsFront.USER_ME} element={<User me={true}/>}/>
         <Route path={UrlsFront.USER} element={<User/>}/>

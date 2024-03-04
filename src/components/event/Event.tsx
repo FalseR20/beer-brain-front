@@ -59,16 +59,20 @@ export default function Event() {
           </span>
         </div>
       </div>
-      <div id={"event-header-bottom"} className={"py-3 d-flex flex-row justify-content-between gap-3"}>
+      <div id={"event-header-bottom"}
+           className={"py-3 d-flex flex-row justify-content-between gap-3"}>
         <div className={"d-flex flex-row gap-3 justify-content-start"}>
-          <Button variant={"primary"} className={"d-flex align-items-center"} onClick={() => setShowDepositModal(true)}>
+          <Button variant={"primary"} className={"d-flex align-items-center"}
+                  onClick={() => setShowDepositModal(true)}>
             <BsArrowDown/>&nbsp;Deposit
           </Button>
-          <Button variant={"success"} className={"d-flex align-items-center gap-1"} onClick={() => setShowRepaymentModal(true)}>
+          <Button variant={"success"} className={"d-flex align-items-center gap-1"}
+                  onClick={() => setShowRepaymentModal(true)}>
             <BsArrowLeftRight/>&nbsp;Repayment
           </Button>
         </div>
-        <Button variant={"secondary"} className={"d-flex align-items-center gap-1"}>
+        <Button variant={"secondary"} className={"d-flex align-items-center gap-1"}
+                href={new UrlPattern(UrlsFront.EVENT_SETTINGS).stringify({"eventId": event.id})}>
           <BsGear/>&nbsp;Settings
         </Button>
       </div>

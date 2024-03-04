@@ -108,6 +108,21 @@ export async function createEventAPI(inputs: {
   return new CEvent(json)
 }
 
+export async function updateEvent(eventId: string, inputs: {
+  name: string,
+  description: string,
+  date: string
+}): Promise<CEvent> {
+  const formData = new FormData();
+  formData.append("name", inputs.name);
+  formData.append("description", inputs.description);
+  formData.append("date", inputs.date);
+  const url = make_url(UrlsBack.RUD_EVENT, {eventId: eventId});
+  const response = await fetchWithAuthorization(url, {method: "PUT", body: formData});
+  const json: IEvent = await response.json();
+  return new CEvent(json)
+}
+
 export async function joinEvent(event_id: string): Promise<void> {
   const url = make_url(UrlsBack.JOIN_EVENT, {eventId: event_id})
   await fetchWithAuthorization(url, {method: "POST"});
