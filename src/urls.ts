@@ -8,12 +8,16 @@ export function make_url(urlPattern: UrlsBack, values?: Record<string, string | 
   return URL_BASE + new UrlPattern(urlPattern).stringify(values);
 }
 
+export function make_front_url(urlPattern: UrlsFront, values?: Record<string, string | number>) {
+  return new UrlPattern(urlPattern).stringify(values);
+}
+
 export enum UrlsBack {
   GET_TOKEN = "users/token/",
   CREATE_USER = "users/new/",
-  GET_MY_USER = "users/me/",
+  MY_USER = "users/me/",
   CHANGE_PASSWORD = "users/me/change-password/",
-  GET_USER = "users/id/:username/",
+  RUD_USER = "users/id/:username/",
 
   GET_EVENT_LIST = "events/",
   CREATE_EVENT = "events/new/",

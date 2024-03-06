@@ -12,6 +12,10 @@ export class CUser {
   public equals(other: CUser): boolean {
     return this.username == other.username
   }
+
+  public equalsFull(other: CUser): boolean {
+    return this.username == other.username && this.fullName == other.fullName
+  }
 }
 
 export class CAction {

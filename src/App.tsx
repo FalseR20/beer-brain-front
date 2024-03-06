@@ -24,7 +24,7 @@ function Router() {
         <Route path={UrlsFront.EVENT} element={<Event/>}/>
         <Route path={UrlsFront.EVENT_SETTINGS} element={<EventSettings/>}/>
         <Route path={UrlsFront.EVENT_MEMBER} element={<EventMember/>}/>
-        <Route path={UrlsFront.USER_ME} element={<User me={true}/>}/>
+        <Route path={UrlsFront.USER_ME} element={<User/>}/>
         <Route path={UrlsFront.USER} element={<User/>}/>
         <Route path={"*"} element={<NotFound/>}/>
       </Routes>

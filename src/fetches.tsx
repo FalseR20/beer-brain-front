@@ -134,14 +134,14 @@ export async function leaveEvent(event_id: string): Promise<void> {
 }
 
 export async function getUser(username: string): Promise<CUser> {
-  const url = make_url(UrlsBack.GET_USER, {username: username})
+  const url = make_url(UrlsBack.RUD_USER, {username: username})
   const response = await fetchWithAuthorization(url);
   const json: IUser = await response.json()
   return new CUser(json)
 }
 
 export async function getMyUser(): Promise<CUser> {
-  const url = make_url(UrlsBack.GET_MY_USER)
+  const url = make_url(UrlsBack.MY_USER)
   const response = await fetchWithAuthorization(url);
   const json: IUser = await response.json()
   return new CUser(json)
@@ -194,4 +194,26 @@ export async function createRepayment(inputs: {
   const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
   const json: IRepayment = await response.json();
   return new CRepayment(json)
+}
+
+
+export async function updateUser(inputs: {
+  username?: string,
+  fullName?: string
+}): Promise<CUser> {
+  const formData = new FormData();
+  if (inputs.username) {
+    formData.append("username", inputs.username)
+  }
+  if (inputs.fullName) {
+    formData.append("full_name", inputs.fullName);
+  }
+
+  const url = make_url(UrlsBack.MY_USER);
+  const response = await fetchWithAuthorization(url, {method: "PATCH", body: formData});
+  if (!response.ok) {
+    throw new ResponseError(response);
+  }
+  const json: IUser = await response.json();
+  return new CUser(json)
 }
