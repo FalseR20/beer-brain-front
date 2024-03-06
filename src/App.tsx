@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./components/Home.tsx";
 import SignIn from "./components/SignIn.tsx";
 import SignUp from "./components/SignUp.tsx";
@@ -10,10 +10,12 @@ import User from "./components/user/User.tsx";
 import EventMember from "./components/event/EventMember.tsx";
 import {UrlsFront} from "./urls.ts";
 import {EventSettings} from "./components/event/EventSettings.tsx";
+import ThemeContextWrapper from "./contexts/themeContext.tsx";
+import {AuthContextWrapper} from "./contexts/authContext.tsx";
 
-function App() {
+function Router() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path={UrlsFront.HOME} element={<Home/>}/>
         <Route path={UrlsFront.GUEST} element={<Guest/>}/>
@@ -26,8 +28,16 @@ function App() {
         <Route path={UrlsFront.USER} element={<User/>}/>
         <Route path={"*"} element={<NotFound/>}/>
       </Routes>
-    </Router>
-  );
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default function App() {
+  return (
+    <ThemeContextWrapper>
+      <AuthContextWrapper>
+        <Router/>
+      </AuthContextWrapper>
+    </ThemeContextWrapper>
+  );
+}

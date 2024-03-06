@@ -4,9 +4,9 @@ import {getMyUser} from "../fetches.tsx";
 import {isTokenExist} from "../tokens.ts";
 
 
-export const UserContext = createContext<CUser | undefined | null>(undefined);
+export const AuthContext = createContext<CUser | undefined | null>(undefined);
 
-export function UserProvider(props: {
+export function AuthContextWrapper(props: {
   children: ReactNode;
 }) {
   const [user, setUser] = useState<CUser | undefined | null>(undefined)
@@ -21,8 +21,8 @@ export function UserProvider(props: {
   }, []);
 
   return (
-    <UserContext.Provider value={user}>
+    <AuthContext.Provider value={user}>
       {props.children}
-    </UserContext.Provider>
+    </AuthContext.Provider>
   )
 }

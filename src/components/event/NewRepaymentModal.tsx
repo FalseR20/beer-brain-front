@@ -3,7 +3,7 @@ import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import * as yup from "yup";
 import {Formik} from "formik";
 import {useContext} from "react";
-import {UserContext} from "../../contexts/userContext.tsx";
+import {AuthContext} from "../../contexts/authContext.tsx";
 import {createRepayment} from "../../fetches.tsx";
 
 export default function NewRepaymentModal({event, show, setShow}: {
@@ -12,8 +12,9 @@ export default function NewRepaymentModal({event, show, setShow}: {
   setShow: (show: boolean) => void,
 }) {
   const handleClose = () => setShow(false);
-  const userMe = useContext(UserContext);
-  const usersNotMe = event.users.filter((user => !user.equals(userMe!)))
+  const userMe = useContext(AuthContext);
+
+  const usersNotMe = event.users.filter((user => !userMe?.equals(user)))
 
   return <Modal show={show} onHide={handleClose}>
     <Modal.Header closeButton>

@@ -3,11 +3,11 @@ import {ThemeSwitcher} from "./ThemeSwitcher.tsx";
 import {AvatarOffcanvas} from "./AvatarOffcanvas.tsx";
 import {UrlsFront} from "../../urls.ts";
 import {useContext} from "react";
-import {UserContext} from "../../contexts/userContext.tsx";
+import {AuthContext} from "../../contexts/authContext.tsx";
 import {CUser} from "../../dataclasses.ts";
 
 export default function Header() {
-  const user = useContext(UserContext)
+  const user = useContext(AuthContext)
   return (
     <header className="d-flex flex-row justify-content-center bg-body-tertiary border-bottom">
       <Navbar
