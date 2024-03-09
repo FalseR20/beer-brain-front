@@ -54,7 +54,7 @@ export default function EventMember() {
 function render(event: CDetailedEvent, user: CDetailedUser) {
   const actions = user.getSortedActions();
   console.log(actions)
-  return <Template>
+  return <Template title={`member - ${user.fullNameOrUsername}`}>
     {/* Event member header */}
     <Card>
       <Card.Body className={"d-flex align-items-center px-3 py-2 gap-3"}>

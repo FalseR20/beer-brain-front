@@ -8,6 +8,7 @@ import {catchUnauthorized, getEventList} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
 
+
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
   const [showJoinEventModal, setShowJoinEventModal] = useState(false);
@@ -23,7 +24,7 @@ export default function Home() {
     return <Template/>
   }
   return (
-    <Template>
+    <Template title="Home page">
       <Alert variant="light" className={"mb-3 bg-body-tertiary"}>
         <Alert.Heading>All events</Alert.Heading>
         <p>

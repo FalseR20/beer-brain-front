@@ -30,7 +30,7 @@ export function EventSettings() {
   if (event == undefined) {
     return is404 ? <NotFound/> : <Template/>;
   }
-  return (<Template>
+  return (<Template title={`settings - ${event.name}`}>
     <span
       className={"mt-4 pb-1 border-bottom color-border-muted mb-3 fs-3 fw-bold"}> General </span>
     <ChangeEventForm event={event}/>

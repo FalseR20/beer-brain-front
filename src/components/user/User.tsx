@@ -26,7 +26,7 @@ export default function User() {
   }, [me, params.username]);
   const isMe = me?.equals(user) || false
 
-  return (<Template>
+  return (<Template title={`${user.fullNameOrUsername}`}>
     <Card>
       <Card.Body>
         <UserTemplate user={user}/>

@@ -9,6 +9,10 @@ export class CUser {
     this.fullName = user.full_name
   }
 
+  public get fullNameOrUsername() {
+    return this.fullName || this.username
+  }
+
   public equals(other: CUser): boolean {
     return this.username == other.username
   }

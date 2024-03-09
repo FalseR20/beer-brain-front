@@ -7,7 +7,7 @@ import {UrlsFront} from "../urls.ts";
 
 export default function SignIn() {
   return (
-    <Template noWrap={true}>
+    <Template noWrap={true} title={"Sign Up"}>
       <div id={"common-field"} className={"m-3 mt-5 width-30"}>
         <h1 className={"text-center"}> Sign Up</h1>
         <Formik

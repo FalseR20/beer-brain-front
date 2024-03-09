@@ -2,7 +2,7 @@ import Template from "./Template.tsx";
 
 export default function Guest() {
   return (
-    <Template>
+    <Template title={"Guest page"}>
       <div className={"d-flex flex-column align-items-center "}>
         <h1 className={"fw-bold mt-4"} style={{fontSize: "5rem"}}>
           BeerBrain

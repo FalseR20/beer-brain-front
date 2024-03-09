@@ -2,7 +2,7 @@ import Template from "./Template.tsx";
 
 export default function NotFound() {
   return (
-    <Template>
+    <Template title={"Not found"}>
       <div className={"d-flex flex-column align-items-center"}>
         <span className={"fw-bold"} style={{fontSize: "20rem"}}>
           4 0 4

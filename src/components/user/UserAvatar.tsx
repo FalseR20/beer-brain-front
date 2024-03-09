@@ -12,7 +12,7 @@ export function UserAvatar(props: Partial<UserAvatarProps>) {
   if (!props.user) {
     return <div style={{width: props.size, height: props.size}}/>
   }
-  return <Avatar name={props.user.fullName || props.user.username} {...props}/>
+  return <Avatar name={props.user.fullNameOrUsername} {...props}/>
 }
 
 export function LinkUserAvatar(props: UserAvatarProps) {

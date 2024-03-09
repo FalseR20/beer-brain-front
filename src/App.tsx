@@ -12,6 +12,7 @@ import {UrlsFront} from "./urls.ts";
 import {EventSettings} from "./components/event/EventSettings.tsx";
 import ThemeContextWrapper from "./contexts/themeContext.tsx";
 import {AuthContextWrapper} from "./contexts/authContext.tsx";
+import {HelmetProvider} from "react-helmet-async";
 
 function Router() {
   return (
@@ -33,11 +34,14 @@ function Router() {
 }
 
 export default function App() {
+  const helmetContext = {};
   return (
-    <ThemeContextWrapper>
-      <AuthContextWrapper>
-        <Router/>
-      </AuthContextWrapper>
-    </ThemeContextWrapper>
-  );
+    <HelmetProvider context={helmetContext}>
+      <ThemeContextWrapper>
+        <AuthContextWrapper>
+          <Router/>
+        </AuthContextWrapper>
+      </ThemeContextWrapper>
+    </HelmetProvider>
+  )
 }

@@ -36,7 +36,7 @@ export default function Event() {
     return is404 ? <NotFound/> : <Template/>;
   }
 
-  return (<Template>
+  return (<Template title={`event - ${event.name}`}>
     <div id={"event-header"}>
       <div id={"event-header-top"}
            className={"border-bottom color-border-muted pb-3 d-flex justify-content-between"}>
