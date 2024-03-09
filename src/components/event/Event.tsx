@@ -1,10 +1,7 @@
-import {useParams} from "react-router-dom";
 import Template from "../Template.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import NotFound from "../NotFound.tsx";
 import "../../css/Event.css";
-import {CDetailedEvent} from "../../dataclasses.ts";
-import {catchUnauthorized, FetchError, getDetailedEvent} from "../../fetches.tsx";
 import {Badge, Button, Card, Col, ListGroup, Row} from "react-bootstrap";
 import {UserAvatar} from "../user/UserAvatar.tsx";
 import UrlPattern from "url-pattern";
@@ -13,24 +10,12 @@ import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import NewDepositModal from "./NewDepositModal.tsx";
 import NewRepaymentModal from "./NewRepaymentModal.tsx";
 import {BsArrowDown, BsArrowLeftRight, BsGear} from "react-icons/bs";
+import {useDetailedEvent} from "./UseDetailedEvent.tsx";
 
 export default function Event() {
-  const [event, setEvent] = useState<CDetailedEvent>();
-  const [is404, setIs404] = useState<boolean>(false)
+  const {event, is404} = useDetailedEvent()
   const [showDepositModal, setShowDepositModal] = useState(false)
   const [showRepaymentModal, setShowRepaymentModal] = useState(false)
-
-  const params = useParams<{ eventId: string }>();
-  useEffect(() => {
-    getDetailedEvent(params.eventId!)
-      .then(setEvent)
-      .catch(async (reason: FetchError) => {
-        const error = await catchUnauthorized(reason)
-        if (error.status == 404) {
-          setIs404(true)
-        }
-      })
-  }, [params.eventId]);
 
   if (event == undefined) {
     return is404 ? <NotFound/> : <Template/>;

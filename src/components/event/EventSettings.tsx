@@ -1,61 +1,51 @@
 import {Button, Form, InputGroup, ListGroup} from "react-bootstrap";
 import Template from "../Template.tsx";
-import {CDetailedEvent, CEvent} from "../../dataclasses.ts";
-import {catchUnauthorized, FetchError, getDetailedEvent, updateEvent} from "../../fetches.tsx";
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {CEvent} from "../../dataclasses.ts";
+import {updateEvent} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
 import * as yup from "yup";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
 import moment from "moment";
 import {Formik} from "formik";
+import {useDetailedEvent} from "./UseDetailedEvent.tsx";
 
 export function EventSettings() {
-  const [event, setEvent] = useState<CDetailedEvent>();
-  const [is404, setIs404] = useState<boolean>(false)
-
-  const params = useParams<{ eventId: string }>();
-  useEffect(() => {
-    getDetailedEvent(params.eventId!)
-      .then(setEvent)
-      .catch(async (reason: FetchError) => {
-        const error = await catchUnauthorized(reason)
-        if (error.status == 404) {
-          setIs404(true)
-        }
-      })
-  }, [params.eventId]);
+  const {event, is404} = useDetailedEvent()
 
   if (event == undefined) {
     return is404 ? <NotFound/> : <Template/>;
   }
-  return (<Template title={`settings - ${event.name}`}>
-    <span
-      className={"mt-4 pb-1 border-bottom color-border-muted mb-3 fs-3 fw-bold"}> General </span>
-    <ChangeEventForm event={event}/>
 
-    <span className={"fs-3 fw-bold mt-4 mb-2"}> Danger Zone </span>
-    <ListGroup className={"border border-danger rounded-2"} variant={"flush"}>
-      <ListGroup.Item className={"d-flex flex-row align-items-center"}>
-        <span className={"flex-grow-1"}>Leave this event</span>
-        <Button variant={"danger"} className={"my-2"}>
-          {" "}
-          Leave{" "}
-        </Button>
-      </ListGroup.Item>
-      <ListGroup.Item
-        className={"d-flex flex-row justify-content-between align-items-center"}
-      >
-        <span className={"flex-grow-1"}>Delete this event</span>
-        <Button variant={"danger"} className={"my-2"}>
-          {" "}
-          Delete event{" "}
-        </Button>
-      </ListGroup.Item>
-    </ListGroup>
-  </Template>);
+  return (
+    <Template title={`settings - ${event.name}`}>
+      <span
+        className={"mt-4 pb-1 border-bottom color-border-muted mb-3 fs-3 fw-bold"}> General </span>
+      <ChangeEventForm event={event}/>
+
+      <span className={"fs-3 fw-bold mt-4 mb-2"}> Danger Zone </span>
+      <ListGroup className={"border border-danger rounded-2"} variant={"flush"}>
+        <ListGroup.Item className={"d-flex flex-row align-items-center"}>
+          <span className={"flex-grow-1"}>Leave this event</span>
+          <Button variant={"danger"} className={"my-2"}>
+            {" "}
+            Leave{" "}
+          </Button>
+        </ListGroup.Item>
+        <ListGroup.Item
+          className={"d-flex flex-row justify-content-between align-items-center"}
+        >
+          <span className={"flex-grow-1"}>Delete this event</span>
+          <Button variant={"danger"} className={"my-2"}>
+            {" "}
+            Delete event{" "}
+          </Button>
+        </ListGroup.Item>
+      </ListGroup>
+    </Template>
+  )
 }
+
 
 function ChangeEventForm({event}: { event: CEvent }) {
   return (
