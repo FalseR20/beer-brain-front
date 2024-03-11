@@ -1,4 +1,13 @@
-import {Alert, Button, Form, InputGroup, ListGroup, Modal} from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Form,
+  InputGroup,
+  ListGroup,
+  Modal,
+  OverlayTrigger,
+  Tooltip
+} from "react-bootstrap";
 import Template from "../Template.tsx";
 import {CDetailedEvent, CEvent} from "../../dataclasses.ts";
 import {deleteEvent, leaveEvent, updateEvent} from "../../fetches.tsx";
@@ -23,12 +32,6 @@ export function EventSettings() {
   }
   const isHost: boolean | undefined = user?.equals(event.host)
 
-  // const renderTooltip = (props) => (
-  //   <Tooltip id="button-tooltip" {...props}>
-  //     Simple tooltip
-  //   </Tooltip>
-  // )
-
   return (
     <Template title={`settings - ${event.name}`}>
       <Alert show={!(isHost || true)} variant={"warning"}>
@@ -45,18 +48,25 @@ export function EventSettings() {
       <ListGroup className={"border border-danger rounded-2"} variant={"flush"}>
         <ListGroup.Item className={"d-flex flex-row align-items-center"}>
           <span className={"flex-grow-1"}>Leave this event</span>
-          {/*<OverlayTrigger*/}
-          {/*  placement="right"*/}
-          {/*  delay={{show: 250, hide: 400}}*/}
-          {/*  overlay={renderTooltip}*/}
-          {/*>*/}
-          {/*  */}
-          {/*</OverlayTrigger>*/}
-          <Button variant={"danger"} className={"my-2"} disabled={isHost}
-                  onClick={() => setShowLeaveEventModal(true)}>
-            {" "}
-            Leave{" "}
-          </Button>
+          {isHost ? (
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>The host cannot leave</Tooltip>}
+            >
+            <span className="d-inline-block">
+            <Button variant={"danger"} className={"my-2"} disabled={true}
+                    style={{pointerEvents: 'none'}}>
+              Leave
+            </Button>
+            </span>
+            </OverlayTrigger>
+          ) : (
+            <Button variant={"danger"} className={"my-2"} disabled={isHost}
+                    onClick={() => setShowLeaveEventModal(true)}>
+              Leave
+            </Button>
+          )}
+
 
         </ListGroup.Item>
         <ListGroup.Item
