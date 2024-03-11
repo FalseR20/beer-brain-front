@@ -13,6 +13,7 @@ import * as yup from "yup";
 import {Formik} from "formik";
 import {useContext} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
+import moment from "moment";
 
 export default function Deposit() {
   // const {deposit, is404} = useDeposit()
@@ -78,6 +79,7 @@ export default function Deposit() {
           initialValues={{
             value: deposit.value,
             description: deposit.description,
+            payedAt: moment(deposit.payedAt).format('YYYY-MM-DD[T]HH:mm'),
           }}
         >
           {({handleSubmit, handleChange, handleReset, values, errors}) => (
@@ -117,6 +119,23 @@ export default function Deposit() {
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.description}
+                  </Form.Control.Feedback>
+                </InputGroup>
+              </Form.Group>
+              <Form.Group controlId="validationFormikDescription">
+                <Form.Label>Datetime</Form.Label>
+                <InputGroup hasValidation>
+                  <Form.Control
+                    type="datetime-local"
+                    aria-describedby="inputGroupPrepend"
+                    name="payedAt"
+                    value={values.payedAt}
+                    onChange={handleChange}
+                    isInvalid={!!errors.payedAt}
+                    disabled={true}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.payedAt}
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
