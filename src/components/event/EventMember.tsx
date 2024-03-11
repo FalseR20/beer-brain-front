@@ -92,7 +92,10 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
                                                 href={action instanceof CDeposit ? make_front_url(UrlsFront.DEPOSIT, {
                                                   eventId: event.id,
                                                   depositId: action.id
-                                                }) : ""}>
+                                                }) : make_front_url(UrlsFront.REPAYMENT, {
+                                                  eventId: event.id,
+                                                  repaymentId: action.id
+                                                })}>
           {action instanceof CDeposit ? (<div className={"d-flex align-items-center gap-2"}>
             <div style={{width: "3rem", height: "3rem"}}/>
             <BsPlusCircle size={"1.5rem"}/>

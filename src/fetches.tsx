@@ -12,7 +12,7 @@ import {IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
 import {BANK_FORMAT} from "./constants.ts";
 import {FetchError, ResponseError, TokenError} from "./errors.ts";
 
-export function redirectGuest(reason: FetchError){
+export function redirectGuest(reason: FetchError) {
   if (reason instanceof TokenError) {
     window.location.href = "/guest";
   }
@@ -221,6 +221,24 @@ export async function createRepayment(inputs: {
   return new CRepayment(json)
 }
 
+export async function updateRepayment(inputs: {
+  value: number,
+  description: string,
+  type: string,
+  user: string,
+  payedAt: string,
+}, event: CEvent, repayment: CRepayment): Promise<CRepayment> {
+  const formData = new FormData();
+  formData.append("value", BANK_FORMAT.format(inputs.value));
+  formData.append("description", inputs.description);
+  // formData.append("recipient_username", inputs.user);  TODO: implement
+  // formData.append("payed_at", inputs.payedAt);  TODO: implement
+
+  const url = make_url(UrlsBack.RUD_REPAYMENT, {eventId: event.id, repaymentId: repayment.id})
+  const response = await fetchWithAuthorization(url, {method: "PUT", body: formData});
+  const json: IRepayment = await response.json();
+  return new CRepayment(json)
+}
 
 export async function updateUser(inputs: {
   username?: string,
