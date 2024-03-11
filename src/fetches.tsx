@@ -186,12 +186,12 @@ export async function updateDeposit(inputs: {
   value: number,
   description: string,
   payedAt: string
-}, event: CEvent, deposit: CDeposit): Promise<CDeposit> {
+}, eventId: string, deposit: CDeposit): Promise<CDeposit> {
   const formData = new FormData();
   formData.append("value", BANK_FORMAT.format(inputs.value));
   formData.append("description", inputs.description);
   // formData.append("payedAt", inputs.payedAt);  // TODO: add possibility to change datetime
-  const url = make_url(UrlsBack.RUD_DEPOSIT, {eventId: event.id, depositId: deposit.id})
+  const url = make_url(UrlsBack.RUD_DEPOSIT, {eventId, depositId: deposit.id})
   const response = await fetchWithAuthorization(url, {method: "PUT", body: formData});
   const json: IDeposit = await response.json();
   return new CDeposit(json)
@@ -202,6 +202,11 @@ export async function getDeposit(eventId: string, depositId: string): Promise<CD
   const response = await fetchWithAuthorization(url, {method: "GET"})
   const json: IDeposit = await response.json();
   return new CDeposit(json)
+}
+
+export async function deleteDeposit(eventId: string, depositId: string): Promise<void> {
+  const url = make_url(UrlsBack.RUD_DEPOSIT, {eventId, depositId})
+  await fetchWithAuthorization(url, {method: "DELETE"});
 }
 
 export async function createRepayment(inputs: {
