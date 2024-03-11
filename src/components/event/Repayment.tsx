@@ -1,13 +1,11 @@
 import Template from "../Template.tsx";
 import {useParams} from "react-router-dom";
-import {updateRepayment} from "../../fetches.tsx";
+import {deleteRepayment, updateRepayment} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
 import {Button, Card, Form, InputGroup} from "react-bootstrap";
 import {BsArrowLeft, BsArrowRightCircle} from "react-icons/bs";
 import {UserAvatar} from "../user/UserAvatar.tsx";
 import {useEvent} from "./UseEvent.tsx";
-import UrlPattern from "url-pattern";
-import {UrlsFront} from "../../urls.ts";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
 import {Formik} from "formik";
@@ -36,14 +34,15 @@ export default function Repayment() {
         <Card>
           <Card.Body className={"d-flex align-items-center px-3 py-2 gap-3"}>
             <Button variant={"outline-secondary border-0"}
-                    href={new UrlPattern(UrlsFront.EVENT).stringify({eventId: event.id})}>
+                    onClick={() => history.back()}>
               <BsArrowLeft size={"2rem"}/>
             </Button>
             <div
               className={"d-flex flex-row gap-2 justify-content-between align-items-center w-50 border-end pe-3"}>
               <UserAvatar user={repayment.payer} round={true} size={"3rem"}/>
               <BsArrowRightCircle size={"1.5rem"}/>
-              <UserAvatar user={repayment.recipient} round={true} size={"3rem"} className={"me-1"}/>
+              <UserAvatar user={repayment.recipient} round={true} size={"3rem"}
+                          className={"me-1"}/>
               <div className={"d-flex flex-column justify-content-between flex-grow-1"}>
                     <span className={"fs-5"}>
                       {repayment.description}
@@ -175,6 +174,13 @@ export default function Repayment() {
                 <Button variant={"outline-secondary"} onClick={handleReset}
                         disabled={!isUser}>Reset</Button>
                 <Button variant="primary" type="submit" disabled={!isUser}>Update deposit</Button>
+              </div>
+              <div>
+                <Button variant={"danger"} disabled={!isUser} onClick={() => {
+                  deleteRepayment(event.id, repayment.id).then(() => {
+                    history.back()
+                  })
+                }}>Delete deposit</Button>
               </div>
             </Form>
           )}

@@ -226,6 +226,13 @@ export async function createRepayment(inputs: {
   return new CRepayment(json)
 }
 
+export async function getRepayment(eventId: string, repaymentId: string): Promise<CRepayment> {
+  const url = make_url(UrlsBack.RUD_REPAYMENT, {eventId, repaymentId})
+  const response = await fetchWithAuthorization(url, {method: "GET"});
+  const json: IRepayment = await response.json();
+  return new CRepayment(json)
+}
+
 export async function updateRepayment(inputs: {
   value: number,
   description: string,
@@ -243,6 +250,11 @@ export async function updateRepayment(inputs: {
   const response = await fetchWithAuthorization(url, {method: "PUT", body: formData});
   const json: IRepayment = await response.json();
   return new CRepayment(json)
+}
+
+export async function deleteRepayment(eventId: string, repaymentId: string): Promise<void> {
+  const url = make_url(UrlsBack.RUD_REPAYMENT, {eventId, repaymentId})
+  await fetchWithAuthorization(url, {method: "DELETE"});
 }
 
 export async function updateUser(inputs: {
