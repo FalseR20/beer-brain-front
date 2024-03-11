@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {CDetailedEvent} from "../../dataclasses.ts";
 import {useParams} from "react-router-dom";
-import {throwIfUnauthorized, getDetailedEvent} from "../../fetches.tsx";
+import {redirectGuest, getDetailedEvent} from "../../fetches.tsx";
 import {FetchError} from "../../errors.ts";
 
 export function useDetailedEvent() {
@@ -12,11 +12,9 @@ export function useDetailedEvent() {
   useEffect(() => {
     getDetailedEvent(params.eventId!)
       .then(setEvent)
-      .catch(async (error: FetchError) => {
-        await throwIfUnauthorized(error)
-        if (error.status == 404) {
-          setIs404(true)
-        }
+      .catch((error: FetchError) => {
+        redirectGuest(error)
+        setIs404(true)
       })
   }, [params.eventId, setEvent]);
 

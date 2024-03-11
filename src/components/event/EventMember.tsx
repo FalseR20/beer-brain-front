@@ -2,7 +2,7 @@ import Template from "../Template.tsx";
 import {useEffect, useState} from "react";
 import {CDeposit, CDetailedEvent, CDetailedUser, CRepayment} from "../../dataclasses.ts";
 import {useParams} from "react-router-dom";
-import {throwIfUnauthorized, getEventMember} from "../../fetches.tsx";
+import {redirectGuest, getEventMember} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
 import {Button, Card, ListGroup} from "react-bootstrap";
 import {
@@ -30,8 +30,8 @@ export default function EventMember() {
         setUser(data.user);
         setEvent(data.detailedEvent);
       })
-      .catch(async (error: FetchError) => {
-        await throwIfUnauthorized(error);
+      .catch((error: FetchError) => {
+        redirectGuest(error);
         if (error.status == 404) {
           setIs404(true);
         }

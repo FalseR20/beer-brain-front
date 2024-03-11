@@ -12,10 +12,9 @@ import {IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
 import {BANK_FORMAT} from "./constants.ts";
 import {FetchError, ResponseError, TokenError} from "./errors.ts";
 
-export async function throwIfUnauthorized(reason: FetchError): Promise<void> {
+export function redirectGuest(reason: FetchError){
   if (reason instanceof TokenError) {
     window.location.href = "/guest";
-    throw reason
   }
 }
 
