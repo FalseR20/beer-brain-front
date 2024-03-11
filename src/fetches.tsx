@@ -122,6 +122,14 @@ export async function leaveEvent(event_id: string): Promise<void> {
   await fetchWithAuthorization(url, {method: "POST"});
 }
 
+export async function deleteEvent(eventId: string) {
+  const url = make_url(UrlsBack.RUD_EVENT, {eventId: eventId})
+  const response = await fetchWithAuthorization(url, {method: "DELETE"});
+  if (!response.ok) {
+    throw new ResponseError(response);
+  }
+}
+
 export async function getUser(username: string): Promise<CUser> {
   const url = make_url(UrlsBack.RUD_USER, {username: username})
   const response = await fetchWithAuthorization(url);
