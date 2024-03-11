@@ -9,13 +9,15 @@ import {UrlsFront} from "../../urls.ts";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import NewDepositModal from "./NewDepositModal.tsx";
 import NewRepaymentModal from "./NewRepaymentModal.tsx";
-import {BsArrowDown, BsArrowLeftRight, BsGear} from "react-icons/bs";
+import {BsArrowDown, BsArrowLeftRight, BsGear, BsShare} from "react-icons/bs";
 import {useDetailedEvent} from "./UseDetailedEvent.tsx";
+import ShareModal from "./ShareModal.tsx";
 
 export default function Event() {
   const {event, is404} = useDetailedEvent()
   const [showDepositModal, setShowDepositModal] = useState(false)
   const [showRepaymentModal, setShowRepaymentModal] = useState(false)
+  const [showShareModal, setShowShareModal] = useState(false)
 
   if (event == undefined) {
     return is404 ? <NotFound/> : <Template/>;
@@ -56,10 +58,16 @@ export default function Event() {
             <BsArrowLeftRight/>&nbsp;Repayment
           </Button>
         </div>
-        <Button variant={"secondary"} className={"d-flex align-items-center gap-1"}
-                href={new UrlPattern(UrlsFront.EVENT_SETTINGS).stringify({"eventId": event.id})}>
-          <BsGear/>&nbsp;Settings
-        </Button>
+        <div className={"d-flex flex-row gap-3 justify-content-start"}>
+          <Button variant={"primary"} className={"d-flex align-items-center gap-1"}
+                  onClick={() => setShowShareModal(true)}>
+            <BsShare/>&nbsp;Share
+          </Button>
+          <Button variant={"secondary"} className={"d-flex align-items-center gap-1"}
+                  href={new UrlPattern(UrlsFront.EVENT_SETTINGS).stringify({"eventId": event.id})}>
+            <BsGear/>&nbsp;Settings
+          </Button>
+        </div>
       </div>
     </div>
 
@@ -140,5 +148,6 @@ export default function Event() {
     </Row>
     <NewDepositModal event={event} show={showDepositModal} setShow={setShowDepositModal}/>
     <NewRepaymentModal event={event} show={showRepaymentModal} setShow={setShowRepaymentModal}/>
+    <ShareModal event={event} show={showShareModal} setShow={setShowShareModal}/>
   </Template>);
 }
