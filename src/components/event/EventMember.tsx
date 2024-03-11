@@ -2,15 +2,15 @@ import Template from "../Template.tsx";
 import {useEffect, useState} from "react";
 import {CDeposit, CDetailedEvent, CDetailedUser, CRepayment} from "../../dataclasses.ts";
 import {useParams} from "react-router-dom";
-import {redirectGuest, getEventMember} from "../../fetches.tsx";
+import {getEventMember, redirectGuest} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
 import {Button, Card, ListGroup} from "react-bootstrap";
 import {
-  BsArrowDownCircle,
   BsArrowLeft,
   BsArrowLeftCircle,
   BsArrowRightCircle,
-  BsArrowUpCircle
+  BsCircle,
+  BsPlusCircle
 } from "react-icons/bs";
 import {UrlsFront} from "../../urls.ts";
 import UrlPattern from "url-pattern";
@@ -91,7 +91,7 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
                                                 className={"d-flex flex-row align-items-center gap-3"}>
           {action instanceof CDeposit ? (<div className={"d-flex align-items-center gap-2"}>
             <div style={{width: "3rem", height: "3rem"}}/>
-            <BsArrowUpCircle size={"1.5rem"}/>
+            <BsPlusCircle size={"1.5rem"}/>
             <UserAvatar user={action.user} round={true} size={"3rem"}/>
           </div>) : (action.payer.equals(user)) ? (
             <div className={"d-flex align-items-center gap-2"}>
@@ -119,7 +119,7 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
         <div className="d-flex align-items-center gap-3" style={{height: "3rem"}}>
           <div className={"d-flex align-items-center gap-2"}>
             <div style={{width: "3rem", height: "3rem"}}/>
-            <BsArrowDownCircle size={"1.5rem"}/>
+            <BsCircle size={"1.5rem"}/>
             <UserAvatar user={user} round={true} size={"3rem"}/>
           </div>
           <div className={"d-flex flex-column flex-grow-1"}>

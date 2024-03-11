@@ -27,7 +27,7 @@ export default function Event() {
     <div id={"event-header"}>
       <div id={"event-header-top"}
            className={"border-bottom color-border-muted pb-3 d-flex justify-content-between"}>
-        <div className={"d-flex flex-column"}>
+        <div className={"d-flex flex-column justify-content-end"}>
           <span className={"fs-4 fw-bold"}>
             {event.name}
           </span>
