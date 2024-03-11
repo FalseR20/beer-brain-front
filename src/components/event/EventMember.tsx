@@ -12,7 +12,7 @@ import {
   BsCircle,
   BsPlusCircle
 } from "react-icons/bs";
-import {UrlsFront} from "../../urls.ts";
+import {make_front_url, UrlsFront} from "../../urls.ts";
 import UrlPattern from "url-pattern";
 import {UserAvatar} from "../user/UserAvatar.tsx";
 import {BALANCE_FORMAT} from "../../constants.ts";
@@ -87,8 +87,12 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
     <Card className={"mt-3"}>
       <Card.Header>Actions</Card.Header>
       <ListGroup variant={"flush"}>
-        {actions.map(action => (<ListGroup.Item key={action.id}
-                                                className={"d-flex flex-row align-items-center gap-3"}>
+        {actions.map(action => (<ListGroup.Item key={action.id} action={true}
+                                                className={"d-flex flex-row align-items-center gap-3"}
+                                                href={action instanceof CDeposit ? make_front_url(UrlsFront.DEPOSIT, {
+                                                  eventId: event.id,
+                                                  depositId: action.id
+                                                }) : ""}>
           {action instanceof CDeposit ? (<div className={"d-flex align-items-center gap-2"}>
             <div style={{width: "3rem", height: "3rem"}}/>
             <BsPlusCircle size={"1.5rem"}/>

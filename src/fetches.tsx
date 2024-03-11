@@ -182,6 +182,26 @@ export async function createDeposit(inputs: {
   return new CDeposit(json)
 }
 
+export async function updateDeposit(inputs: {
+  value: number,
+  description: string
+}, event: CEvent, deposit: CDeposit): Promise<CDeposit> {
+  const formData = new FormData();
+  formData.append("value", BANK_FORMAT.format(inputs.value));
+  formData.append("description", inputs.description);
+  const url = make_url(UrlsBack.RUD_DEPOSIT, {eventId: event.id, depositId: deposit.id})
+  const response = await fetchWithAuthorization(url, {method: "PUT", body: formData});
+  const json: IDeposit = await response.json();
+  return new CDeposit(json)
+}
+
+export async function getDeposit(eventId: string, depositId: string): Promise<CDeposit> {
+  const url = make_url(UrlsBack.RUD_DEPOSIT, {eventId, depositId})
+  const response = await fetchWithAuthorization(url, {method: "GET"})
+  const json: IDeposit = await response.json();
+  return new CDeposit(json)
+}
+
 export async function createRepayment(inputs: {
   value: number,
   description: string,

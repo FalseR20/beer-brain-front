@@ -5,7 +5,7 @@ import "../../css/Event.css";
 import {Badge, Button, Card, Col, ListGroup, Row} from "react-bootstrap";
 import {UserAvatar} from "../user/UserAvatar.tsx";
 import UrlPattern from "url-pattern";
-import {UrlsFront} from "../../urls.ts";
+import {make_front_url, UrlsFront} from "../../urls.ts";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import NewDepositModal from "./NewDepositModal.tsx";
 import NewRepaymentModal from "./NewRepaymentModal.tsx";
@@ -124,7 +124,8 @@ export default function Event() {
           </Card.Header>
           <ListGroup variant={"flush"}>
             {event.deposits.map(deposit => (
-              <ListGroup.Item action={true} key={deposit.id}>
+              <ListGroup.Item action={true} key={deposit.id}
+                              href={make_front_url(UrlsFront.DEPOSIT, {eventId: event.id, depositId: deposit.id})}>
                 <div
                   className={"d-flex flex-row gap-2 justify-content-between align-items-center"}>
                   <UserAvatar user={deposit.user} round={true} size={"3rem"}/>

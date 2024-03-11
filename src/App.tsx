@@ -13,6 +13,7 @@ import {EventSettings} from "./components/event/EventSettings.tsx";
 import ThemeContextWrapper from "./contexts/themeContext.tsx";
 import {AuthContextWrapper} from "./contexts/authContext.tsx";
 import {HelmetProvider} from "react-helmet-async";
+import Deposit from "./components/event/Deposit.tsx";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
         <Route path={UrlsFront.EVENT} element={<Event/>}/>
         <Route path={UrlsFront.EVENT_SETTINGS} element={<EventSettings/>}/>
         <Route path={UrlsFront.EVENT_MEMBER} element={<EventMember/>}/>
+        <Route path={UrlsFront.DEPOSIT} element={<Deposit/>}/>
         <Route path={UrlsFront.USER_ME} element={<User/>}/>
         <Route path={UrlsFront.USER} element={<User/>}/>
         <Route path={"*"} element={<NotFound/>}/>
