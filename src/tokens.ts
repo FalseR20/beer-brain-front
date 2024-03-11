@@ -1,7 +1,6 @@
-const TOKEN = "token"
+import {TokenError} from "./errors.ts";
 
-export class TokenError extends Error {
-}
+const TOKEN = "token"
 
 
 export function setToken(token: string) {

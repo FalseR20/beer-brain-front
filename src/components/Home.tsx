@@ -4,7 +4,7 @@ import {Alert, Button, Card, Col, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
 import {CEvent} from "../dataclasses.ts";
-import {catchUnauthorized, getEventList} from "../fetches.tsx";
+import {throwIfUnauthorized, getEventList} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
 
@@ -17,7 +17,7 @@ export default function Home() {
   useEffect(() => {
     getEventList()
       .then(setEvents)
-      .catch(catchUnauthorized)
+      .catch(throwIfUnauthorized)
   }, []);
 
   if (events == undefined) {

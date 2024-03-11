@@ -1,5 +1,5 @@
 import {make_url, UrlsBack} from "./urls.ts";
-import getAuthHeaders, {deleteToken, setToken, TokenError} from "./tokens.ts";
+import getAuthHeaders, {deleteToken, setToken} from "./tokens.ts";
 import {
   CDeposit,
   CDetailedEvent,
@@ -10,24 +10,13 @@ import {
 } from "./dataclasses.ts";
 import {IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
 import {BANK_FORMAT} from "./constants.ts";
+import {FetchError, ResponseError, TokenError} from "./errors.ts";
 
-export class ResponseError extends Error {
-  status: number;
-
-  constructor(response: Response) {
-    super(response.statusText);
-    this.status = response.status
-  }
-}
-
-export type FetchError = ResponseError | TokenError
-
-export async function catchUnauthorized(reason: FetchError): Promise<ResponseError> {
+export async function throwIfUnauthorized(reason: FetchError): Promise<void> {
   if (reason instanceof TokenError) {
     window.location.href = "/guest";
     throw reason
   }
-  return reason
 }
 
 export async function fetchSignIn({username, password}: {
@@ -80,7 +69,7 @@ async function fetchWithAuthorization(input: RequestInfo | URL, init?: RequestIn
   if (!response.ok) {
     if (response.status == 401) {
       deleteToken()
-      throw new TokenError("Token is expired")
+      throw new TokenError(response.statusText)
     }
     throw new ResponseError(response)
   }
@@ -161,9 +150,16 @@ export async function getDetailedEvent(eventId: string): Promise<CDetailedEvent>
   return new CDetailedEvent(json)
 }
 
-export async function getDetailedUser(eventId: string, username: string): Promise<CDetailedUser> {
+export async function getEventMember(eventId: string, username: string): Promise<{
+  detailedEvent: CDetailedEvent;
+  user: CDetailedUser
+}> {
   const detailedEvent = await getDetailedEvent(eventId)
-  return detailedEvent.users.find(detailedUser => detailedUser.username == username)!
+  const user = detailedEvent.users.find(detailedUser => detailedUser.username == username)
+  if (!user) {
+    throw new FetchError("Unknown user", 404);
+  }
+  return {detailedEvent, user}
 }
 
 export async function createDeposit(inputs: {

@@ -1,15 +1,22 @@
 import Template from "../Template.tsx";
-import { useEffect, useState } from "react";
-import { CDeposit, CDetailedEvent, CDetailedUser, CRepayment } from "../../dataclasses.ts";
-import { useParams } from "react-router-dom";
-import { catchUnauthorized, FetchError, getDetailedEvent, getDetailedUser } from "../../fetches.tsx";
+import {useEffect, useState} from "react";
+import {CDeposit, CDetailedEvent, CDetailedUser, CRepayment} from "../../dataclasses.ts";
+import {useParams} from "react-router-dom";
+import {throwIfUnauthorized, getEventMember} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
-import { Button, Card, ListGroup } from "react-bootstrap";
-import { BsArrowDownCircle, BsArrowLeft, BsArrowLeftCircle, BsArrowRightCircle, BsArrowUpCircle } from "react-icons/bs";
-import { UrlsFront } from "../../urls.ts";
+import {Button, Card, ListGroup} from "react-bootstrap";
+import {
+  BsArrowDownCircle,
+  BsArrowLeft,
+  BsArrowLeftCircle,
+  BsArrowRightCircle,
+  BsArrowUpCircle
+} from "react-icons/bs";
+import {UrlsFront} from "../../urls.ts";
 import UrlPattern from "url-pattern";
-import { UserAvatar } from "../user/UserAvatar.tsx";
-import { BALANCE_FORMAT } from "../../constants.ts";
+import {UserAvatar} from "../user/UserAvatar.tsx";
+import {BALANCE_FORMAT} from "../../constants.ts";
+import {FetchError} from "../../errors.ts";
 
 export default function EventMember() {
   const [event, setEvent] = useState<CDetailedEvent>();
@@ -18,56 +25,41 @@ export default function EventMember() {
 
   const params = useParams<{ eventId: string, username: string }>();
   useEffect(() => {
-    getDetailedEvent(params.eventId!)
-      .then(event_ => {
-        setUser(event_.users.find(user => user.username === params.username!));
-        setEvent(event_);
+    getEventMember(params.eventId!, params.username!)
+      .then((data) => {
+        setUser(data.user);
+        setEvent(data.detailedEvent);
       })
-      .catch(async (reason: FetchError) => {
-        const error = await catchUnauthorized(reason);
+      .catch(async (error: FetchError) => {
+        await throwIfUnauthorized(error);
         if (error.status == 404) {
           setIs404(true);
         }
       });
   }, [params.eventId, params.username]);
 
-  useEffect(() => {
-    getDetailedUser(params.eventId!, params.username!)
-      .then(setUser)
-      .catch(async (reason: FetchError) => {
-        const error = await catchUnauthorized(reason);
-        if (error.status == 404) {
-          setIs404(true);
-        }
-      });
-  }, [params]);
-
   if (event == undefined) {
-    return is404 ? <NotFound /> : <Template />;
+    return is404 ? <NotFound/> : <Template/>;
   }
-  if (user == undefined) {
-    return <NotFound />;
-  }
-  return render(event, user);
+  return render(event, user!);
 }
 
 function render(event: CDetailedEvent, user: CDetailedUser) {
   const actions = user.getSortedActions();
-  console.log(actions)
   return <Template title={`member - ${user.fullNameOrUsername}`}>
     {/* Event member header */}
     <Card>
       <Card.Body className={"d-flex align-items-center px-3 py-2 gap-3"}>
         <Button variant={"outline-secondary border-0"}
-                href={new UrlPattern(UrlsFront.EVENT).stringify({ eventId: event.id })}>
-          <BsArrowLeft size={"2rem"} />
+                href={new UrlPattern(UrlsFront.EVENT).stringify({eventId: event.id})}>
+          <BsArrowLeft size={"2rem"}/>
         </Button>
         <div>
-          <UserAvatar user={user} round={true} size={"3.5rem"} />
+          <UserAvatar user={user} round={true} size={"3.5rem"}/>
         </div>
         <div className={"d-flex flex-column justify-content-center"}>
           <Card.Title className={"mb-0"}
-                      style={event.host.username == user.username ? { color: "goldenrod" } : {}}>
+                      style={event.host.username == user.username ? {color: "goldenrod"} : {}}>
             {`@${user.username}`}
           </Card.Title>
           {user.fullName == "" ? "" : <>
@@ -98,17 +90,18 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
         {actions.map(action => (<ListGroup.Item key={action.id}
                                                 className={"d-flex flex-row align-items-center gap-3"}>
           {action instanceof CDeposit ? (<div className={"d-flex align-items-center gap-2"}>
-            <div style={{ width: "3rem", height: "3rem" }} />
-            <BsArrowUpCircle size={"1.5rem"} />
-            <UserAvatar user={action.user} round={true} size={"3rem"} />
-          </div>) : (action.payer.equals(user)) ? (<div className={"d-flex align-items-center gap-2"}>
-            <UserAvatar user={action.recipient} round={true} size={"3rem"} />
-            <BsArrowLeftCircle size={"1.5rem"} />
-            <UserAvatar user={action.payer} round={true} size={"3rem"} />
-          </div>) : (<div className={"d-flex align-items-center gap-2"}>
-            <UserAvatar user={action.payer} round={true} size={"3rem"} />
-            <BsArrowRightCircle size={"1.5rem"} />
-            <UserAvatar user={action.recipient} round={true} size={"3rem"} />
+            <div style={{width: "3rem", height: "3rem"}}/>
+            <BsArrowUpCircle size={"1.5rem"}/>
+            <UserAvatar user={action.user} round={true} size={"3rem"}/>
+          </div>) : (action.payer.equals(user)) ? (
+            <div className={"d-flex align-items-center gap-2"}>
+              <UserAvatar user={action.recipient} round={true} size={"3rem"}/>
+              <BsArrowLeftCircle size={"1.5rem"}/>
+              <UserAvatar user={action.payer} round={true} size={"3rem"}/>
+            </div>) : (<div className={"d-flex align-items-center gap-2"}>
+            <UserAvatar user={action.payer} round={true} size={"3rem"}/>
+            <BsArrowRightCircle size={"1.5rem"}/>
+            <UserAvatar user={action.recipient} round={true} size={"3rem"}/>
           </div>)}
           <div className={"d-flex flex-column flex-grow-1"}>
             <span>{action.description}</span>
@@ -123,11 +116,11 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
         </ListGroup.Item>))}
       </ListGroup>
       <Card.Footer>
-        <div className="d-flex align-items-center gap-3" style={{ height: "3rem" }}>
+        <div className="d-flex align-items-center gap-3" style={{height: "3rem"}}>
           <div className={"d-flex align-items-center gap-2"}>
-            <div style={{ width: "3rem", height: "3rem" }} />
-            <BsArrowDownCircle size={"1.5rem"} />
-            <UserAvatar user={user} round={true} size={"3rem"} />
+            <div style={{width: "3rem", height: "3rem"}}/>
+            <BsArrowDownCircle size={"1.5rem"}/>
+            <UserAvatar user={user} round={true} size={"3rem"}/>
           </div>
           <div className={"d-flex flex-column flex-grow-1"}>
             <span><i>Event debt</i></span>
