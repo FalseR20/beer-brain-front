@@ -83,7 +83,7 @@ export default function NewRepaymentModal({event, show, setShow}: {
                 <Form.Select name={"type"} value={values.type} onChange={handleChange}
                              isInvalid={!!errors.type}>
                   <option value={"to"}>To</option>
-                  {/*<option value={"from"}>From</option>*/}
+                  <option value={"from"}>From</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   {errors.type}

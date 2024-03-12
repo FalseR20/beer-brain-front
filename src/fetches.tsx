@@ -11,6 +11,7 @@ import {
 import {IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
 import {BANK_FORMAT} from "./constants.ts";
 import {FetchError, ResponseError, TokenError} from "./errors.ts";
+import moment from "moment";
 
 export function redirectGuest(reason: FetchError) {
   if (reason instanceof TokenError) {
@@ -190,7 +191,7 @@ export async function updateDeposit(inputs: {
   const formData = new FormData();
   formData.append("value", BANK_FORMAT.format(inputs.value));
   formData.append("description", inputs.description);
-  // formData.append("payedAt", inputs.payedAt);  // TODO: add possibility to change datetime
+  formData.append("payed_at", moment(inputs.payedAt).format());
   const url = make_url(UrlsBack.RUD_DEPOSIT, {eventId, depositId: deposit.id})
   const response = await fetchWithAuthorization(url, {method: "PUT", body: formData});
   const json: IDeposit = await response.json();
@@ -218,7 +219,7 @@ export async function createRepayment(inputs: {
   const formData = new FormData();
   formData.append("value", BANK_FORMAT.format(inputs.value));
   formData.append("description", inputs.description);
-  formData.append("recipient_username", inputs.user);
+  formData.append((inputs.type == "to" ? "recipient_username" : "payer_username"), inputs.user);
 
   const url = make_url(UrlsBack.CREATE_REPAYMENT, {eventId: event.id})
   const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
@@ -236,15 +237,12 @@ export async function getRepayment(eventId: string, repaymentId: string): Promis
 export async function updateRepayment(inputs: {
   value: number,
   description: string,
-  type: string,
-  user: string,
   payedAt: string,
 }, event: CEvent, repayment: CRepayment): Promise<CRepayment> {
   const formData = new FormData();
   formData.append("value", BANK_FORMAT.format(inputs.value));
   formData.append("description", inputs.description);
-  // formData.append("recipient_username", inputs.user);  TODO: implement
-  // formData.append("payed_at", inputs.payedAt);  TODO: implement
+  formData.append("payed_at", moment(inputs.payedAt).format());
 
   const url = make_url(UrlsBack.RUD_REPAYMENT, {eventId: event.id, repaymentId: repayment.id})
   const response = await fetchWithAuthorization(url, {method: "PUT", body: formData});

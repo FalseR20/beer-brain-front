@@ -125,7 +125,7 @@ export default function Deposit() {
                     value={values.payedAt}
                     onChange={handleChange}
                     isInvalid={!!errors.payedAt}
-                    disabled={true}
+                    disabled={!isUser}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.payedAt}

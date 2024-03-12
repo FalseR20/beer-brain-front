@@ -8,24 +8,27 @@ import {useEvent} from "./UseEvent.tsx";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
 import {Formik} from "formik";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import moment from "moment";
 import {UserTemplate} from "../user/User.tsx";
+import {CRepayment} from "../../dataclasses.ts";
 
 export default function Repayment() {
   const user = useContext(AuthContext)
   const {event, is404} = useEvent()
+  const [repayment, setRepayment] = useState<CRepayment>()
   const params = useParams<{ repaymentId: string }>()
   if (!event) {
     return is404 ? <NotFound/> : <Template/>;
   }
-  const repayment = event.repayments.find(value => value.id == params.repaymentId!)
+  if (!repayment) {
+    setRepayment(event.repayments.find(value => value.id == params.repaymentId!))
+  }
   if (!repayment) {
     return <NotFound/>
   }
-  const isUser = user?.equals(repayment.payer) || false  //  || user?.equals(event.host)
-  const usersNotMe = event.users.filter((value => !user?.equals(value)))
+  const hasRights = user?.equals(repayment.payer) || user?.equals(event.host) || false
 
   return (
     <Template title={repayment.description}>
@@ -63,20 +66,17 @@ export default function Repayment() {
             description: yup.string(),
           })}
           onSubmit={(values) => {
-            updateRepayment(values, event, repayment).then(() => {
-              window.location.reload();
-            })
+            updateRepayment(values, event, repayment).then(setRepayment)
           }}
           initialValues={{
             value: repayment.value,
             description: repayment.description,
-            type: "to",
-            user: usersNotMe[0]?.username,
             payedAt: moment(repayment.payedAt).format('YYYY-MM-DD[T]HH:mm'),
           }}
         >
           {({handleSubmit, handleChange, handleReset, values, errors}) => (
-            <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3 width-30"}>
+            <Form noValidate onSubmit={handleSubmit}
+                  className={"d-flex flex-column gap-3 width-30"}>
               <Form.Group controlId="validationFormikValue">
                 <Form.Label>Value</Form.Label>
                 <InputGroup hasValidation>
@@ -90,7 +90,7 @@ export default function Repayment() {
                     value={values.value}
                     onChange={handleChange}
                     isInvalid={!!errors.value}
-                    disabled={!isUser}
+                    disabled={!hasRights}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.value}
@@ -108,41 +108,13 @@ export default function Repayment() {
                     value={values.description}
                     onChange={handleChange}
                     isInvalid={!!errors.description}
-                    disabled={!isUser}
+                    disabled={!hasRights}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.description}
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
-              <div className={"d-flex gap-4"}>
-                <Form.Group controlId="validationFormicType">
-                  <Form.Label>Transaction</Form.Label>
-                  <Form.Select name={"type"} value={values.type} onChange={handleChange}
-                               disabled={true}
-                               isInvalid={!!errors.type}>
-                    <option value={"to"}>To</option>
-                    {/*<option value={"from"}>From</option>*/}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {errors.type}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationFormicUser" className={"flex-grow-1"}>
-                  <Form.Label>User</Form.Label>
-                  <Form.Select name={"user"} value={values.user} onChange={handleChange}
-                               isInvalid={!!errors.user} disabled={true}>
-                    {usersNotMe.map(user => (
-                      <option value={user.username} key={user.username}>
-                        {`@${user.username}${user.fullName == "" ? "" : ` (${user.fullName})`}`}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {errors.user}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </div>
               <Form.Group controlId="validationFormikDescription">
                 <Form.Label>Datetime</Form.Label>
                 <InputGroup hasValidation>
@@ -153,7 +125,7 @@ export default function Repayment() {
                     value={values.payedAt}
                     onChange={handleChange}
                     isInvalid={!!errors.payedAt}
-                    disabled={true}
+                    disabled={!user}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.payedAt}
@@ -162,11 +134,11 @@ export default function Repayment() {
               </Form.Group>
               <div className={"d-flex flex-row gap-3"}>
                 <Button variant={"outline-secondary"} onClick={handleReset}
-                        disabled={!isUser}>Reset</Button>
-                <Button variant="primary" type="submit" disabled={!isUser}>Update deposit</Button>
+                        disabled={!hasRights}>Reset</Button>
+                <Button variant="primary" type="submit" disabled={!hasRights}>Update deposit</Button>
               </div>
               <div>
-                <Button variant={"danger"} disabled={!isUser} onClick={() => {
+                <Button variant={"danger"} disabled={!hasRights} onClick={() => {
                   deleteRepayment(event.id, repayment.id).then(() => {
                     history.back()
                   })
