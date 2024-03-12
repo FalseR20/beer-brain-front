@@ -4,7 +4,6 @@ import {deleteRepayment, updateRepayment} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
 import {Button, Card, Form, InputGroup} from "react-bootstrap";
 import {BsArrowLeft, BsArrowRightCircle} from "react-icons/bs";
-import {UserAvatar} from "../user/UserAvatar.tsx";
 import {useEvent} from "./UseEvent.tsx";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
@@ -12,6 +11,7 @@ import {Formik} from "formik";
 import {useContext} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import moment from "moment";
+import {UserTemplate} from "../user/User.tsx";
 
 export default function Repayment() {
   const user = useContext(AuthContext)
@@ -37,32 +37,22 @@ export default function Repayment() {
                     onClick={() => history.back()}>
               <BsArrowLeft size={"2rem"}/>
             </Button>
-            <div
-              className={"d-flex flex-row gap-2 justify-content-between align-items-center w-50 border-end pe-3"}>
-              <UserAvatar user={repayment.payer} round={true} size={"3rem"}/>
-              <BsArrowRightCircle size={"1.5rem"}/>
-              <UserAvatar user={repayment.recipient} round={true} size={"3rem"}
-                          className={"me-1"}/>
-              <div className={"d-flex flex-column justify-content-between flex-grow-1"}>
+            <UserTemplate user={repayment.payer} size={"3rem"}/>
+            <BsArrowRightCircle size={"1.7rem"}/>
+            <UserTemplate user={repayment.recipient} size={"3rem"}/>
+            <div className={"flex-grow-1"}/>
+            <div className={"d-flex flex-column justify-content-between flex-grow-1 ms-2"}>
                     <span className={"fs-5"}>
                       {repayment.description}
                     </span>
-                <span className={"fs-6 text-muted"}>
+              <span className={"fs-6 text-muted"}>
                       {repayment.payedAt.toLocaleString()}
                     </span>
-              </div>
-              <span className={"fs-3"}>
+            </div>
+            <div className={"flex-grow-1"}/>
+            <span className={"fs-3"}>
                     {BANK_FORMAT.format(repayment.value)}
                   </span>
-            </div>
-            <div>
-              <Card.Title>
-                {event.name}
-              </Card.Title>
-              <Card.Subtitle className={"text-muted text-end"}>
-                {event.description}
-              </Card.Subtitle>
-            </div>
           </Card.Body>
         </Card>
 
@@ -86,7 +76,7 @@ export default function Repayment() {
           }}
         >
           {({handleSubmit, handleChange, handleReset, values, errors}) => (
-            <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3 w-50"}>
+            <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3 width-30"}>
               <Form.Group controlId="validationFormikValue">
                 <Form.Label>Value</Form.Label>
                 <InputGroup hasValidation>

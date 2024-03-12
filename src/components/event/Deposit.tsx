@@ -4,7 +4,6 @@ import {deleteDeposit, getDeposit, redirectGuest, updateDeposit} from "../../fet
 import NotFound from "../NotFound.tsx";
 import {Button, Card, Form, InputGroup} from "react-bootstrap";
 import {BsArrowLeft} from "react-icons/bs";
-import {UserAvatar} from "../user/UserAvatar.tsx";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
 import {Formik} from "formik";
@@ -13,6 +12,7 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 import moment from "moment";
 import {CDeposit} from "../../dataclasses.ts";
 import {FetchError} from "../../errors.ts";
+import {UserTemplate} from "../user/User.tsx";
 
 export default function Deposit() {
   const [deposit, setDeposit] = useState<CDeposit>()
@@ -43,19 +43,18 @@ export default function Deposit() {
                     onClick={() => history.back()}>
               <BsArrowLeft size={"2rem"}/>
             </Button>
-            <div
-              className={"d-flex flex-row gap-2 justify-content-between align-items-center"}>
-              <UserAvatar user={deposit.user} round={true} size={"3rem"}/>
-              <div className={"d-flex flex-column justify-content-between flex-grow-1"}>
+            <UserTemplate user={deposit.user} size={"3rem"}/>
+            <div className={"flex-grow-1"}/>
+            <div className={"d-flex flex-column justify-content-between flex-grow-1"}>
                     <span className={"fs-5"}>
                       {deposit.description}
                     </span>
-                <span className={"fs-6 text-muted"}>
+              <span className={"fs-6 text-muted"}>
                       {deposit.payedAt.toLocaleString()}
                     </span>
-              </div>
             </div>
-            <span className={"fs-3 flex-grow-1 text-end"}>
+            <div className={"flex-grow-1"}/>
+            <span className={"fs-3"}>
                     {BANK_FORMAT.format(deposit.value)}
                   </span>
           </Card.Body>
@@ -77,7 +76,7 @@ export default function Deposit() {
           }}
         >
           {({handleSubmit, handleChange, handleReset, values, errors}) => (
-            <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3 w-50"}>
+            <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3 width-30"}>
               <Form.Group controlId="validationFormikValue">
                 <Form.Label>Value</Form.Label>
                 <InputGroup hasValidation>

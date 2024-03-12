@@ -70,9 +70,9 @@ export default function User() {
 }
 
 
-export function UserTemplate({user, children}: { user: CUser, children?: ReactNode }) {
+export function UserTemplate({user, children, size}: { user: CUser, children?: ReactNode, size?: string }) {
   return <div className={"d-flex flex-row gap-3 align-items-center"}>
-    <UserAvatar user={user} round={true} size={"4rem"}/>
+    <UserAvatar user={user} round={true} size={size || "4rem"}/>
     <div className={"d-flex flex-column justify-content-center flex-grow-1"}>
       <Card.Title>
         {`@${user.username}`}
