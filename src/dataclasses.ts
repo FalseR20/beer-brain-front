@@ -1,4 +1,5 @@
 import {IAction, IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
+import {make_front_url, UrlsFront} from "./urls.ts";
 
 export class CUser {
   username: string
@@ -22,20 +23,22 @@ export class CUser {
   }
 }
 
-export class CAction {
+export abstract class CAction {
   id: string
   value: number
   description: string
   payedAt: Date
   event: string
 
-  constructor(action: IAction) {
+  protected constructor(action: IAction) {
     this.id = action.id
     this.description = action.description
     this.value = parseFloat(action.value)
     this.payedAt = new Date(action.payed_at)
     this.event = action.event
   }
+
+  abstract makeFrontHref(): string
 }
 
 export class CDeposit extends CAction {
@@ -44,6 +47,13 @@ export class CDeposit extends CAction {
   constructor(deposit: IDeposit) {
     super(deposit);
     this.user = new CUser(deposit.user)
+  }
+
+  makeFrontHref() {
+    return make_front_url(UrlsFront.DEPOSIT, {
+      eventId: this.event,
+      depositId: this.id
+    })
   }
 }
 
@@ -55,6 +65,13 @@ export class CRepayment extends CAction {
     super(repayment);
     this.payer = new CUser(repayment.payer)
     this.recipient = new CUser(repayment.recipient)
+  }
+
+  makeFrontHref() {
+    return make_front_url(UrlsFront.REPAYMENT, {
+      eventId: this.event,
+      repaymentId: this.id
+    })
   }
 }
 
