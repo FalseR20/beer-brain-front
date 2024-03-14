@@ -37,7 +37,7 @@ export default function User() {
         <h3 className={"mt-5 mb-2"}> Management </h3>
         <ListGroup className={"border rounded-2"} variant={"flush"}>
           <ListGroup.Item
-            className={"d-flex flex-row align-items-center justify-content-between p-3"}>
+            className={"d-flex flex-row align-items-center justify-content-between gap-2 p-3"}>
             <span>Edit username and full name</span>
             <Button variant={"secondary"} onClick={() => setShowPropsModal(true)}>Edit
               profile</Button>
@@ -47,7 +47,7 @@ export default function User() {
         <h3 className={"mt-4 mb-2"}> Danger </h3>
         <ListGroup className={"border rounded-2 border-danger"} variant={"flush"}>
           <ListGroup.Item
-            className={"d-flex flex-row align-items-center justify-content-between p-3"}>
+            className={"d-flex flex-row align-items-center justify-content-between gap-2 p-3"}>
             <div className={"d-flex flex-column"}>
               <span>Change password</span>
               <span className={"text-muted"}>You will need to enter your old password</span>
@@ -55,7 +55,7 @@ export default function User() {
             <Button variant={"outline-danger"} disabled={true}>Change password</Button>
           </ListGroup.Item>
           <ListGroup.Item
-            className={"d-flex flex-row align-items-center justify-content-between p-3"}>
+            className={"d-flex flex-row align-items-center justify-content-between gap-2 p-3"}>
             <div className={"d-flex flex-column"}>
               <span>Delete account</span>
               <span className={"text-muted"}>Delete your account and all its data</span>
