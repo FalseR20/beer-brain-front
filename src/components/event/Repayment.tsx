@@ -2,8 +2,8 @@ import Template from "../Template.tsx";
 import {useParams} from "react-router-dom";
 import {deleteRepayment, updateRepayment} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
-import {Button, Card, Form, InputGroup} from "react-bootstrap";
-import {BsArrowLeft, BsArrowRightCircle} from "react-icons/bs";
+import {Button, Card, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
+import {BsArrowDownCircle, BsArrowLeft, BsArrowRightCircle} from "react-icons/bs";
 import {useEvent} from "./UseEvent.tsx";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
@@ -35,27 +35,53 @@ export default function Repayment() {
       <div className={"d-flex flex-column gap-3"}>
         {/* Event member header */}
         <Card>
-          <Card.Body className={"d-flex align-items-center px-3 py-2 gap-3"}>
-            <Button variant={"outline-secondary border-0"}
-                    onClick={() => history.back()}>
-              <BsArrowLeft size={"2rem"}/>
-            </Button>
-            <UserTemplate user={repayment.payer} size={"3rem"}/>
-            <BsArrowRightCircle size={"1.7rem"}/>
-            <UserTemplate user={repayment.recipient} size={"3rem"}/>
-            <div className={"flex-grow-1"}/>
-            <div className={"d-flex flex-column justify-content-between flex-grow-1 ms-2"}>
-                    <span className={"fs-5"}>
-                      {repayment.description}
+          <Card.Body>
+            <Container fluid={true}>
+              <Row className={"align-items-center gap-3"}>
+                <Col xs={{span: "auto", order: 1}} md={{span: "auto", order: 1}} className={"p-0"}>
+                  <Button variant={"outline-secondary border-0"} onClick={() => history.back()}>
+                    <BsArrowLeft size={"2rem"}/>
+                  </Button>
+                </Col>
+                <Col xs={{span: false, order: 3}} md={{span: true, order: 2}}>
+                  <Row className={"flex-md-nowrap gap-2 align-items-center"}>
+                    <Col xs={true} sm={"auto"}>
+                      <Row className={"align-items-center gap-2"}>
+                        <Col sm={"auto"} className={"p-0"}>
+                          <UserTemplate user={repayment.payer} size={"3rem"}/>
+                        </Col>
+                        {/* Arrow down if sm and left if more */}
+                        <Col sm={"auto"} className={"p-0 d-sm-none"}>
+                          <BsArrowDownCircle size={"1.7rem"} style={{marginLeft: "0.65rem"}}/>
+                        </Col>
+                        <Col sm={"auto"} className={"p-0 d-none d-sm-block"}>
+                          <BsArrowRightCircle size={"1.7rem"} style={{marginLeft: "0.65rem"}}/>
+                        </Col>
+                        <Col sm={"auto"} className={"p-0 "}>
+                          <UserTemplate user={repayment.recipient} size={"3rem"}/>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col xs={3} sm={true} className={"p-0 ms-auto me-md-auto text-center"}>
+                    <span className={"fs-3"}>
+                      {BANK_FORMAT.format(repayment.value)}
                     </span>
-              <span className={"fs-6 text-muted"}>
-                      {repayment.payedAt.toLocaleString()}
-                    </span>
-            </div>
-            <div className={"flex-grow-1"}/>
-            <span className={"fs-3"}>
-                    {BANK_FORMAT.format(repayment.value)}
+                    </Col>
+                  </Row>
+                </Col>
+                <Col xs={{span: true, order: 2}} md={{span: "auto", order: 3}}
+                     className={"p-0 text-md-end"}>
+                  <div className={"d-flex flex-column justify-content-between flex-grow-1 ms-2"}>
+                  <span className={"fs-5"}>
+                    {repayment.description}
                   </span>
+                    <span className={"fs-6 text-muted"}>
+                    {repayment.payedAt.toLocaleString()}
+                  </span>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
           </Card.Body>
         </Card>
 
@@ -76,7 +102,7 @@ export default function Repayment() {
         >
           {({handleSubmit, handleChange, handleReset, values, errors}) => (
             <Form noValidate onSubmit={handleSubmit}
-                  className={"d-flex flex-column gap-3 width-30"}>
+                  className={"d-flex flex-column gap-3"} style={{maxWidth: "30rem"}}>
               <Form.Group controlId="validationFormikValue">
                 <Form.Label>Value</Form.Label>
                 <InputGroup hasValidation>
@@ -135,7 +161,8 @@ export default function Repayment() {
               <div className={"d-flex flex-row gap-3"}>
                 <Button variant={"outline-secondary"} onClick={handleReset}
                         disabled={!hasRights}>Reset</Button>
-                <Button variant="primary" type="submit" disabled={!hasRights}>Update deposit</Button>
+                <Button variant="primary" type="submit" disabled={!hasRights}>Update
+                  deposit</Button>
               </div>
               <div>
                 <Button variant={"danger"} disabled={!hasRights} onClick={() => {

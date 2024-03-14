@@ -2,7 +2,7 @@ import Template from "../Template.tsx";
 import {useParams} from "react-router-dom";
 import {deleteDeposit, getDeposit, redirectGuest, updateDeposit} from "../../fetches.tsx";
 import NotFound from "../NotFound.tsx";
-import {Button, Card, Form, InputGroup} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
 import {BsArrowLeft} from "react-icons/bs";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
@@ -36,27 +36,41 @@ export default function Deposit() {
   return (
     <Template title={deposit.description}>
       <div className={"d-flex flex-column gap-3"}>
-        {/* Event member header */}
         <Card>
-          <Card.Body className={"d-flex align-items-center px-3 py-2 gap-3"}>
-            <Button variant={"outline-secondary border-0"}
-                    onClick={() => history.back()}>
-              <BsArrowLeft size={"2rem"}/>
-            </Button>
-            <UserTemplate user={deposit.user} size={"3rem"}/>
-            <div className={"flex-grow-1"}/>
-            <div className={"d-flex flex-column justify-content-between flex-grow-1"}>
+          <Card.Body>
+            <Container fluid={true}>
+              <Row className={"align-items-center gap-3"}>
+                <Col xs={{span: "auto", order: 1}} md={{span: "auto", order: 1}} className={"p-0"}>
+                  <Button variant={"outline-secondary border-0"}
+                          onClick={() => history.back()}>
+                    <BsArrowLeft size={"2rem"}/>
+                  </Button>
+                </Col>
+                <Col xs={{span: false, order: 3}} md={{span: true, order: 2}}>
+                  <Row className={"align-items-center flex-md-nowrap gap-2"}>
+                    <Col xs={"auto"} className={"p-0"}>
+                      <UserTemplate user={deposit.user} size={"3rem"}/>
+                    </Col>
+                    <Col xs={"auto"} className={"p-0 ms-auto me-md-auto"}>
+                      <span className={"fs-3"}>
+                    {BANK_FORMAT.format(deposit.value)}
+                  </span>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col xs={{span: true, order: 2}} md={{span: "auto", order: 3}}
+                     className={"p-0 text-md-end"}>
+                  <div className={"d-flex flex-column justify-content-between flex-grow-1"}>
                     <span className={"fs-5"}>
                       {deposit.description}
                     </span>
-              <span className={"fs-6 text-muted"}>
+                    <span className={"fs-6 text-muted"}>
                       {deposit.payedAt.toLocaleString()}
                     </span>
-            </div>
-            <div className={"flex-grow-1"}/>
-            <span className={"fs-3"}>
-                    {BANK_FORMAT.format(deposit.value)}
-                  </span>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
           </Card.Body>
         </Card>
 
@@ -76,7 +90,8 @@ export default function Deposit() {
           }}
         >
           {({handleSubmit, handleChange, handleReset, values, errors}) => (
-            <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3 width-30"}>
+            <Form noValidate onSubmit={handleSubmit}
+                  className={"d-flex flex-column gap-3"} style={{maxWidth: "30rem"}}>
               <Form.Group controlId="validationFormikValue">
                 <Form.Label>Value</Form.Label>
                 <InputGroup hasValidation>
