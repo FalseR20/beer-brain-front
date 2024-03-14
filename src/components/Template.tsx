@@ -27,7 +27,7 @@ export default function Template(props: TemplateProps) {
             </div>
           </>}
         </div>
-        <footer className="bg-body-tertiary border-top text-center text-white-50 p-2">
+        <footer className="bg-body-tertiary border-top text-center text-muted p-2">
           &copy; FalseR / Bebra Bebrou
         </footer>
       </div>
