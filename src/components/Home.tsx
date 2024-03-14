@@ -1,10 +1,10 @@
 import Template from "./Template.tsx";
 import {useEffect, useState} from "react";
-import {Alert, Button, Card, Col, Row} from "react-bootstrap";
+import {Alert, Button, Card, Col, Container, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
 import {CEvent} from "../dataclasses.ts";
-import {redirectGuest, getEventList} from "../fetches.tsx";
+import {getEventList, redirectGuest} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
 
@@ -32,31 +32,29 @@ export default function Home() {
           one.
         </p>
         <hr/>
-        <div className={"d-flex flex-row justify-content-end"}>
-          <Button
-            className={"fs-6"}
-            variant={"outline-success"}
-            onClick={() => setShowJoinEventModal(true)}
-          >
-            Join event
-          </Button>
-          <Button
-            className={"fs-6 ms-4"}
-            variant={"success"}
-            onClick={() => setShowNewEventModal(true)}
-          >
-            Create event
-          </Button>
-        </div>
+        <Container fluid={true}>
+          <Row className={"gap-3"}>
+            <Col xs={true} sm={"auto"} className={"px-0 ms-auto"}>
+              <Button
+                className={"w-100 h-100"}
+                variant={"outline-success"}
+                onClick={() => setShowJoinEventModal(true)}
+              >
+                Join event
+              </Button>
+            </Col>
+            <Col xs={true} sm={"auto"} className={"px-0"}>
+              <Button
+                className={"w-100 h-100"}
+                variant={"success"}
+                onClick={() => setShowNewEventModal(true)}
+              >
+                Create event
+              </Button>
+            </Col>
+          </Row>
+        </Container>
       </Alert>
-      <NewEventModal
-        show={showNewEventModal}
-        setShow={setShowNewEventModal}
-      />
-      <JoinEventModal
-        show={showJoinEventModal}
-        setShow={setShowJoinEventModal}
-      />
       <Row xs={1} md={2} className={"g-3"}>
         {events.map((event) => {
           const variant = event.isClosed ? "secondary" : "primary";
@@ -89,6 +87,14 @@ export default function Home() {
           );
         })}
       </Row>
+      <NewEventModal
+        show={showNewEventModal}
+        setShow={setShowNewEventModal}
+      />
+      <JoinEventModal
+        show={showJoinEventModal}
+        setShow={setShowJoinEventModal}
+      />
     </Template>
   );
 }
