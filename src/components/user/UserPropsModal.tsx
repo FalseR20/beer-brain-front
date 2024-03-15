@@ -59,8 +59,8 @@ export function UserPropsModal({user, show, setShow}: {
                   <Form.Control
                     type="text"
                     placeholder="Username"
-                    aria-describedby="inputGroupPrepend"
                     name="username"
+                    autoComplete={"username"}
                     value={values.username}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -77,8 +77,8 @@ export function UserPropsModal({user, show, setShow}: {
                   <Form.Control
                     type="text"
                     placeholder="CuCum Bear"
-                    aria-describedby="inputGroupPrepend"
                     name="fullName"
+                    autoComplete={"name"}
                     value={values.fullName}
                     onChange={handleChange}
                     onBlur={handleBlur}

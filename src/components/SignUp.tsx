@@ -4,8 +4,11 @@ import {Formik} from "formik";
 import * as yup from "yup";
 import {fetchSignUp} from "../fetches.tsx";
 import {UrlsFront} from "../urls.ts";
+import {useState} from "react";
+import {BsEye, BsEyeSlash} from "react-icons/bs";
 
 export default function SignIn() {
+  const [showPassword, setShowPassword] = useState(false)
   return (
     <Template noWrap={true} title={"Sign Up"}>
       <div id={"common-field"} className={"m-3 mt-5 width-30"}>
@@ -41,8 +44,8 @@ export default function SignIn() {
                   <Form.Control
                     type="text"
                     placeholder="Username"
-                    aria-describedby="inputGroupPrepend"
                     name="username"
+                    autoComplete={"username"}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isInvalid={!!errors.username}
@@ -56,14 +59,19 @@ export default function SignIn() {
                 <Form.Label>Password</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    aria-describedby="inputGroupPrepend"
                     name="password"
+                    autoComplete={"new-password"}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isInvalid={!!errors.password}
                   />
+                  <Button variant="outline-secondary"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className={"d-flex align-items-center border-secondary-subtle"}>
+                    {showPassword ? <BsEyeSlash/> : <BsEye/>}
+                  </Button>
                   <Form.Control.Feedback type="invalid">
                     {errors.password}
                   </Form.Control.Feedback>
@@ -75,8 +83,8 @@ export default function SignIn() {
                   <Form.Control
                     type="text"
                     placeholder="CuCum Bear"
-                    aria-describedby="inputGroupPrepend"
                     name="fullName"
+                    autoComplete={"name"}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     isInvalid={!!errors.fullName}
