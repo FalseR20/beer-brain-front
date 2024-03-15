@@ -44,8 +44,8 @@ export default function NewEventModal({show, setShow}: {
                   <Form.Control
                     type="text"
                     placeholder="Chill-Out"
-                    aria-describedby="inputGroupPrepend"
                     name="name"
+                    autoComplete={"off"}
                     value={values.name}
                     onChange={handleChange}
                     isInvalid={!!errors.name}
@@ -55,14 +55,14 @@ export default function NewEventModal({show, setShow}: {
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
-              <Form.Group>
+              <Form.Group controlId="validationFormikDescription">
                 <Form.Label>Description (optional)</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
-                    placeholder=""
-                    aria-describedby="inputGroupPrepend"
+                    placeholder="Cultural recreation"
                     name="description"
+                    autoComplete={"off"}
                     value={values.description}
                     onChange={handleChange}
                     isInvalid={!!errors.description}
@@ -72,12 +72,11 @@ export default function NewEventModal({show, setShow}: {
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
-              <Form.Group>
+              <Form.Group controlId="validationFormikDate">
                 <Form.Label>Date</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="date"
-                    aria-describedby="inputGroupPrepend"
                     name="date"
                     value={values.date}
                     onChange={handleChange}

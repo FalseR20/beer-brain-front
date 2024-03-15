@@ -37,8 +37,8 @@ export default function JoinEventModal({show, setShow}: {
                   <Form.Control
                     type="text"
                     placeholder="00000000-0000-0000-0000-000000000000"
-                    aria-describedby="inputGroupPrepend"
                     name="event_id"
+                    autoComplete={"off"}
                     value={values.event_id}
                     onChange={handleChange}
                     isInvalid={!!errors.event_id}

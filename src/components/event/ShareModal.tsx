@@ -1,5 +1,5 @@
 import {CEvent} from "../../dataclasses.ts";
-import {Button, Form, InputGroup, Modal} from "react-bootstrap";
+import {Button, Form, FormGroup, InputGroup, Modal} from "react-bootstrap";
 import {BsClipboard, BsClipboardCheckFill} from "react-icons/bs";
 import {useState} from "react";
 
@@ -23,16 +23,17 @@ export default function ShareModal({event, show, setShow}: {
       <Modal.Title>Share</Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <Form.Label>Event ID</Form.Label>
-      <InputGroup>
-        <Form.Control
-          type="text"
-          aria-describedby="inputGroupPrepend"
-          name={"id"}
-          value={event.id}
-          disabled={true}
-        />
-      </InputGroup>
+      <FormGroup controlId="eventId">
+        <Form.Label>Event ID</Form.Label>
+        <InputGroup>
+          <Form.Control
+            type="text"
+            name={"id"}
+            value={event.id}
+            disabled={true}
+          />
+        </InputGroup>
+      </FormGroup>
     </Modal.Body>
     <Modal.Footer>
       <Button variant={"primary"} onClick={handleClick}

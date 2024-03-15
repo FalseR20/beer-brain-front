@@ -42,9 +42,7 @@ export default function NewDepositModal({event, show, setShow}: {
                   step="0.01"
                   placeholder="7.62"
                   inputMode={"numeric"}
-                  aria-describedby="inputGroupPrepend"
                   name="value"
-                  // value={values.value}
                   onChange={handleChange}
                   isInvalid={!!errors.value}
                 />
