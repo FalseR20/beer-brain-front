@@ -15,6 +15,7 @@ import {AuthContextWrapper} from "./contexts/authContext.tsx";
 import {HelmetProvider} from "react-helmet-async";
 import Deposit from "./components/event/Deposit.tsx";
 import Repayment from "./components/event/Repayment.tsx";
+import ChangePassword from "./components/user/ChangePassword.tsx";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
         <Route path={UrlsFront.REPAYMENT} element={<Repayment/>}/>
         <Route path={UrlsFront.USER_ME} element={<User/>}/>
         <Route path={UrlsFront.USER} element={<User/>}/>
+        <Route path={UrlsFront.CHANGE_PASSWORD} element={<ChangePassword/>}/>
         <Route path={"*"} element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>

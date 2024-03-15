@@ -14,7 +14,9 @@ export class TokenError extends FetchError {
 }
 
 export class ResponseError extends FetchError {
+  response: Response
   constructor(response: Response) {
     super(response.statusText, response.status);
+    this.response = response
   }
 }

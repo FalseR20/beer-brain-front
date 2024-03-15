@@ -47,4 +47,5 @@ export enum UrlsFront {
   REPAYMENT = "/events/:eventId/repayment/:repaymentId",
   USER_ME = "/users/me",
   USER = "/users/id/:username",
+  CHANGE_PASSWORD = "/change-password",
 }

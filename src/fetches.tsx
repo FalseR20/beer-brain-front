@@ -275,3 +275,14 @@ export async function updateUser(inputs: {
   const json: IUser = await response.json();
   return new CUser(json)
 }
+
+export async function changePassword(inputs: {
+  oldPassword: string,
+  newPassword: string,
+}): Promise<void> {
+  const formData = new FormData();
+  formData.append("old_password", inputs.oldPassword);
+  formData.append("new_password", inputs.newPassword);
+  const url = make_url(UrlsBack.CHANGE_PASSWORD)
+  await fetchWithAuthorization(url, {method: "PUT", body: formData});
+}
