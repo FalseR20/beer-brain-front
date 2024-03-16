@@ -13,8 +13,10 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 import moment from "moment";
 import {UserTemplate} from "../user/User.tsx";
 import {CRepayment} from "../../dataclasses.ts";
+import {useTranslation} from "react-i18next";
 
 export default function Repayment() {
+  const {t} = useTranslation();
   const user = useContext(AuthContext)
   const {event, is404} = useEvent()
   const [repayment, setRepayment] = useState<CRepayment>()
@@ -85,7 +87,7 @@ export default function Repayment() {
           </Card.Body>
         </Card>
 
-        <h3>General</h3>
+        <h3>{t("Settings")}</h3>
         <Formik
           validationSchema={yup.object().shape({
             value: yup.number().positive().required(),
@@ -104,7 +106,7 @@ export default function Repayment() {
             <Form noValidate onSubmit={handleSubmit}
                   className={"d-flex flex-column gap-3"} style={{maxWidth: "30rem"}}>
               <Form.Group controlId="validationFormikValue">
-                <Form.Label>Value</Form.Label>
+                <Form.Label>{t("Value")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="number"
@@ -124,7 +126,7 @@ export default function Repayment() {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikDescription">
-                <Form.Label>Description</Form.Label>
+                <Form.Label>{t("Description")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
@@ -142,7 +144,7 @@ export default function Repayment() {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikDescription">
-                <Form.Label>Datetime</Form.Label>
+                <Form.Label>{t("Datetime")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="datetime-local"
@@ -160,16 +162,15 @@ export default function Repayment() {
               </Form.Group>
               <div className={"d-flex flex-row gap-3"}>
                 <Button variant={"outline-secondary"} onClick={handleReset}
-                        disabled={!hasRights}>Reset</Button>
-                <Button variant="primary" type="submit" disabled={!hasRights}>Update
-                  deposit</Button>
+                        disabled={!hasRights}>{t("Reset")}</Button>
+                <Button variant="primary" type="submit" disabled={!hasRights}>{t("Update repayment")}</Button>
               </div>
               <div>
                 <Button variant={"danger"} disabled={!hasRights} onClick={() => {
                   deleteRepayment(event.id, repayment.id).then(() => {
                     history.back()
                   })
-                }}>Delete deposit</Button>
+                }}>{t("Delete repayment")}</Button>
               </div>
             </Form>
           )}

@@ -5,12 +5,14 @@ import {Formik} from "formik";
 import {useContext} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {createRepayment} from "../../fetches.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function NewRepaymentModal({event, show, setShow}: {
   event: CDetailedEvent,
   show: boolean,
   setShow: (show: boolean) => void,
 }) {
+  const {t} = useTranslation();
   const handleClose = () => setShow(false);
   const userMe = useContext(AuthContext);
 
@@ -18,7 +20,7 @@ export default function NewRepaymentModal({event, show, setShow}: {
 
   return <Modal show={show} onHide={handleClose}>
     <Modal.Header closeButton>
-      <Modal.Title>Create new repayment</Modal.Title>
+      <Modal.Title>{t("Create repayment title")}</Modal.Title>
     </Modal.Header>
     <Formik
       validationSchema={yup.object().shape({
@@ -42,14 +44,13 @@ export default function NewRepaymentModal({event, show, setShow}: {
         <Form noValidate onSubmit={handleSubmit}>
           <Modal.Body className={"d-flex flex-column gap-3"}>
             <Form.Group controlId="validationFormikValue">
-              <Form.Label>Value</Form.Label>
+              <Form.Label>{t("Value")}</Form.Label>
               <InputGroup hasValidation>
                 <Form.Control
                   type="number"
                   step="0.01"
                   placeholder="7.62"
                   inputMode={"numeric"}
-                  aria-describedby="inputGroupPrepend"
                   name="value"
                   // value={values.value}
                   onChange={handleChange}
@@ -61,12 +62,10 @@ export default function NewRepaymentModal({event, show, setShow}: {
               </InputGroup>
             </Form.Group>
             <Form.Group controlId="validationFormikDescription">
-              <Form.Label>Description</Form.Label>
+              <Form.Label>{t("Description")}</Form.Label>
               <InputGroup hasValidation>
                 <Form.Control
                   type="text"
-                  placeholder="Beer and crisps"
-                  aria-describedby="inputGroupPrepend"
                   name="description"
                   value={values.description}
                   onChange={handleChange}
@@ -79,18 +78,18 @@ export default function NewRepaymentModal({event, show, setShow}: {
             </Form.Group>
             <div className={"d-flex gap-4"}>
               <Form.Group controlId="validationFormicType">
-                <Form.Label>Transaction</Form.Label>
+                <Form.Label>{t("Transaction")}</Form.Label>
                 <Form.Select name={"type"} value={values.type} onChange={handleChange}
                              isInvalid={!!errors.type}>
-                  <option value={"to"}>To</option>
-                  <option value={"from"}>From</option>
+                  <option value={"to"}>{t("To")}</option>
+                  <option value={"from"}>{t("From")}</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   {errors.type}
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="validationFormicUser" className={"flex-grow-1"}>
-                <Form.Label>User</Form.Label>
+                <Form.Label>{t("User")}</Form.Label>
                 <Form.Select name={"user"} value={values.user} onChange={handleChange}
                              isInvalid={!!errors.user}>
                   {usersNotMe.map(user => (
@@ -106,7 +105,7 @@ export default function NewRepaymentModal({event, show, setShow}: {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="success" type="submit">Add repayment</Button>
+            <Button variant="success" type="submit">{t("Create repayment")}</Button>
           </Modal.Footer>
         </Form>
       )}

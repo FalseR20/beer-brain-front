@@ -1,0 +1,107 @@
+{
+  "Brand": "BeerBrain",
+  "Sign In": "Sign In",
+  "Sign Up": "Sign Up",
+
+  "Guest title": "Guest page",
+  "Guest description": "Don't forget to remind your friends that the <strong>beer\uD83C\uDF7A</strong> was not free!",
+
+  "Sign Up title": "Sign Up",
+  "Sign In title": "Sign In",
+  "Username": "Username",
+  "Password": "Password",
+  "Full name": "Full name",
+
+  "Profile": "Profile",
+  "Language": "Language",
+  "Sign Out": "Sign Out",
+
+  "Home page": "Home page",
+  "All events": "All events",
+  "All events description": "There are all events. You can create a new one or join to the existing one",
+  "Look": "Look",
+  "members_one": "{{count, number}} members",
+  "members": "{{count, number}} members",
+
+  "Join event title": "Join event",
+  "Join event": "Join",
+  "Event id": "Event id",
+
+  "Create event title": "Create event",
+  "Create event": "Create",
+  "Name": "Name",
+  "Name placeholder": "Chill-Out",
+  "Description" : "Description",
+  "Description placeholder": "Cultural recreation",
+  "Date" : "Date",
+
+  "Settings": "Settings",
+  "Settings title": "Settings - {{name}}",
+  "Settings rights warning": "Warning",
+  "Settings rights": "You have no rights to to change the event. Ask <host>the host user</host> if you want.",
+  "Danger Zone": "Danger Zone",
+  "Update event": "Update",
+  "Cancel": "Cancel",
+
+  "Leave event": "Leave",
+  "Leave event description": "Leave this event",
+  "Leave event warning": "Are you sure you want to leave this event? You'll be able to return any time.",
+  "Leave event host": "The host cannot leave",
+
+  "Delete event": "Delete",
+  "Delete event warning": "Are you sure you want to delete this event? This action cannot be rolled back",
+  "Delete event description": "Delete this event",
+
+  "Bank": "Bank",
+  "each": "each",
+  "Members": "Members",
+  "Deposits": "Deposits",
+
+  "Create deposit button": "Deposit",
+  "Create deposit title": "Create new deposit",
+  "Create deposit": "Create",
+  "Value": "Value",
+  "Deposit description placeholder": "Beer and crisps",
+
+  "Create repayment button": "Repayment",
+  "Create repayment title": "Create new repayment",
+  "Create repayment": "Create",
+  "Transaction": "Transaction",
+  "To": "To",
+  "From": "From",
+
+  "Share title": "Share",
+  "Copy": "Copy",
+  "Copied": "Copied",
+
+  "Event member title": "Member - {{name}}",
+  "Actions": "Actions",
+  "Event debt": "Event debt",
+  "Datetime": "Date and time",
+  "Reset": "Reset",
+  "Update": "Update",
+  "Delete deposit": "Delete deposit",
+  "Update deposit": "Update deposit",
+  "Delete repayment": "Delete repayment",
+  "Update repayment": "Update repayment",
+
+  "User": "User",
+  "Management": "Management",
+  "Update user title": "Edit username and full name",
+  "Update user": "Edit profile",
+
+  "Change password": "Change password",
+  "Change password description": "Change password",
+  "Change password muted": "You will need to enter your old password",
+  "Old password": "Old password",
+  "New password": "New password",
+  "Update password": "Update password",
+
+  "Password changed title": "Password changed successfully",
+  "Password changed description": "Agree with your browser password manager to change it",
+
+  "Delete account": "Delete account",
+  "Delete account description": "Delete account",
+  "Delete account muted": "Delete your account and all its data",
+  "Delete account red": "Don't even think!"
+}

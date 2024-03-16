@@ -6,15 +6,17 @@ import {createEventAPI} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
 import moment from "moment/moment";
+import {useTranslation} from "react-i18next";
 
 export default function NewEventModal({show, setShow}: {
   show: boolean;
   setShow: (show: boolean) => void,
 }) {
+  const {t} = useTranslation();
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Create event</Modal.Title>
+        <Modal.Title>{t("Create event title")}</Modal.Title>
       </Modal.Header>
       <Formik
         validationSchema={yup.object().shape({
@@ -39,11 +41,11 @@ export default function NewEventModal({show, setShow}: {
           <Form noValidate onSubmit={handleSubmit}>
             <Modal.Body className={"d-flex flex-column gap-3"}>
               <Form.Group controlId="validationFormikName">
-                <Form.Label>Name</Form.Label>
+                <Form.Label>{t("Name")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
-                    placeholder="Chill-Out"
+                    placeholder={t("Name placeholder")}
                     name="name"
                     autoComplete={"off"}
                     value={values.name}
@@ -56,11 +58,11 @@ export default function NewEventModal({show, setShow}: {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikDescription">
-                <Form.Label>Description (optional)</Form.Label>
+                <Form.Label>{t("Description")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
-                    placeholder="Cultural recreation"
+                    placeholder={t("Description placeholder")}
                     name="description"
                     autoComplete={"off"}
                     value={values.description}
@@ -73,7 +75,7 @@ export default function NewEventModal({show, setShow}: {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikDate">
-                <Form.Label>Date</Form.Label>
+                <Form.Label>{t("Date")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="date"
@@ -89,7 +91,7 @@ export default function NewEventModal({show, setShow}: {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="submit">Create</Button>
+              <Button type="submit">{t("Create event")}</Button>
             </Modal.Footer>
           </Form>
         )}

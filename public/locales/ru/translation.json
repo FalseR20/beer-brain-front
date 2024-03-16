@@ -1,0 +1,107 @@
+{
+  "Brand": "BeerBrain",
+  "Sign In": "Войти",
+  "Sign Up": "Зарегистрироваться",
+
+  "Guest title": "Гостевая страница",
+  "Guest description": "Не забудь напомнить друзьям, что <strong>пиво\uD83C\uDF7A</strong> не было бесплатным!",
+
+  "Sign Up title": "Зарегистрироваться",
+  "Sign In title": "Войти",
+  "Username": "Имя пользователя",
+  "Password": "Пароль",
+  "Full name": "Полное имя",
+
+  "Profile": "Мой профиль",
+  "Language": "Язык",
+  "Sign Out": "Выйти",
+
+  "Home page": "Домашняя страница",
+  "All events": "Все события",
+  "All events description": "Здесь все события. Вы можете создать новое или присоединиться к уже имеющемуся",
+  "Look": "Подробнее",
+  "members_one": "{{count, number}} участник",
+  "members": "{{count, number}} участников",
+
+  "Join event title": "Присоединиться к событию",
+  "Join event": "Присоединиться",
+  "Event id": "ID события",
+
+  "Create event title": "Создать событие",
+  "Create event": "Создать",
+  "Name": "Название",
+  "Name placeholder": "Chill-Out",
+  "Description": "Описание",
+  "Description placeholder": "Культурный отдых",
+  "Date": "Дата",
+
+  "Settings": "Настройки",
+  "Settings title": "Настройки - {{name}}",
+  "Settings rights warning": "Внимание",
+  "Settings rights": "Ты не можешь изменять это событие. Для этого обратись к <host>хосту</host>.",
+  "Danger Zone": "Опасное",
+  "Update event": "Обновить",
+  "Cancel": "Отмена",
+
+  "Leave event": "Выйти",
+  "Leave event description": "Выйти из события",
+  "Leave event warning": "Ты уверен, что хотешь покинуть это событие? Ты сможешь вернуться в любое время.",
+  "Leave event host": "Хост не может выйти из события",
+
+  "Delete event": "Удалить",
+  "Delete event warning": "Ты уверен, что хочешь удалить это мероприятие? Данное действие нельзя отменить.",
+  "Delete event description": "Удалить событие",
+
+  "Bank": "Суммарно",
+  "each": "поровну",
+  "Members": "Участники",
+  "Deposits": "Пополнения",
+
+  "Create deposit button": "Пополнение",
+  "Create deposit title": "Создать пополнение",
+  "Create deposit": "Создать",
+  "Value": "Сумма",
+  "Deposit description placeholder": "Пиво и чипсы",
+
+  "Create repayment button": "Выплата",
+  "Create repayment title": "Создать выплату",
+  "Create repayment": "Создать",
+  "Transaction": "Транзакция",
+  "To": "Кому",
+  "From": "От кого",
+
+  "Share title": "Поделиться",
+  "Copy": "Скопировать",
+  "Copied": "Скопировано",
+
+  "Event member title": "Участник - {{name}}",
+  "Actions": "Действия",
+  "Event debt": "Долг по событию",
+  "Datetime": "Дата и время",
+  "Reset": "Сбросить",
+  "Update": "Обновить",
+  "Delete deposit": "Удалить пополнение",
+  "Update deposit": "Обновить поплонение",
+  "Delete repayment": "Удалить выплату",
+  "Update repayment": "Обновить выплату",
+
+  "User": "Пользователь",
+  "Management": "Управление",
+  "Update user title": "Обновить имя пользователя и полное имя",
+  "Update user": "Редактировать профиль",
+
+  "Change password": "Изменить пароль",
+  "Change password description": "Изменить пароль",
+  "Change password muted": "Тебе нужно будет ввести старый пароль",
+  "Old password": "Старый пароль",
+  "New password": "Новый пароль",
+  "Update password": "Обновить пароль",
+
+  "Password changed title": "Пароль изменен успешно",
+  "Password changed description": "Менеджер паролей браузера должен предложить его обновить",
+
+  "Delete account": "Удалить аккаунт",
+  "Delete account description": "Удалить аккаунт",
+  "Delete account muted": "Удалить аккаунт и всю информацию включая события",
+  "Delete account red": "Даже не думай!"
+}

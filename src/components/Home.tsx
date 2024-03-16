@@ -7,12 +7,14 @@ import {CEvent} from "../dataclasses.ts";
 import {getEventList, redirectGuest} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
+import {useTranslation} from "react-i18next";
 
 
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
   const [showJoinEventModal, setShowJoinEventModal] = useState(false);
   const [events, setEvents] = useState<CEvent[]>();
+  const {t} = useTranslation();
 
   useEffect(() => {
     getEventList()
@@ -24,12 +26,13 @@ export default function Home() {
     return <Template/>
   }
   return (
-    <Template title="Home page">
+    <Template title={t("Home page")}>
       <Alert variant="light" className={"mb-3 bg-body-tertiary"}>
-        <Alert.Heading>All events</Alert.Heading>
+        <Alert.Heading>
+          {t("All events")}
+        </Alert.Heading>
         <p>
-          There are all debts. You can create a new one or join to the existed
-          one.
+          {t("All events description")}
         </p>
         <hr/>
         <Container fluid={true}>
@@ -40,7 +43,7 @@ export default function Home() {
                 variant={"outline-success"}
                 onClick={() => setShowJoinEventModal(true)}
               >
-                Join event
+                {t("Join event")}
               </Button>
             </Col>
             <Col xs={true} sm={"auto"} className={"px-0"}>
@@ -49,7 +52,7 @@ export default function Home() {
                 variant={"success"}
                 onClick={() => setShowNewEventModal(true)}
               >
-                Create event
+                {t("Create event")}
               </Button>
             </Col>
           </Row>
@@ -71,14 +74,14 @@ export default function Home() {
                 </Card.Header>
                 <Card.Body>
                   <Card.Title>{event.name}</Card.Title>
-                  <Card.Text>{event.users.length} members</Card.Text>
+                  <Card.Text>{t("members", {count: event.users.length})}</Card.Text>
                   <Row className={"mx-0"}>
                     <Button
                       variant={variant}
                       size={"lg"}
                       href={new UrlPattern(UrlsFront.EVENT).stringify({"eventId": event.id})}
                     >
-                      Look
+                      {t("Look")}
                     </Button>
                   </Row>
                 </Card.Body>

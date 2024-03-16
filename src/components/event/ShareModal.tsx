@@ -2,12 +2,14 @@ import {CEvent} from "../../dataclasses.ts";
 import {Button, Form, FormGroup, InputGroup, Modal} from "react-bootstrap";
 import {BsClipboard, BsClipboardCheckFill} from "react-icons/bs";
 import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
 export default function ShareModal({event, show, setShow}: {
   event: CEvent,
   show: boolean,
   setShow: (show: boolean) => void,
 }) {
+  const {t} = useTranslation();
   const [clicked, setClicked] = useState(false);
   const handleClose = () => setShow(false);
 
@@ -20,11 +22,11 @@ export default function ShareModal({event, show, setShow}: {
 
   return <Modal show={show} onHide={handleClose}>
     <Modal.Header closeButton>
-      <Modal.Title>Share</Modal.Title>
+      <Modal.Title>{t("Share title")}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <FormGroup controlId="eventId">
-        <Form.Label>Event ID</Form.Label>
+        <Form.Label>{t("Event id")}</Form.Label>
         <InputGroup>
           <Form.Control
             type="text"
@@ -40,11 +42,11 @@ export default function ShareModal({event, show, setShow}: {
               className={"d-flex align-items-center gap-1"}>
         {!clicked ? (
           <>
-            <BsClipboard/>&nbsp;Copy
+            <BsClipboard/>&nbsp;{t("Copy")}
           </>
         ) : (
           <>
-            <BsClipboardCheckFill/>&nbsp;Copied
+            <BsClipboardCheckFill/>&nbsp;{t("Copied")}
           </>
         )}
       </Button>

@@ -17,8 +17,10 @@ import {BALANCE_FORMAT} from "../../constants.ts";
 import {FetchError} from "../../errors.ts";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
+import {useTranslation} from "react-i18next";
 
 export default function EventMember() {
+  const {t} = useTranslation();
   const [event, setEvent] = useState<CDetailedEvent>();
   const [user, setUser] = useState<CDetailedUser>();
   const [is404, setIs404] = useState<boolean>(false);
@@ -38,15 +40,11 @@ export default function EventMember() {
       });
   }, [params.eventId, params.username]);
 
-  if (event == undefined) {
+  if (event == undefined || !user) {
     return is404 ? <NotFound/> : <Template/>;
   }
-  return render(event, user!);
-}
-
-function render(event: CDetailedEvent, user: CDetailedUser) {
   const actions = user.getSortedActions();
-  return <Template title={`member - ${user.fullNameOrUsername}`}>
+  return <Template title={t("Event member title", {name: user.fullNameOrUsername})}>
     {/* Event member header */}
     <Card>
       <Card.Body className={"d-flex align-items-center px-3 py-2 gap-2"}>
@@ -136,7 +134,7 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
 
     {/* Actions */}
     <Card className={"mt-3"}>
-      <Card.Header>Actions</Card.Header>
+      <Card.Header>{t("Actions")}</Card.Header>
       <ListGroup variant={"flush"}>
         {actions.map(action => (
           <ListGroup.Item key={action.id} action={true}
@@ -176,7 +174,7 @@ function render(event: CDetailedEvent, user: CDetailedUser) {
             <BsCircle size={"1.5rem"}/>
             {/*<UserAvatar user={user} round={true} size={"3rem"}/>*/}
           </div>
-          <span className={"fst-italic flex-grow-1"}>Event debt</span>
+          <span className={"fst-italic flex-grow-1"}>{t("Event debt")}</span>
           {/*<span>{event.created_at.toLocaleString()}</span>*/}
           <h4 className={`mb-0 text-danger`}>
             {BALANCE_FORMAT.format(-event.bankPart)}

@@ -6,13 +6,15 @@ import {fetchSignUp} from "../fetches.tsx";
 import {UrlsFront} from "../urls.ts";
 import {useState} from "react";
 import {BsEye, BsEyeSlash} from "react-icons/bs";
+import {useTranslation} from "react-i18next";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
+  const {t} = useTranslation();
   return (
-    <Template noWrap={true} title={"Sign Up"}>
+    <Template noWrap={true} title={t("Sign Up title")}>
       <div id={"common-field"} className={"m-3 mt-5 width-30"}>
-        <h1 className={"text-center"}> Sign Up</h1>
+        <h1 className={"text-center"}>{t("Sign Up title")}</h1>
         <Formik
           validationSchema={yup.object().shape({
             username: yup.string().required(),
@@ -38,12 +40,12 @@ export default function SignIn() {
           {({handleSubmit, handleBlur, handleChange, errors}) => (
             <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3"}>
               <Form.Group controlId="validationFormikUsername">
-                <Form.Label>Username</Form.Label>
+                <Form.Label>{t("Username")}</Form.Label>
                 <InputGroup hasValidation>
                   <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
                   <Form.Control
                     type="text"
-                    placeholder="Username"
+                    placeholder="username"
                     name="username"
                     autoComplete={"username"}
                     onChange={handleChange}
@@ -56,11 +58,11 @@ export default function SignIn() {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikPassword">
-                <Form.Label>Password</Form.Label>
+                <Form.Label>{t("Password")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type={showPassword ? "text" : "password"}
-                    placeholder="Password"
+                    placeholder="password"
                     name="password"
                     autoComplete={"new-password"}
                     onChange={handleChange}
@@ -78,7 +80,7 @@ export default function SignIn() {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikFullname">
-                <Form.Label>Full name (optional)</Form.Label>
+                <Form.Label>{t("Full name")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
@@ -94,7 +96,7 @@ export default function SignIn() {
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
-              <Button className={"mt-3"} size={"lg"} type="submit">Register</Button>
+              <Button className={"mt-3"} size={"lg"} type="submit">{t("Sign Up")}</Button>
             </Form>
           )}
         </Formik>

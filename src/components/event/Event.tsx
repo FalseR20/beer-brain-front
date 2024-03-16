@@ -12,8 +12,10 @@ import {useDetailedEvent} from "./UseDetailedEvent.tsx";
 import ShareModal from "./ShareModal.tsx";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import {UserAvatar} from "../user/UserAvatar.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function Event() {
+  const {t} = useTranslation();
   const {event, is404} = useDetailedEvent()
   const [showDepositModal, setShowDepositModal] = useState(false)
   const [showRepaymentModal, setShowRepaymentModal] = useState(false)
@@ -23,7 +25,7 @@ export default function Event() {
     return is404 ? <NotFound/> : <Template/>;
   }
 
-  return (<Template title={`event - ${event.name}`}>
+  return (<Template title={event.name}>
     <div id={"event-header"}>
       <div id={"event-header-top"}
            className={"border-bottom color-border-muted pb-3 d-flex justify-content-between"}>
@@ -37,12 +39,12 @@ export default function Event() {
         </div>
         <div className={"d-flex flex-column align-items-end"}>
           <span className={"fw-bold fs-4 text-end"}>
-            <span className={"text-muted"}>Bank </span>
+            <span className={"text-muted"}>{t("Bank")} </span>
             {BANK_FORMAT.format(event.bank)}
             </span>
           <span className={"fs-6 text-end"}>
             {BANK_FORMAT.format(event.bankPart)}
-            <span className={"text-muted"}> each</span>
+            <span className={"text-muted"}> {t("each")}</span>
           </span>
         </div>
       </div>
@@ -54,14 +56,14 @@ export default function Event() {
                 <Button variant={"primary"}
                         className={"d-flex justify-content-center align-items-center w-100"}
                         onClick={() => setShowDepositModal(true)}>
-                  <BsArrowDown/>&nbsp;Deposit
+                  <BsArrowDown/>&nbsp;{t("Create deposit button")}
                 </Button>
               </Col>
               <Col xs={false} sm={"auto"} className={"px-0"}>
                 <Button variant={"success"}
                         className={"d-flex justify-content-center align-items-center gap-1 w-100"}
                         onClick={() => setShowRepaymentModal(true)}>
-                  <BsArrowLeftRight/>&nbsp;Repayment
+                  <BsArrowLeftRight/>&nbsp;{t("Create repayment button")}
                 </Button>
               </Col>
             </Row>
@@ -72,14 +74,14 @@ export default function Event() {
                 <Button variant={"info"}
                         className={"d-flex justify-content-center align-items-center gap-1 w-100"}
                         onClick={() => setShowShareModal(true)}>
-                  <BsShare/>&nbsp;Share
+                  <BsShare/>&nbsp;{t("Share title")}
                 </Button>
               </Col>
               <Col xs={false} sm={"auto"} className={"px-0"}>
                 <Button variant={"secondary"}
                         className={"d-flex justify-content-center align-items-center gap-1 w-100"}
                         href={new UrlPattern(UrlsFront.EVENT_SETTINGS).stringify({"eventId": event.id})}>
-                  <BsGear/>&nbsp;Settings
+                  <BsGear/>&nbsp;{t("Settings")}
                 </Button>
               </Col>
             </Row>
@@ -94,7 +96,7 @@ export default function Event() {
         <Col className={"px-0"} lg={true}>
           <Card>
             <Card.Header>
-              Members
+              {t("Members")}
             </Card.Header>
             <ListGroup variant={"flush"}>
               {event.users.map((user) => (
@@ -138,7 +140,7 @@ export default function Event() {
         <Col className={"px-0"} lg={true}>
           <Card>
             <Card.Header>
-              Deposits
+              {t("Deposits")}
             </Card.Header>
             <ListGroup variant={"flush"}>
               {event.deposits.map(deposit => (

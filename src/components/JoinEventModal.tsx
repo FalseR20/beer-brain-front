@@ -5,15 +5,17 @@ import * as yup from "yup";
 import {joinEvent} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
+import {useTranslation} from "react-i18next";
 
 export default function JoinEventModal({show, setShow}: {
   show: boolean;
   setShow: (show: boolean) => void,
 }) {
+  const {t} = useTranslation();
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Join event</Modal.Title>
+        <Modal.Title>{t("Join event title")}</Modal.Title>
       </Modal.Header>
       <Formik
         validationSchema={yup.object().shape({
@@ -32,7 +34,7 @@ export default function JoinEventModal({show, setShow}: {
           <Form noValidate onSubmit={handleSubmit}>
             <Modal.Body>
               <Form.Group controlId="validationFormikDescription">
-                <Form.Label>Event id</Form.Label>
+                <Form.Label>{t("Event id")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
@@ -50,7 +52,7 @@ export default function JoinEventModal({show, setShow}: {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="submit">Join</Button>
+              <Button type="submit">{t("Join event")}</Button>
             </Modal.Footer>
           </Form>
         )}

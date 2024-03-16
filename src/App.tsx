@@ -16,6 +16,7 @@ import {HelmetProvider} from "react-helmet-async";
 import Deposit from "./components/event/Deposit.tsx";
 import Repayment from "./components/event/Repayment.tsx";
 import ChangePassword from "./components/user/ChangePassword.tsx";
+import "./i18n/config.ts";
 
 function Router() {
   return (

@@ -13,8 +13,10 @@ import moment from "moment";
 import {CDeposit} from "../../dataclasses.ts";
 import {FetchError} from "../../errors.ts";
 import {UserTemplate} from "../user/User.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function Deposit() {
+  const {t} = useTranslation();
   const [deposit, setDeposit] = useState<CDeposit>()
   const [is404, setIs404] = useState<boolean>(false)
   const user = useContext(AuthContext)
@@ -74,7 +76,7 @@ export default function Deposit() {
           </Card.Body>
         </Card>
 
-        <h3>General</h3>
+        <h3>{t("Settings")}</h3>
         <Formik
           validationSchema={yup.object().shape({
             value: yup.number().positive().required(),
@@ -93,7 +95,7 @@ export default function Deposit() {
             <Form noValidate onSubmit={handleSubmit}
                   className={"d-flex flex-column gap-3"} style={{maxWidth: "30rem"}}>
               <Form.Group controlId="validationFormikValue">
-                <Form.Label>Value</Form.Label>
+                <Form.Label>{t("Value")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="number"
@@ -113,7 +115,7 @@ export default function Deposit() {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikDescription">
-                <Form.Label>Description</Form.Label>
+                <Form.Label>{t("Description")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
@@ -131,7 +133,7 @@ export default function Deposit() {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikDescription">
-                <Form.Label>Datetime</Form.Label>
+                <Form.Label>{t("Datetime")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="datetime-local"
@@ -149,15 +151,15 @@ export default function Deposit() {
               </Form.Group>
               <div className={"d-flex flex-row gap-3"}>
                 <Button variant={"outline-secondary"} onClick={handleReset}
-                        disabled={!isUser}>Reset</Button>
-                <Button variant="primary" type="submit" disabled={!isUser}>Update deposit</Button>
+                        disabled={!isUser}>{t("Reset")}</Button>
+                <Button variant="primary" type="submit" disabled={!isUser}>{t("Update deposit")}</Button>
               </div>
               <div>
                 <Button variant={"danger"} disabled={!isUser} onClick={() => {
                   deleteDeposit(params.eventId!, deposit.id).then(() => {
                     history.back()
                   })
-                }}>Delete deposit</Button>
+                }}>{t("Delete deposit")}</Button>
               </div>
             </Form>
           )}

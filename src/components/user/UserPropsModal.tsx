@@ -5,18 +5,18 @@ import * as yup from "yup";
 import {updateUser} from "../../fetches.tsx";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import {UserTemplate} from "./User.tsx";
+import {useTranslation} from "react-i18next";
 
 export function UserPropsModal({user, show, setShow}: {
   user: CUser,
   show: boolean,
   setShow: (show: boolean) => void
 }) {
+  const {t} = useTranslation();
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>
-          Update profile
-        </Modal.Title>
+        <Modal.Title>{t("Update user")}</Modal.Title>
       </Modal.Header>
       <Formik
         validationSchema={yup.object().shape({
@@ -53,12 +53,12 @@ export function UserPropsModal({user, show, setShow}: {
             <Modal.Body className={"d-flex flex-column gap-3"}>
               <UserTemplate user={values}/>
               <Form.Group controlId="validationFormikUsername">
-                <Form.Label>Username (disabled temporary)</Form.Label>
+                <Form.Label>{t("Username")}</Form.Label>
                 <InputGroup hasValidation>
                   <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
                   <Form.Control
                     type="text"
-                    placeholder="Username"
+                    placeholder="username"
                     name="username"
                     autoComplete={"username"}
                     value={values.username}
@@ -72,7 +72,7 @@ export function UserPropsModal({user, show, setShow}: {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikFullname">
-                <Form.Label>Full name (optional)</Form.Label>
+                <Form.Label>{t("Full name")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
@@ -91,8 +91,8 @@ export function UserPropsModal({user, show, setShow}: {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant={"outline-secondary"} onClick={handleReset}>Reset</Button>
-              <Button variant={"success"} type="submit">Update</Button>
+              <Button variant={"outline-secondary"} onClick={handleReset}>{t("Reset")}</Button>
+              <Button variant={"success"} type="submit">{t("Update")}</Button>
             </Modal.Footer>
           </Form>
         )}

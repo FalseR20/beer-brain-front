@@ -20,8 +20,10 @@ import {Formik} from "formik";
 import {useDetailedEvent} from "./UseDetailedEvent.tsx";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
+import {Trans, useTranslation} from "react-i18next";
 
 export function EventSettings() {
+  const {t} = useTranslation();
   const [showDeleteEventModal, setShowDeleteEventModal] = useState(false);
   const [showLeaveEventModal, setShowLeaveEventModal] = useState(false);
   const {event, is404} = useDetailedEvent()
@@ -33,25 +35,32 @@ export function EventSettings() {
   const isHost: boolean | undefined = user?.equals(event.host)
 
   return (
-    <Template title={`settings - ${event.name}`}>
-      <Alert show={!(isHost || true)} variant={"warning"}>
-        <Alert.Heading>Warning</Alert.Heading>
-        You have no rights to to change the event. Ask <Alert.Link
-        href={make_front_url(UrlsFront.USER, {username: event.host.username})}>the host
-        user</Alert.Link> if you want.
+    <Template title={t("Settings title", {name: event.name})}>
+      <Alert show={isHost == false} variant={"warning"}>
+        <Alert.Heading>{t("Settings rights warning")}</Alert.Heading>
+        <Trans t={t}
+               i18nKey="Settings rights"
+               components={{
+                 host: (
+                   <Alert.Link
+                     href={make_front_url(UrlsFront.USER, {username: event.host.username})}
+                   />
+                 )
+               }}/>
+
       </Alert>
       <span
-        className={"pb-1 border-bottom color-border-muted mb-3 fs-3 fw-bold"}> General </span>
-      <ChangeEventForm event={event} isHost={isHost || false}/>
+        className={"pb-1 border-bottom color-border-muted mb-3 fs-3 fw-bold"}>{t("Settings")}</span>
+      <ChangeEventForm event={event} isHost={isHost == true}/>
 
-      <span className={"fs-3 fw-bold mt-4 mb-2"}> Danger Zone </span>
+      <span className={"fs-3 fw-bold mt-4 mb-2"}>{t("Danger Zone")}</span>
       <ListGroup className={"border border-danger rounded-2"} variant={"flush"}>
         <ListGroup.Item className={"d-flex flex-row align-items-center"}>
-          <span className={"flex-grow-1"}>Leave this event</span>
+          <span className={"flex-grow-1"}>{t("Leave event description")}</span>
           {isHost ? (
             <OverlayTrigger
-              placement="right"
-              overlay={<Tooltip>The host cannot leave</Tooltip>}
+              placement="left"
+              overlay={<Tooltip>{t("Leave event host")}</Tooltip>}
             >
             <span className="d-inline-block">
             <Button variant={"danger"} className={"my-2"} disabled={true}
@@ -63,7 +72,7 @@ export function EventSettings() {
           ) : (
             <Button variant={"danger"} className={"my-2"} disabled={isHost}
                     onClick={() => setShowLeaveEventModal(true)}>
-              Leave
+              {t("Leave event")}
             </Button>
           )}
 
@@ -72,11 +81,10 @@ export function EventSettings() {
         <ListGroup.Item
           className={"d-flex flex-row justify-content-between align-items-center"}
         >
-          <span className={"flex-grow-1"}>Delete this event</span>
+          <span className={"flex-grow-1"}>{t("Delete event description")}</span>
           <Button variant={"danger"} className={"my-2"} disabled={!isHost}
                   onClick={() => setShowDeleteEventModal(true)}>
-            {" "}
-            Delete event{" "}
+            {t("Delete event")}
           </Button>
         </ListGroup.Item>
       </ListGroup>
@@ -89,6 +97,7 @@ export function EventSettings() {
 
 
 function ChangeEventForm({event, isHost}: { event: CEvent, isHost: boolean }) {
+  const {t} = useTranslation();
   return (
     <Formik
       validationSchema={yup.object().shape({
@@ -113,12 +122,11 @@ function ChangeEventForm({event, isHost}: { event: CEvent, isHost: boolean }) {
         <Form noValidate onSubmit={handleSubmit}
               className={"d-flex flex-column gap-3 w-50"}>
           <Form.Group controlId="validationFormikName">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>{t("Name")}</Form.Label>
             <InputGroup hasValidation>
               <Form.Control
                 type="text"
-                placeholder="Chill-Out"
-                aria-describedby="inputGroupPrepend"
+                placeholder={t("Name placeholder")}
                 name="name"
                 value={values.name}
                 onChange={handleChange}
@@ -131,12 +139,11 @@ function ChangeEventForm({event, isHost}: { event: CEvent, isHost: boolean }) {
             </InputGroup>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Description (optional)</Form.Label>
+            <Form.Label>{t("Description")}</Form.Label>
             <InputGroup hasValidation>
               <Form.Control
                 type="text"
                 placeholder=""
-                aria-describedby="inputGroupPrepend"
                 name="description"
                 value={values.description}
                 onChange={handleChange}
@@ -149,11 +156,10 @@ function ChangeEventForm({event, isHost}: { event: CEvent, isHost: boolean }) {
             </InputGroup>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Date</Form.Label>
+            <Form.Label>{t("Date")}</Form.Label>
             <InputGroup hasValidation>
               <Form.Control
                 type="date"
-                aria-describedby="inputGroupPrepend"
                 name="date"
                 value={values.date}
                 onChange={handleChange}
@@ -166,7 +172,7 @@ function ChangeEventForm({event, isHost}: { event: CEvent, isHost: boolean }) {
             </InputGroup>
           </Form.Group>
           <div>
-            <Button type="submit" disabled={!isHost}>Update</Button>
+            <Button type="submit" disabled={!isHost}>{t("Update event")}</Button>
           </div>
         </Form>
       )}
@@ -179,7 +185,7 @@ function LeaveEventModal({event, show, setShow}: {
   show: boolean,
   setShow: (show: boolean) => void
 }) {
-
+  const {t} = useTranslation();
   function handleLeave() {
     leaveEvent(event.id).then(() => {
       window.location.href = UrlsFront.HOME
@@ -189,17 +195,12 @@ function LeaveEventModal({event, show, setShow}: {
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>
-          Leave event
-        </Modal.Title>
+        <Modal.Title>{t("Leave event description")}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        Are you sure you want to leave this event?
-        You'll be able to return any time.
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant={"outline-secondary"} onClick={() => setShow(false)}>Cancel</Button>
-        <Button variant={"danger"} onClick={handleLeave}>Leave</Button>
+      <Modal.Body>{t("Leave event warning")}</Modal.Body>
+      <Modal.Footer className={"gap-2"}>
+        <Button variant={"outline-secondary"} onClick={() => setShow(false)}>{t("Cancel")}</Button>
+        <Button variant={"danger"} onClick={handleLeave}>{t("Leave event")}</Button>
       </Modal.Footer>
     </Modal>
   )
@@ -210,6 +211,7 @@ function DeleteEventModal({event, show, setShow}: {
   show: boolean,
   setShow: (show: boolean) => void
 }) {
+  const {t} = useTranslation();
 
   function handleDelete() {
     deleteEvent(event.id).then(() => {
@@ -221,16 +223,13 @@ function DeleteEventModal({event, show, setShow}: {
     <Modal show={show} onHide={() => setShow(false)} contentClassName={"border-danger"}>
       <Modal.Header closeButton>
         <Modal.Title>
-          Delete event
+          {t("Delete event description")}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        Are you sure you want to delete this event?
-        This action cannot be rolled back
-      </Modal.Body>
+      <Modal.Body>{t("Delete event warning")}</Modal.Body>
       <Modal.Footer>
-        <Button variant={"outline-secondary"} onClick={() => setShow(false)}>Cancel</Button>
-        <Button variant={"danger"} onClick={handleDelete}>Delete</Button>
+        <Button variant={"outline-secondary"} onClick={() => setShow(false)}>{t("Cancel")}</Button>
+        <Button variant={"danger"} onClick={handleDelete}>{t("Delete event")}</Button>
       </Modal.Footer>
     </Modal>
   )

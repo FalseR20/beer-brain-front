@@ -8,17 +8,19 @@ import {BsEye, BsEyeSlash} from "react-icons/bs";
 import {changePassword} from "../../fetches.tsx";
 import {ResponseError} from "../../errors.ts";
 import {make_front_url, UrlsFront} from "../../urls.ts";
+import {useTranslation} from "react-i18next";
 
 export default function ChangePassword() {
+  const {t} = useTranslation()
   const user = useContext(AuthContext)
   const [showPassword, setShowPassword] = useState(false)
   if (!user) {
     return <Template/>
   }
   return (
-    <Template noWrap={true} title={"Change password"}>
+    <Template noWrap={true} title={t("Change password")}>
       <div id={"common-field"} className={"m-3 mt-5 width-30"}>
-        <h1 className={"text-center"}>Change password</h1>
+        <h1 className={"text-center"}>{t("Change password")}</h1>
         <Formik
           validationSchema={yup.object().shape({
             oldPassword: yup.string().required(),
@@ -53,11 +55,11 @@ export default function ChangePassword() {
           {({handleSubmit, handleChange, values, errors}) => (
             <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3"}>
               <Form.Group controlId="validationFormikUsername">
-                <Form.Label>Old password</Form.Label>
+                <Form.Label>{t("Old password")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="password"
-                    placeholder="Old password"
+                    placeholder="old password"
                     name="oldPassword"
                     autoComplete={"current-password"}
                     value={values.oldPassword}
@@ -70,11 +72,11 @@ export default function ChangePassword() {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikPassword">
-                <Form.Label>New password</Form.Label>
+                <Form.Label>{t("New password")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type={showPassword ? "text" : "password"}
-                    placeholder="Password"
+                    placeholder="new password"
                     name="newPassword"
                     autoComplete={"new-password"}
                     value={values.newPassword}
@@ -92,7 +94,7 @@ export default function ChangePassword() {
                 </InputGroup>
               </Form.Group>
               <Button variant={"danger"} className={"mt-3"} size={"lg"}
-                      type="submit">Change</Button>
+                      type="submit">{t("Update password")}</Button>
             </Form>
           )}
         </Formik>

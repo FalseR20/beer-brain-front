@@ -6,13 +6,15 @@ import {fetchSignIn} from "../fetches.tsx";
 import {UrlsFront} from "../urls.ts";
 import {BsEye, BsEyeSlash} from "react-icons/bs";
 import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
+  const {t} = useTranslation();
   return (
-    <Template noWrap={true} title={"Sign In"}>
+    <Template noWrap={true} title={t("Sign In title")}>
       <div id={"common-field"} className={"m-3 mt-5 width-30"}>
-        <h1 className={"text-center"}> Sign In</h1>
+        <h1 className={"text-center"}>{t("Sign In")}</h1>
         <Formik
           validationSchema={yup.object().shape({
             username: yup.string().required(),
@@ -36,7 +38,7 @@ export default function SignIn() {
           {({handleSubmit, handleChange, values, errors}) => (
             <Form noValidate onSubmit={handleSubmit} className={"d-flex flex-column gap-3"}>
               <Form.Group controlId="validationFormikUsername">
-                <Form.Label>Username</Form.Label>
+                <Form.Label>{t("Username")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
@@ -53,7 +55,7 @@ export default function SignIn() {
                 </InputGroup>
               </Form.Group>
               <Form.Group controlId="validationFormikPassword">
-                <Form.Label>Password</Form.Label>
+                <Form.Label>{t("Password")}</Form.Label>
                 <InputGroup hasValidation>
                   <Form.Control
                     type={showPassword ? "text" : "password"}
@@ -75,7 +77,7 @@ export default function SignIn() {
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
-              <Button className={"mt-3"} size={"lg"} type="submit">Login</Button>
+              <Button className={"mt-3"} size={"lg"} type="submit">{t("Sign In")}</Button>
             </Form>
           )}
         </Formik>
