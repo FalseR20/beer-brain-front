@@ -17,6 +17,7 @@ import Deposit from "./components/event/Deposit.tsx";
 import Repayment from "./components/event/Repayment.tsx";
 import ChangePassword from "./components/user/ChangePassword.tsx";
 import "./i18n/config.ts";
+import About from "./components/About.tsx";
 
 function Router() {
   return (
@@ -34,6 +35,7 @@ function Router() {
         <Route path={UrlsFront.USER_ME} element={<User/>}/>
         <Route path={UrlsFront.USER} element={<User/>}/>
         <Route path={UrlsFront.CHANGE_PASSWORD} element={<ChangePassword/>}/>
+        <Route path={UrlsFront.ABOUT} element={<About/>}/>
         <Route path={"*"} element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>

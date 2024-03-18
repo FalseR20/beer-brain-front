@@ -103,5 +103,11 @@
   "Delete account": "Delete account",
   "Delete account description": "Delete account",
   "Delete account muted": "Delete your account and all its data",
-  "Delete account red": "Don't even think!"
+  "Delete account red": "Don't even think!",
+
+  "Me": "Me",
+  "Developer username": "FalseR",
+  "Developer fullname": "Bebra Bebrou",
+  "Developer description": "I'm developing BeerBrain alone, but you can help me by sending feedback:",
+  "Developer email": "falser.mk@gmail.com"
 }

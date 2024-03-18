@@ -2,6 +2,9 @@ import {ReactNode} from "react";
 import "../css/Template.css";
 import Header from "./header/Header.tsx";
 import {Helmet} from "react-helmet-async";
+import {Link} from "react-router-dom";
+import {UrlsFront} from "../urls.ts";
+import {useTranslation} from "react-i18next";
 
 export interface TemplateProps {
   children?: ReactNode;
@@ -10,6 +13,7 @@ export interface TemplateProps {
 }
 
 export default function Template(props: TemplateProps) {
+  const {t} = useTranslation();
   return (
     <>
       {props.title ? (
@@ -28,7 +32,10 @@ export default function Template(props: TemplateProps) {
           </>}
         </div>
         <footer className="bg-body-tertiary border-top text-center text-muted p-2">
-          &copy; FalseR / Bebra Bebrou
+          &copy;{" "}
+          <Link to={UrlsFront.ABOUT} className={"text-reset"}>
+            {t("Developer username")} / {t("Developer fullname")}
+          </Link>
         </footer>
       </div>
     </>
