@@ -1,9 +1,9 @@
 import {ReactNode} from "react";
-import "../css/Template.css";
-import Header from "./header/Header.tsx";
+import "../../css/Template.css";
+import Header from "./Header.tsx";
 import {Helmet} from "react-helmet-async";
 import {Link} from "react-router-dom";
-import {UrlsFront} from "../urls.ts";
+import {UrlsFront} from "../../urls.ts";
 import {useTranslation} from "react-i18next";
 
 export interface TemplateProps {

@@ -1,15 +1,16 @@
-import Template from "../Template.tsx";
 import {CUser} from "../../dataclasses.ts";
 import {useParams, useSearchParams} from "react-router-dom";
 import {getUser} from "../../fetches.tsx";
-import {ReactNode, useContext, useEffect, useState} from "react";
-import {UserAvatar} from "./UserAvatar.tsx";
+import {lazy, useContext, useEffect, useState} from "react";
 import {Alert, Button, Card, ListGroup} from "react-bootstrap";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import {UserPropsModal} from "./UserPropsModal.tsx";
 import {BsCheckCircle} from "react-icons/bs";
 import {useTranslation} from "react-i18next";
+
+const UserTemplate = lazy(() => import("./UserTemplate.tsx"))
+const Template = lazy(() => import("../template/Template.tsx"))
 
 
 export default function User() {
@@ -45,7 +46,8 @@ export default function User() {
     </Card>
     {!isMe ? "" : (
       <>
-        <Alert variant={"success"} className={"mt-3"} show={showPasswordChanged} onClose={() => setShowPasswordChanged(false)} dismissible>
+        <Alert variant={"success"} className={"mt-3"} show={showPasswordChanged}
+               onClose={() => setShowPasswordChanged(false)} dismissible>
           <Alert.Heading className={"d-flex flex-row align-items-center gap-3 mb-2"}>
             <BsCheckCircle size={"1.8rem"}/>
             {t("Password changed title")}
@@ -72,7 +74,8 @@ export default function User() {
               <span>{t("Change password description")}</span>
               <span className={"text-muted"}>{t("Change password muted")}</span>
             </div>
-            <Button variant={"outline-danger"} href={UrlsFront.CHANGE_PASSWORD}>{t("Change password")}</Button>
+            <Button variant={"outline-danger"}
+                    href={UrlsFront.CHANGE_PASSWORD}>{t("Change password")}</Button>
           </ListGroup.Item>
           <ListGroup.Item
             className={"d-flex flex-row align-items-center justify-content-between gap-2 p-3"}>
@@ -88,24 +91,4 @@ export default function User() {
       </>
     )}
   </Template>);
-}
-
-
-export function UserTemplate({user, children, size}: {
-  user: CUser,
-  children?: ReactNode,
-  size?: string
-}) {
-  return <div className={"d-flex flex-row gap-3 align-items-center"}>
-    <UserAvatar user={user} round={true} size={size || "4rem"}/>
-    <div className={"d-flex flex-column justify-content-center flex-grow-1"}>
-      <Card.Title>
-        {`@${user.username}`}
-      </Card.Title>
-      {user.fullName == "" ? "" : <>
-        <Card.Subtitle className={"text-muted"}>{user.fullName}</Card.Subtitle>
-      </>}
-    </div>
-    {children}
-  </div>
 }

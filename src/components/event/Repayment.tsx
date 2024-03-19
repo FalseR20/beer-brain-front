@@ -1,19 +1,20 @@
-import Template from "../Template.tsx";
 import {useParams} from "react-router-dom";
 import {deleteRepayment, updateRepayment} from "../../fetches.tsx";
-import NotFound from "../NotFound.tsx";
 import {Button, Card, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
 import {BsArrowDownCircle, BsArrowLeft, BsArrowRightCircle} from "react-icons/bs";
 import {useEvent} from "./UseEvent.tsx";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
 import {Formik} from "formik";
-import {useContext, useState} from "react";
+import {lazy, useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import moment from "moment";
-import {UserTemplate} from "../user/User.tsx";
 import {CRepayment} from "../../dataclasses.ts";
 import {useTranslation} from "react-i18next";
+
+const NotFound = lazy(() => import("../NotFound.tsx"))
+const UserTemplate = lazy(() => import("../user/UserTemplate.tsx"))
+const Template = lazy(() => import("../template/Template.tsx"))
 
 export default function Repayment() {
   const {t} = useTranslation();
@@ -163,7 +164,8 @@ export default function Repayment() {
               <div className={"d-flex flex-row gap-3"}>
                 <Button variant={"outline-secondary"} onClick={handleReset}
                         disabled={!hasRights}>{t("Reset")}</Button>
-                <Button variant="primary" type="submit" disabled={!hasRights}>{t("Update repayment")}</Button>
+                <Button variant="primary" type="submit"
+                        disabled={!hasRights}>{t("Update repayment")}</Button>
               </div>
               <div>
                 <Button variant={"danger"} disabled={!hasRights} onClick={() => {

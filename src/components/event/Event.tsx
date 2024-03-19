@@ -1,6 +1,4 @@
-import Template from "../Template.tsx";
-import {useState} from "react";
-import NotFound from "../NotFound.tsx";
+import {lazy, useState} from "react";
 import "../../css/Event.css";
 import {Badge, Button, Card, Col, Container, ListGroup, Row} from "react-bootstrap";
 import UrlPattern from "url-pattern";
@@ -13,6 +11,9 @@ import ShareModal from "./ShareModal.tsx";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import {UserAvatar} from "../user/UserAvatar.tsx";
 import {useTranslation} from "react-i18next";
+
+const NotFound = lazy(() => import("../NotFound.tsx"))
+const Template = lazy(() => import("../template/Template.tsx"))
 
 export default function Event() {
   const {t} = useTranslation();

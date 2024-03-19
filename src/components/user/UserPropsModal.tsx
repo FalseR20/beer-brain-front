@@ -4,8 +4,11 @@ import {Formik} from "formik";
 import * as yup from "yup";
 import {updateUser} from "../../fetches.tsx";
 import {make_front_url, UrlsFront} from "../../urls.ts";
-import {UserTemplate} from "./User.tsx";
 import {useTranslation} from "react-i18next";
+import {lazy} from "react";
+
+const UserTemplate = lazy(() => import("./UserTemplate.tsx"))
+
 
 export function UserPropsModal({user, show, setShow}: {
   user: CUser,

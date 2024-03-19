@@ -1,14 +1,15 @@
 import {Button, Form, InputGroup, Offcanvas} from "react-bootstrap";
 import {signOut} from "../../fetches.tsx";
-import {useState} from "react";
+import {lazy, useState} from "react";
 import {CUser} from "../../dataclasses.ts";
 import {UserAvatar} from "../user/UserAvatar.tsx";
-import {UserTemplate} from "../user/User.tsx";
 import {UrlsFront} from "../../urls.ts";
 import UrlPattern from "url-pattern";
 import {BsBoxArrowRight, BsPerson} from "react-icons/bs";
 import {useTranslation} from "react-i18next";
 import {supportedLngs} from "../../i18n/config.ts";
+
+const UserTemplate = lazy(() => import("../user/UserTemplate.tsx"))
 
 
 export function AvatarOffcanvas({user}: { user?: CUser }) {

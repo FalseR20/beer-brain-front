@@ -1,7 +1,10 @@
-import Template from "./Template.tsx";
 import {Col, Container, Image, Row} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
+import {lazy} from "react";
+
+const Template = lazy(() => import("./template/Template.tsx"))
+
 
 export default function About() {
   const {t} = useTranslation();

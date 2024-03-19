@@ -8,21 +8,22 @@ import {
   OverlayTrigger,
   Tooltip
 } from "react-bootstrap";
-import Template from "../Template.tsx";
 import {CDetailedEvent, CEvent} from "../../dataclasses.ts";
 import {deleteEvent, leaveEvent, updateEvent} from "../../fetches.tsx";
-import NotFound from "../NotFound.tsx";
 import * as yup from "yup";
 import UrlPattern from "url-pattern";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import moment from "moment";
 import {Formik} from "formik";
 import {useDetailedEvent} from "./UseDetailedEvent.tsx";
-import {useContext, useState} from "react";
+import {lazy, useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {Trans, useTranslation} from "react-i18next";
 
-export function EventSettings() {
+const NotFound = lazy(() => import("../NotFound.tsx"))
+const Template = lazy(() => import("../template/Template.tsx"))
+
+export default function EventSettings() {
   const {t} = useTranslation();
   const [showDeleteEventModal, setShowDeleteEventModal] = useState(false);
   const [showLeaveEventModal, setShowLeaveEventModal] = useState(false);
@@ -186,6 +187,7 @@ function LeaveEventModal({event, show, setShow}: {
   setShow: (show: boolean) => void
 }) {
   const {t} = useTranslation();
+
   function handleLeave() {
     leaveEvent(event.id).then(() => {
       window.location.href = UrlsFront.HOME

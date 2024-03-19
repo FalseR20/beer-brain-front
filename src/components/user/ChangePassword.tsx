@@ -1,6 +1,5 @@
-import {useContext, useState} from "react";
+import {lazy, useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
-import Template from "../Template.tsx";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {Button, Form, InputGroup} from "react-bootstrap";
@@ -9,6 +8,8 @@ import {changePassword} from "../../fetches.tsx";
 import {ResponseError} from "../../errors.ts";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import {useTranslation} from "react-i18next";
+
+const Template = lazy(() => import("../template/Template.tsx"))
 
 export default function ChangePassword() {
   const {t} = useTranslation()

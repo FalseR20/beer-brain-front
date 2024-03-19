@@ -1,4 +1,6 @@
-import Template from "./Template.tsx";
+import {lazy} from "react";
+
+const Template = lazy(() => import("./template/Template.tsx"))
 
 export default function NotFound() {
   return (

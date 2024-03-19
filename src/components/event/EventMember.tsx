@@ -1,9 +1,7 @@
-import Template from "../Template.tsx";
-import {useEffect, useState} from "react";
+import {lazy, useEffect, useState} from "react";
 import {CDeposit, CDetailedEvent, CDetailedUser, CRepayment} from "../../dataclasses.ts";
 import {useParams} from "react-router-dom";
 import {getEventMember, redirectGuest} from "../../fetches.tsx";
-import NotFound from "../NotFound.tsx";
 import {Button, Card, Col, Container, ListGroup, Row} from "react-bootstrap";
 import {
   BsArrowLeft,
@@ -18,6 +16,9 @@ import {FetchError} from "../../errors.ts";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../../urls.ts";
 import {useTranslation} from "react-i18next";
+
+const NotFound = lazy(() => import("../NotFound.tsx"))
+const Template = lazy(() => import("../template/Template.tsx"))
 
 export default function EventMember() {
   const {t} = useTranslation();

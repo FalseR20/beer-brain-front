@@ -1,12 +1,14 @@
-import Template from "./Template.tsx";
 import {Button, Form, InputGroup} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {fetchSignIn} from "../fetches.tsx";
 import {UrlsFront} from "../urls.ts";
 import {BsEye, BsEyeSlash} from "react-icons/bs";
-import {useState} from "react";
+import {lazy, useState} from "react";
 import {useTranslation} from "react-i18next";
+
+const Template = lazy(() => import("./template/Template.tsx"))
+
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false)

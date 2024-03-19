@@ -1,19 +1,20 @@
-import Template from "../Template.tsx";
 import {useParams} from "react-router-dom";
 import {deleteDeposit, getDeposit, redirectGuest, updateDeposit} from "../../fetches.tsx";
-import NotFound from "../NotFound.tsx";
 import {Button, Card, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
 import {BsArrowLeft} from "react-icons/bs";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
 import {Formik} from "formik";
-import {useContext, useEffect, useState} from "react";
+import {lazy, useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import moment from "moment";
 import {CDeposit} from "../../dataclasses.ts";
 import {FetchError} from "../../errors.ts";
-import {UserTemplate} from "../user/User.tsx";
 import {useTranslation} from "react-i18next";
+
+const NotFound = lazy(() => import("../NotFound.tsx"))
+const UserTemplate = lazy(() => import("../user/UserTemplate.tsx"))
+const Template = lazy(() => import("../template/Template.tsx"))
 
 export default function Deposit() {
   const {t} = useTranslation();
@@ -152,7 +153,8 @@ export default function Deposit() {
               <div className={"d-flex flex-row gap-3"}>
                 <Button variant={"outline-secondary"} onClick={handleReset}
                         disabled={!isUser}>{t("Reset")}</Button>
-                <Button variant="primary" type="submit" disabled={!isUser}>{t("Update deposit")}</Button>
+                <Button variant="primary" type="submit"
+                        disabled={!isUser}>{t("Update deposit")}</Button>
               </div>
               <div>
                 <Button variant={"danger"} disabled={!isUser} onClick={() => {

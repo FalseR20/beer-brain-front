@@ -1,5 +1,4 @@
-import Template from "./Template.tsx";
-import {useEffect, useState} from "react";
+import {lazy, useEffect, useState} from "react";
 import {Alert, Button, Card, Col, Container, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
@@ -8,6 +7,8 @@ import {getEventList, redirectGuest} from "../fetches.tsx";
 import UrlPattern from "url-pattern";
 import {UrlsFront} from "../urls.ts";
 import {useTranslation} from "react-i18next";
+
+const Template = lazy(() => import("./template/Template.tsx"))
 
 
 export default function Home() {
