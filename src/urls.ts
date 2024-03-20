@@ -1,6 +1,6 @@
 import UrlPattern from "url-pattern";
 
-const baseUrlEnv: string | undefined = import.meta.env.VITE_DJANGO_URL;
+const baseUrlEnv = import.meta.env.VITE_DJANGO_URL;
 
 export const URL_BASE = baseUrlEnv || "http://localhost:8000/";
 
