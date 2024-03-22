@@ -29,11 +29,6 @@ export default function Header() {
                   {t("Sign In")}
                 </Button>
               </NavLink>
-              <NavLink to={UrlsFront.SIGN_UP}>
-                <Button variant={"success"}>
-                  {t("Sign Up")}
-                </Button>
-              </NavLink>
             </>
           )}
         </div>

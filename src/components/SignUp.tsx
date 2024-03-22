@@ -6,7 +6,7 @@ import {UrlsFront} from "../urls.ts";
 import {lazy, useContext, useState} from "react";
 import {BsEye, BsEyeSlash} from "react-icons/bs";
 import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AuthContext} from "../contexts/authContext.tsx";
 
 const Template = lazy(() => import("./template/Template.tsx"))
@@ -106,6 +106,11 @@ export default function SignIn() {
             </Form>
           )}
         </Formik>
+        <div className={"text-center mt-3"}>
+          {t("Already have an account?")}
+          {" "}
+          <Link to={UrlsFront.SIGN_IN}>{t("Sign In")}</Link>
+        </div>
       </div>
     </Template>
   );
