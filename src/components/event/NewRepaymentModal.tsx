@@ -14,7 +14,7 @@ export default function NewRepaymentModal({event, show, setShow}: {
 }) {
   const {t} = useTranslation();
   const handleClose = () => setShow(false);
-  const userMe = useContext(AuthContext);
+  const {user: userMe} = useContext(AuthContext);
 
   const usersNotMe = event.users.filter((user => !userMe?.equals(user)))
 

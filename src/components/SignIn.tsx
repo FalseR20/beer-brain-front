@@ -4,14 +4,18 @@ import * as yup from "yup";
 import {fetchSignIn} from "../fetches.tsx";
 import {UrlsFront} from "../urls.ts";
 import {BsEye, BsEyeSlash} from "react-icons/bs";
-import {lazy, useState} from "react";
+import {lazy, useContext, useState} from "react";
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
+import {AuthContext} from "../contexts/authContext.tsx";
 
 const Template = lazy(() => import("./template/Template.tsx"))
 
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
+  const {updateUser} = useContext(AuthContext)
+  const navigate = useNavigate();
   const {t} = useTranslation();
   return (
     <Template noWrap={true} title={t("Sign In title")}>
@@ -24,7 +28,8 @@ export default function SignIn() {
           })}
           onSubmit={(values, formikHelpers) => {
             fetchSignIn(values).then(() => {
-              window.location.href = UrlsFront.HOME;
+              updateUser()
+              navigate(UrlsFront.HOME);
             }).catch(() => {
               formikHelpers.setSubmitting(false);
               const message = "Wrong password or login";

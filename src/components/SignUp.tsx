@@ -3,14 +3,18 @@ import {Formik} from "formik";
 import * as yup from "yup";
 import {fetchSignUp} from "../fetches.tsx";
 import {UrlsFront} from "../urls.ts";
-import {lazy, useState} from "react";
+import {lazy, useContext, useState} from "react";
 import {BsEye, BsEyeSlash} from "react-icons/bs";
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
+import {AuthContext} from "../contexts/authContext.tsx";
 
 const Template = lazy(() => import("./template/Template.tsx"))
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
+  const {updateUser} = useContext(AuthContext)
+  const navigate = useNavigate();
   const {t} = useTranslation();
   return (
     <Template noWrap={true} title={t("Sign Up title")}>
@@ -24,7 +28,8 @@ export default function SignIn() {
           })}
           onSubmit={(values, formikHelpers) => {
             fetchSignUp(values).then(() => {
-              window.location.href = UrlsFront.HOME;
+              updateUser()
+              navigate(UrlsFront.HOME)
             }).catch(() => {
               formikHelpers.setSubmitting(false);
               formikHelpers.setFieldError("username", "User already exists");

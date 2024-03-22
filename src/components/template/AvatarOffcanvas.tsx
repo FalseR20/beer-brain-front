@@ -3,11 +3,11 @@ import {signOut} from "../../fetches.tsx";
 import {lazy, useState} from "react";
 import {CUser} from "../../dataclasses.ts";
 import {UserAvatar} from "../user/UserAvatar.tsx";
-import {UrlsFront} from "../../urls.ts";
-import UrlPattern from "url-pattern";
+import {make_front_url, UrlsFront} from "../../urls.ts";
 import {BsBoxArrowRight, BsPerson} from "react-icons/bs";
 import {useTranslation} from "react-i18next";
 import {supportedLngs} from "../../i18n/config.ts";
+import {Link} from "react-router-dom";
 
 const UserTemplate = lazy(() => import("../user/UserTemplate.tsx"))
 
@@ -27,12 +27,14 @@ export function AvatarOffcanvas({user}: { user?: CUser }) {
           <UserTemplate user={user!}/>
         </Offcanvas.Header>
         <Offcanvas.Body className={"d-flex flex-column gap-3"}>
-          <Button variant="outline-secondary" className={"text-reset border-light-subtle"}
-                  href={!user ? "" : new UrlPattern(UrlsFront.USER).stringify({username: user.username})}>
-            <span className={"d-flex align-items-center gap-1"}>
-            <BsPerson size={iconsSize}/>&nbsp;{t("Profile")}
-            </span>
-          </Button>
+          <Link to={!user ? "" : make_front_url(UrlsFront.USER, {username: user.username})} className={"text-reset"}>
+            <Button variant="outline-secondary" className={"text-reset border-light-subtle"}>
+              <span className={"d-flex align-items-center gap-1"}>
+                <BsPerson size={iconsSize}/>&nbsp;{t("Profile")}
+              </span>
+            </Button>
+          </Link>
+
           <Form.Group controlId="language">
             <Form.Label>{t("Language")}</Form.Label>
             <InputGroup hasValidation>

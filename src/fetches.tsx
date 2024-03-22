@@ -13,11 +13,6 @@ import {BANK_FORMAT} from "./constants.ts";
 import {FetchError, ResponseError, TokenError} from "./errors.ts";
 import moment from "moment";
 
-export function redirectGuest(reason: FetchError) {
-  if (reason instanceof TokenError) {
-    window.location.href = "/guest";
-  }
-}
 
 export async function fetchSignIn({username, password}: {
   username: string,

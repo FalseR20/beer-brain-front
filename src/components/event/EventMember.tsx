@@ -1,7 +1,7 @@
 import {lazy, useEffect, useState} from "react";
 import {CDeposit, CDetailedEvent, CDetailedUser, CRepayment} from "../../dataclasses.ts";
-import {useParams} from "react-router-dom";
-import {getEventMember, redirectGuest} from "../../fetches.tsx";
+import {Link, useParams} from "react-router-dom";
+import {getEventMember} from "../../fetches.tsx";
 import {Button, Card, Col, Container, ListGroup, Row} from "react-bootstrap";
 import {
   BsArrowLeft,
@@ -13,9 +13,9 @@ import {
 import {UserAvatar} from "../user/UserAvatar.tsx";
 import {BALANCE_FORMAT} from "../../constants.ts";
 import {FetchError} from "../../errors.ts";
-import UrlPattern from "url-pattern";
-import {UrlsFront} from "../../urls.ts";
+import {make_front_url, UrlsFront} from "../../urls.ts";
 import {useTranslation} from "react-i18next";
+import useGuest from "../useGuest.tsx";
 
 const NotFound = lazy(() => import("../NotFound.tsx"))
 const Template = lazy(() => import("../template/Template.tsx"))
@@ -25,6 +25,7 @@ export default function EventMember() {
   const [event, setEvent] = useState<CDetailedEvent>();
   const [user, setUser] = useState<CDetailedUser>();
   const [is404, setIs404] = useState<boolean>(false);
+  const {redirectGuest} = useGuest()
 
   const params = useParams<{ eventId: string, username: string }>();
   useEffect(() => {
@@ -52,10 +53,11 @@ export default function EventMember() {
         <Container fluid={true}>
           <Row className={"align-items-center gap-3"}>
             <Col xs={{span: "auto", order: 1}} md={{span: "auto", order: 1}} className={"p-0"}>
-              <Button variant={"outline-secondary border-0"}
-                      href={new UrlPattern(UrlsFront.EVENT).stringify({eventId: event.id})}>
-                <BsArrowLeft size={"2rem"}/>
-              </Button>
+              <Link to={make_front_url(UrlsFront.EVENT, {eventId: event.id})}>
+                <Button variant={"outline-secondary border-0"}>
+                  <BsArrowLeft size={"2rem"}/>
+                </Button>
+              </Link>
             </Col>
             <Col xs={{span: false, order: 3}} md={{span: true, order: 2}}>
               <Row className={"align-items-center flex-md-nowrap gap-2"}>
@@ -95,10 +97,11 @@ export default function EventMember() {
           </Row>
         </Container>
         <div style={{display: "none"}}>
-          <Button variant={"outline-secondary border-0"}
-                  href={new UrlPattern(UrlsFront.EVENT).stringify({eventId: event.id})}>
-            <BsArrowLeft size={"2rem"}/>
-          </Button>
+          <Link to={make_front_url(UrlsFront.EVENT, {eventId: event.id})}>
+            <Button variant={"outline-secondary border-0"}>
+              <BsArrowLeft size={"2rem"}/>
+            </Button>
+          </Link>
 
           <div>
             <UserAvatar user={user} round={true} size={"3.5rem"}/>
@@ -138,9 +141,9 @@ export default function EventMember() {
       <Card.Header>{t("Actions")}</Card.Header>
       <ListGroup variant={"flush"}>
         {actions.map(action => (
-          <ListGroup.Item key={action.id} action={true}
+          <ListGroup.Item key={action.id} action={true} as={Link}
                           className={"d-flex flex-row align-items-center gap-3"}
-                          href={action.makeFrontHref()}>
+                          to={action.makeFrontHref()}>
             {action instanceof CDeposit ? (<div className={"d-flex align-items-center gap-2"}>
               <div style={{width: "3rem", height: "3rem"}}/>
               <BsPlusCircle size={"1.5rem"}/>

@@ -18,7 +18,7 @@ const Template = lazy(() => import("../template/Template.tsx"))
 
 export default function Repayment() {
   const {t} = useTranslation();
-  const user = useContext(AuthContext)
+  const {user} = useContext(AuthContext)
   const {event, is404} = useEvent()
   const [repayment, setRepayment] = useState<CRepayment>()
   const params = useParams<{ repaymentId: string }>()

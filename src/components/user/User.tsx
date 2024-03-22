@@ -1,5 +1,5 @@
 import {CUser} from "../../dataclasses.ts";
-import {useParams, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {getUser} from "../../fetches.tsx";
 import {lazy, useContext, useEffect, useState} from "react";
 import {Alert, Button, Card, ListGroup} from "react-bootstrap";
@@ -14,17 +14,18 @@ const Template = lazy(() => import("../template/Template.tsx"))
 
 
 export default function User() {
+  const navigate = useNavigate();
   const {t} = useTranslation();
   const [user, setUser] = useState<CUser>(new CUser());
   const [showPropsModal, setShowPropsModal] = useState(false);
   const params = useParams<{ username: string }>();
-  const me = useContext(AuthContext)
+  const {user: me} = useContext(AuthContext)
   const [searchParams, setSearchParams] = useSearchParams();
   const [showPasswordChanged, setShowPasswordChanged] = useState(false);
   useEffect(() => {
     if (!params.username) {
       if (me) {
-        window.location.href = make_front_url(UrlsFront.USER, {username: me.username});
+        navigate(make_front_url(UrlsFront.USER, {username: me.username}))
       }
     } else {
       getUser(params.username).then(setUser)
@@ -74,8 +75,9 @@ export default function User() {
               <span>{t("Change password description")}</span>
               <span className={"text-muted"}>{t("Change password muted")}</span>
             </div>
-            <Button variant={"outline-danger"}
-                    href={UrlsFront.CHANGE_PASSWORD}>{t("Change password")}</Button>
+            <Link to={UrlsFront.CHANGE_PASSWORD}>
+              <Button variant={"outline-danger"}>{t("Change password")}</Button>
+            </Link>
           </ListGroup.Item>
           <ListGroup.Item
             className={"d-flex flex-row align-items-center justify-content-between gap-2 p-3"}>

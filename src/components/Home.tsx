@@ -3,10 +3,11 @@ import {Alert, Button, Card, Col, Container, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
 import {CEvent} from "../dataclasses.ts";
-import {getEventList, redirectGuest} from "../fetches.tsx";
-import UrlPattern from "url-pattern";
-import {UrlsFront} from "../urls.ts";
+import {getEventList} from "../fetches.tsx";
+import {make_front_url, UrlsFront} from "../urls.ts";
 import {useTranslation} from "react-i18next";
+import useGuest from "./useGuest.tsx";
+import {Link} from "react-router-dom";
 
 const Template = lazy(() => import("./template/Template.tsx"))
 
@@ -16,6 +17,7 @@ export default function Home() {
   const [showJoinEventModal, setShowJoinEventModal] = useState(false);
   const [events, setEvents] = useState<CEvent[]>();
   const {t} = useTranslation();
+  const {redirectGuest} = useGuest()
 
   useEffect(() => {
     getEventList()
@@ -76,15 +78,15 @@ export default function Home() {
                 <Card.Body>
                   <Card.Title>{event.name}</Card.Title>
                   <Card.Text>{t("members", {count: event.users.length})}</Card.Text>
-                  <Row className={"mx-0"}>
+                  <Link to={make_front_url(UrlsFront.EVENT, {"eventId": event.id})}>
                     <Button
+                      className={"w-100"}
                       variant={variant}
                       size={"lg"}
-                      href={new UrlPattern(UrlsFront.EVENT).stringify({"eventId": event.id})}
                     >
                       {t("Look")}
                     </Button>
-                  </Row>
+                  </Link>
                 </Card.Body>
               </Card>
             </Col>

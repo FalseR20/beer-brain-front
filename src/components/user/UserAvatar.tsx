@@ -1,7 +1,7 @@
 import Avatar, {ReactAvatarProps} from "react-avatar";
 import {CUser} from "../../dataclasses.ts";
-import UrlPattern from "url-pattern";
-import {UrlsFront} from "../../urls.ts";
+import {make_front_url, UrlsFront} from "../../urls.ts";
+import {useNavigate} from "react-router-dom";
 
 
 export interface UserAvatarProps extends ReactAvatarProps {
@@ -16,6 +16,7 @@ export function UserAvatar(props: Partial<UserAvatarProps>) {
 }
 
 export function LinkUserAvatar(props: UserAvatarProps) {
-  const onClick = () => window.location.href = new UrlPattern(UrlsFront.USER).stringify({"username": props.user.username});
+  const navigate = useNavigate();
+  const onClick = () => navigate(make_front_url(UrlsFront.USER, {"username": props.user.username}))
   return <UserAvatar onClick={onClick} className={"hover-cursor-pointer"} {...props}/>
 }

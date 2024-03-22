@@ -3,15 +3,16 @@ import {Button, Form, InputGroup, Modal} from "react-bootstrap";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {createEventAPI} from "../fetches.tsx";
-import UrlPattern from "url-pattern";
-import {UrlsFront} from "../urls.ts";
+import {make_front_url, UrlsFront} from "../urls.ts";
 import moment from "moment/moment";
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
 
 export default function NewEventModal({show, setShow}: {
   show: boolean;
   setShow: (show: boolean) => void,
 }) {
+  const navigate = useNavigate();
   const {t} = useTranslation();
   return (
     <Modal show={show} onHide={() => setShow(false)}>
@@ -27,7 +28,7 @@ export default function NewEventModal({show, setShow}: {
         onSubmit={(values) => {
           console.log(values);
           createEventAPI(values).then((event) => {
-            window.location.href = new UrlPattern(UrlsFront.EVENT).stringify({"eventId": event.id});
+            navigate(make_front_url(UrlsFront.EVENT, {"eventId": event.id}))
           });
           console.log(values.date)
         }}

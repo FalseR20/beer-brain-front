@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {deleteDeposit, getDeposit, redirectGuest, updateDeposit} from "../../fetches.tsx";
+import {deleteDeposit, getDeposit, updateDeposit} from "../../fetches.tsx";
 import {Button, Card, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
 import {BsArrowLeft} from "react-icons/bs";
 import {BANK_FORMAT} from "../../constants.ts";
@@ -11,6 +11,7 @@ import moment from "moment";
 import {CDeposit} from "../../dataclasses.ts";
 import {FetchError} from "../../errors.ts";
 import {useTranslation} from "react-i18next";
+import useGuest from "../useGuest.tsx";
 
 const NotFound = lazy(() => import("../NotFound.tsx"))
 const UserTemplate = lazy(() => import("../user/UserTemplate.tsx"))
@@ -20,8 +21,10 @@ export default function Deposit() {
   const {t} = useTranslation();
   const [deposit, setDeposit] = useState<CDeposit>()
   const [is404, setIs404] = useState<boolean>(false)
-  const user = useContext(AuthContext)
+  const {user} = useContext(AuthContext)
   const params = useParams<{ eventId: string, depositId: string }>();
+  const {redirectGuest} = useGuest()
+
   useEffect(() => {
     getDeposit(params.eventId!, params.depositId!)
       .then(setDeposit)

@@ -1,7 +1,6 @@
 import {lazy, useState} from "react";
 import "../../css/Event.css";
 import {Badge, Button, Card, Col, Container, ListGroup, Row} from "react-bootstrap";
-import UrlPattern from "url-pattern";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import NewDepositModal from "./NewDepositModal.tsx";
 import NewRepaymentModal from "./NewRepaymentModal.tsx";
@@ -11,6 +10,7 @@ import ShareModal from "./ShareModal.tsx";
 import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import {UserAvatar} from "../user/UserAvatar.tsx";
 import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
 
 const NotFound = lazy(() => import("../NotFound.tsx"))
 const Template = lazy(() => import("../template/Template.tsx"))
@@ -79,11 +79,13 @@ export default function Event() {
                 </Button>
               </Col>
               <Col xs={false} sm={"auto"} className={"px-0"}>
-                <Button variant={"secondary"}
-                        className={"d-flex justify-content-center align-items-center gap-1 w-100"}
-                        href={new UrlPattern(UrlsFront.EVENT_SETTINGS).stringify({"eventId": event.id})}>
-                  <BsGear/>&nbsp;{t("Settings")}
-                </Button>
+                <Link to={make_front_url(UrlsFront.EVENT_SETTINGS, {"eventId": event.id})}
+                      className={"text-decoration-none"}>
+                  <Button variant={"secondary"}
+                          className={"d-flex justify-content-center align-items-center gap-1 w-100"}>
+                    <BsGear/>&nbsp;{t("Settings")}
+                  </Button>
+                </Link>
               </Col>
             </Row>
           </Col>
@@ -101,8 +103,8 @@ export default function Event() {
             </Card.Header>
             <ListGroup variant={"flush"}>
               {event.users.map((user) => (
-                <ListGroup.Item key={user.username} action={true} className={"p-3"}
-                                href={new UrlPattern(UrlsFront.EVENT_MEMBER).stringify({
+                <ListGroup.Item key={user.username} action={true} className={"p-3"} as={Link}
+                                to={make_front_url(UrlsFront.EVENT_MEMBER, {
                                   "eventId": event.id,
                                   "username": user.username
                                 })}>
@@ -145,8 +147,8 @@ export default function Event() {
             </Card.Header>
             <ListGroup variant={"flush"}>
               {event.deposits.map(deposit => (
-                <ListGroup.Item action={true} key={deposit.id}
-                                href={make_front_url(UrlsFront.DEPOSIT, {
+                <ListGroup.Item action={true} key={deposit.id} as={Link}
+                                to={make_front_url(UrlsFront.DEPOSIT, {
                                   eventId: event.id,
                                   depositId: deposit.id
                                 })}>

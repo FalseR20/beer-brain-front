@@ -11,7 +11,6 @@ import {
 import {CDetailedEvent, CEvent} from "../../dataclasses.ts";
 import {deleteEvent, leaveEvent, updateEvent} from "../../fetches.tsx";
 import * as yup from "yup";
-import UrlPattern from "url-pattern";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import moment from "moment";
 import {Formik} from "formik";
@@ -19,6 +18,7 @@ import {useDetailedEvent} from "./UseDetailedEvent.tsx";
 import {lazy, useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {Trans, useTranslation} from "react-i18next";
+import {Link, useNavigate} from "react-router-dom";
 
 const NotFound = lazy(() => import("../NotFound.tsx"))
 const Template = lazy(() => import("../template/Template.tsx"))
@@ -28,7 +28,7 @@ export default function EventSettings() {
   const [showDeleteEventModal, setShowDeleteEventModal] = useState(false);
   const [showLeaveEventModal, setShowLeaveEventModal] = useState(false);
   const {event, is404} = useDetailedEvent()
-  const user = useContext(AuthContext)
+  const {user} = useContext(AuthContext)
 
   if (event == undefined) {
     return is404 ? <NotFound/> : <Template/>;
@@ -43,8 +43,8 @@ export default function EventSettings() {
                i18nKey="Settings rights"
                components={{
                  host: (
-                   <Alert.Link
-                     href={make_front_url(UrlsFront.USER, {username: event.host.username})}
+                   <Alert.Link as={Link}
+                               to={make_front_url(UrlsFront.USER, {username: event.host.username})}
                    />
                  )
                }}/>
@@ -98,6 +98,7 @@ export default function EventSettings() {
 
 
 function ChangeEventForm({event, isHost}: { event: CEvent, isHost: boolean }) {
+  const navigate = useNavigate()
   const {t} = useTranslation();
   return (
     <Formik
@@ -109,7 +110,7 @@ function ChangeEventForm({event, isHost}: { event: CEvent, isHost: boolean }) {
       onSubmit={(values) => {
         console.log(values);
         updateEvent(event.id, values).then((event) => {
-          window.location.href = new UrlPattern(UrlsFront.EVENT).stringify({"eventId": event.id});
+          navigate(make_front_url(UrlsFront.EVENT, {"eventId": event.id}))
         });
         console.log(values.date)
       }}
@@ -186,11 +187,12 @@ function LeaveEventModal({event, show, setShow}: {
   show: boolean,
   setShow: (show: boolean) => void
 }) {
+  const navigate = useNavigate()
   const {t} = useTranslation();
 
   function handleLeave() {
     leaveEvent(event.id).then(() => {
-      window.location.href = UrlsFront.HOME
+      navigate(UrlsFront.HOME)
     })
   }
 
@@ -213,11 +215,12 @@ function DeleteEventModal({event, show, setShow}: {
   show: boolean,
   setShow: (show: boolean) => void
 }) {
+  const navigate = useNavigate()
   const {t} = useTranslation();
 
   function handleDelete() {
     deleteEvent(event.id).then(() => {
-      window.location.href = UrlsFront.HOME
+      navigate(UrlsFront.HOME);
     })
   }
 

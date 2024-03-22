@@ -6,6 +6,7 @@ import {updateUser} from "../../fetches.tsx";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import {useTranslation} from "react-i18next";
 import {lazy} from "react";
+import {useNavigate} from "react-router-dom";
 
 const UserTemplate = lazy(() => import("./UserTemplate.tsx"))
 
@@ -15,6 +16,7 @@ export function UserPropsModal({user, show, setShow}: {
   show: boolean,
   setShow: (show: boolean) => void
 }) {
+  const navigate = useNavigate();
   const {t} = useTranslation();
   return (
     <Modal show={show} onHide={() => setShow(false)}>
@@ -39,7 +41,7 @@ export function UserPropsModal({user, show, setShow}: {
             .then(() => {
               setShow(false)
               if (user.username != values.username) {
-                window.location.href = make_front_url(UrlsFront.USER, {username: values.username});
+                navigate(make_front_url(UrlsFront.USER, {username: values.username}))
               } else {
                 window.location.reload()
               }

@@ -8,12 +8,14 @@ import {changePassword} from "../../fetches.tsx";
 import {ResponseError} from "../../errors.ts";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
 
 const Template = lazy(() => import("../template/Template.tsx"))
 
 export default function ChangePassword() {
+  const navigate = useNavigate();
   const {t} = useTranslation()
-  const user = useContext(AuthContext)
+  const {user} = useContext(AuthContext)
   const [showPassword, setShowPassword] = useState(false)
   if (!user) {
     return <Template/>
@@ -29,7 +31,7 @@ export default function ChangePassword() {
           })}
           onSubmit={(values, formikHelpers) => {
             changePassword(values).then(() => {
-              window.location.href = `${make_front_url(UrlsFront.USER, {username: user.username})}?showPasswordChanged`
+              navigate(`${make_front_url(UrlsFront.USER, {username: user.username})}?showPasswordChanged`)
             }).catch((reason) => {
               formikHelpers.setSubmitting(false);
               if (reason instanceof ResponseError) {
