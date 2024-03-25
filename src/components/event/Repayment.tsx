@@ -31,7 +31,7 @@ export default function Repayment() {
   if (!repayment) {
     return <NotFound/>
   }
-  const hasRights = user?.equals(repayment.payer) || user?.equals(event.host) || false
+  const hasRights = user?.equals(repayment.payer) || user?.equals(repayment.recipient) || false
 
   return (
     <Template title={repayment.description}>
