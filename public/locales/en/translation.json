@@ -78,6 +78,7 @@
 
   "Event member title": "Member - {{name}}",
   "Actions": "Actions",
+  "Your part: ": "Your part: ",
   "Event debt": "Event debt",
   "Datetime": "Date and time",
   "Reset": "Reset",

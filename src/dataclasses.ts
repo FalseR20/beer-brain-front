@@ -165,4 +165,10 @@ export class CDetailedEvent extends CEvent {
   public sortUsers() {
     this.users.sort((a, b) => a.balance - b.balance)
   }
+
+  public getSortedActions(): (CDeposit | CRepayment)[] {
+    const actions: (CDeposit | CRepayment)[] = [...this.deposits, ...this.repayments]
+    actions.sort((a, b) => b.payedAt.getTime() - a.payedAt.getTime())
+    return actions
+  }
 }

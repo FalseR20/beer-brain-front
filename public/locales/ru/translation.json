@@ -78,6 +78,7 @@
 
   "Event member title": "Участник - {{name}}",
   "Actions": "Действия",
+  "Your part: ": "Твоя часть: ",
   "Event debt": "Долг по событию",
   "Datetime": "Дата и время",
   "Reset": "Сбросить",

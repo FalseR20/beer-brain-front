@@ -1,4 +1,4 @@
-import {lazy, useState} from "react";
+import {lazy, useContext, useState} from "react";
 import "../../css/Event.css";
 import {Badge, Button, Card, Col, Container, ListGroup, Row} from "react-bootstrap";
 import {make_front_url, UrlsFront} from "../../urls.ts";
@@ -11,6 +11,8 @@ import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import {UserAvatar} from "../user/UserAvatar.tsx";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
+import ActionItem from "./ActionItem.tsx";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 const NotFound = lazy(() => import("../NotFound.tsx"))
 const Template = lazy(() => import("../template/Template.tsx"))
@@ -21,8 +23,9 @@ export default function Event() {
   const [showDepositModal, setShowDepositModal] = useState(false)
   const [showRepaymentModal, setShowRepaymentModal] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
+  const {user} = useContext(AuthContext)
 
-  if (event == undefined) {
+  if (!event || !user) {
     return is404 ? <NotFound/> : <Template/>;
   }
 
@@ -93,10 +96,10 @@ export default function Event() {
       </Container>
     </div>
 
-    <Container fluid={true} className={"my-2"}>
-      <Row className={"gap-3"}>
+    <Container fluid={true} className={"p-0"}>
+      <Row className={"g-3"}>
         {/* Members card */}
-        <Col className={"px-0"} lg={true}>
+        <Col lg={5} className={"px-2"}>
           <Card>
             <Card.Header>
               {t("Members")}
@@ -139,35 +142,15 @@ export default function Event() {
             </ListGroup>
           </Card>
         </Col>
-        {/* Deposits card */}
-        <Col className={"px-0"} lg={true}>
+        {/* Actions card */}
+        <Col lg={7} className={"px-2"}>
           <Card>
             <Card.Header>
-              {t("Deposits")}
+              {t("Actions")}
             </Card.Header>
             <ListGroup variant={"flush"}>
-              {event.deposits.map(deposit => (
-                <ListGroup.Item action={true} key={deposit.id} as={Link}
-                                to={make_front_url(UrlsFront.DEPOSIT, {
-                                  eventId: event.id,
-                                  depositId: deposit.id
-                                })}>
-                  <div
-                    className={"d-flex flex-row gap-2 justify-content-between align-items-center"}>
-                    <UserAvatar user={deposit.user} round={true} size={"3rem"}/>
-                    <div className={"d-flex flex-column justify-content-between flex-grow-1"}>
-                    <span className={"fs-5"}>
-                      {deposit.description}
-                    </span>
-                      <span className={"fs-6 text-muted"}>
-                      {deposit.payedAt.toLocaleString()}
-                    </span>
-                    </div>
-                    <span className={"fs-3"}>
-                    {BANK_FORMAT.format(deposit.value)}
-                  </span>
-                  </div>
-                </ListGroup.Item>
+              {event.getSortedActions().map(action => (
+                <ActionItem action_={action} event={event} user={user} key={action.id}/>
               ))}
             </ListGroup>
           </Card>
