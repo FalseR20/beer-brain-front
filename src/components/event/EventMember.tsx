@@ -1,21 +1,16 @@
 import {lazy, useEffect, useState} from "react";
-import {CDeposit, CDetailedEvent, CDetailedUser, CRepayment} from "../../dataclasses.ts";
+import {CDetailedEvent, CDetailedUser} from "../../dataclasses.ts";
 import {Link, useParams} from "react-router-dom";
 import {getEventMember} from "../../fetches.tsx";
 import {Button, Card, Col, Container, ListGroup, Row} from "react-bootstrap";
-import {
-  BsArrowLeft,
-  BsArrowLeftCircle,
-  BsArrowRightCircle,
-  BsCircle,
-  BsPlusCircle
-} from "react-icons/bs";
+import {BsArrowLeft, BsCircle} from "react-icons/bs";
 import {UserAvatar} from "../user/UserAvatar.tsx";
-import {BALANCE_FORMAT} from "../../constants.ts";
+import {BALANCE_FORMAT, BANK_FORMAT} from "../../constants.ts";
 import {FetchError} from "../../errors.ts";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import {useTranslation} from "react-i18next";
 import useGuest from "../useGuest.tsx";
+import ActionItem from "./ActionItem.tsx";
 
 const NotFound = lazy(() => import("../NotFound.tsx"))
 const Template = lazy(() => import("../template/Template.tsx"))
@@ -46,6 +41,9 @@ export default function EventMember() {
     return is404 ? <NotFound/> : <Template/>;
   }
   const actions = user.getSortedActions();
+
+  const userDiffBank = event.deposits.filter(d => !d.user.equals(user)).reduce((accumulator, currentValue) => accumulator + currentValue.value, 0.0)
+  const userDiff = -userDiffBank / event.users.length
   return <Template title={t("Event member title", {name: user.fullNameOrUsername})}>
     {/* Event member header */}
     <Card>
@@ -141,51 +139,35 @@ export default function EventMember() {
       <Card.Header>{t("Actions")}</Card.Header>
       <ListGroup variant={"flush"}>
         {actions.map(action => (
-          <ListGroup.Item key={action.id} action={true} as={Link}
-                          className={"d-flex flex-row align-items-center gap-3"}
-                          to={action.makeFrontHref()}>
-            {action instanceof CDeposit ? (<div className={"d-flex align-items-center gap-2"}>
-              <div style={{width: "3rem", height: "3rem"}}/>
-              <BsPlusCircle size={"1.5rem"}/>
-              {/*<UserAvatar user={action.user} round={true} size={"3rem"}/>*/}
-            </div>) : (action.payer.equals(user)) ? (
-              <div className={"d-flex align-items-center gap-2"}>
-                <UserAvatar user={action.recipient} round={true} size={"3rem"}/>
-                <BsArrowLeftCircle size={"1.5rem"}/>
-                {/*<UserAvatar user={action.payer} round={true} size={"3rem"}/>*/}
-              </div>) : (<div className={"d-flex align-items-center gap-2"}>
-              <UserAvatar user={action.payer} round={true} size={"3rem"}/>
-              <BsArrowRightCircle size={"1.5rem"}/>
-              {/*<UserAvatar user={action.recipient} round={true} size={"3rem"}/>*/}
-            </div>)}
-            <div className={"d-flex flex-column flex-grow-1"}>
-              <span>{action.description}</span>
-              <span>{action.payedAt.toLocaleString()}</span>
-            </div>
-            {(action instanceof CRepayment && action.recipient.equals(user)) ? (
-              <h4 className={`mb-0 text-danger`}>
-                {BALANCE_FORMAT.format(-action.value)}
-              </h4>) : (<h4 className={"m-0"}>
-              {BALANCE_FORMAT.format(action.value)}
-            </h4>)}
-          </ListGroup.Item>
+          <ActionItem action_={action} event={event} user={user} hideRightUser={true}
+                      key={action.id}/>
         ))}
       </ListGroup>
       <Card.Footer>
         <div className="d-flex align-items-center gap-3" style={{height: "3rem"}}>
           <div className={"d-flex align-items-center gap-2"}>
-            <div style={{width: "3rem", height: "3rem"}}/>
-            <BsCircle size={"1.5rem"}/>
+            <div style={{width: "2.8rem", height: "2.8rem"}} className={"d-none d-sm-block"}/>
+            <BsCircle size={"1.8rem"}/>
             {/*<UserAvatar user={user} round={true} size={"3rem"}/>*/}
           </div>
-          <span className={"fst-italic flex-grow-1"}>{t("Event debt")}</span>
+          <div className={"d-flex flex-column flex-grow-1"}>
+            <span className={"fst-italic"}>{t("The other deposits")}</span>
+            {userDiff != 0.0 ? <div>
+              <span className={"text-muted"}>{t("Difference: ")}</span>
+              <span className={userDiff < 0 ? "text-danger" : "text-success"}>
+            {BALANCE_FORMAT.format(userDiff)}
+          </span>
+            </div> : <></>}
+          </div>
+
           {/*<span>{event.created_at.toLocaleString()}</span>*/}
-          <h4 className={`mb-0 text-danger`}>
-            {BALANCE_FORMAT.format(-event.bankPart)}
+          <h4 className={`mb-0`}>
+            {BANK_FORMAT.format(userDiffBank)}
           </h4>
         </div>
 
       </Card.Footer>
     </Card>
-  </Template>;
+  </Template>
+    ;
 }

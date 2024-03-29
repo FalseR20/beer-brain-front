@@ -78,8 +78,8 @@
 
   "Event member title": "Member - {{name}}",
   "Actions": "Actions",
-  "Your part: ": "Your part: ",
-  "Event debt": "Event debt",
+  "Difference: ": "Difference: ",
+  "The other deposits": "The other deposits",
   "Datetime": "Date and time",
   "Reset": "Reset",
   "Update": "Update",

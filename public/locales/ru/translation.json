@@ -78,8 +78,8 @@
 
   "Event member title": "Участник - {{name}}",
   "Actions": "Действия",
-  "Your part: ": "Твоя часть: ",
-  "Event debt": "Долг по событию",
+  "Difference: ": "Разница: ",
+  "The other deposits": "Другие события",
   "Datetime": "Дата и время",
   "Reset": "Сбросить",
   "Update": "Обновить",
