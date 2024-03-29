@@ -71,10 +71,10 @@ async function fetchWithAuthorization(input: RequestInfo | URL, init?: RequestIn
   return response
 }
 
-export async function getEventList(): Promise<CEvent[]> {
+export async function getEventList(): Promise<CDetailedEvent[]> {
   const response = await fetchWithAuthorization(make_url(UrlsBack.GET_EVENT_LIST))
   const json: IEvent[] = await response.json()
-  return json.map(event => new CEvent(event))
+  return json.map(event => new CDetailedEvent(event))
 }
 
 export async function createEventAPI(inputs: {

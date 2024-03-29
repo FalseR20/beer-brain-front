@@ -1,13 +1,15 @@
-import {lazy, useEffect, useState} from "react";
+import {lazy, useContext, useEffect, useState} from "react";
 import {Alert, Button, Card, Col, Container, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
-import {CEvent} from "../dataclasses.ts";
+import {CDetailedEvent} from "../dataclasses.ts";
 import {getEventList} from "../fetches.tsx";
 import {make_front_url, UrlsFront} from "../urls.ts";
 import {useTranslation} from "react-i18next";
 import useGuest from "./useGuest.tsx";
 import {Link} from "react-router-dom";
+import {AuthContext} from "../contexts/authContext.tsx";
+import {BALANCE_FORMAT} from "../constants.ts";
 
 const Template = lazy(() => import("./template/Template.tsx"))
 
@@ -15,7 +17,8 @@ const Template = lazy(() => import("./template/Template.tsx"))
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
   const [showJoinEventModal, setShowJoinEventModal] = useState(false);
-  const [events, setEvents] = useState<CEvent[]>();
+  const [events, setEvents] = useState<CDetailedEvent[]>();
+  const {user} = useContext(AuthContext)
   const {t} = useTranslation();
   const {redirectGuest} = useGuest()
 
@@ -25,7 +28,7 @@ export default function Home() {
       .catch(redirectGuest)
   }, []);
 
-  if (events == undefined) {
+  if (!events || !user) {
     return <Template/>
   }
   return (
@@ -64,6 +67,8 @@ export default function Home() {
       <Row xs={1} md={2} className={"g-3"}>
         {events.map((event) => {
           const variant = event.isClosed ? "secondary" : "primary";
+          let balance = event.users.find(value => value.equals(user))!.balance
+          balance = Math.round(balance * 100) / 100
           return (
             <Col key={`Debt${event.id}`}>
               <Card className={"p-0"} border={variant}>
@@ -76,8 +81,17 @@ export default function Home() {
                   </Row>
                 </Card.Header>
                 <Card.Body>
-                  <Card.Title>{event.name}</Card.Title>
-                  <Card.Text>{t("members", {count: event.users.length})}</Card.Text>
+                  <div className={"d-flex flex-row align-items-center mb-3"}>
+                    <div className={"flex-grow-1"}>
+                      <Card.Title>{event.name}</Card.Title>
+                      <Card.Text>{t("members", {count: event.users.length})}</Card.Text>
+                    </div>
+                    <div
+                      className={`fs-3 ${balance > 0.0 ? "text-success" : (balance < 0.0 ? "text-danger" : "")}`}>
+                      {BALANCE_FORMAT.format(balance)}
+                    </div>
+                  </div>
+
                   <Link to={make_front_url(UrlsFront.EVENT, {"eventId": event.id})}>
                     <Button
                       className={"w-100"}
