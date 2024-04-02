@@ -45,6 +45,7 @@ export enum UrlsFront {
   EVENT_MEMBER = "/events/:eventId/members/:username",
   DEPOSIT = "/events/:eventId/deposits/:depositId",
   REPAYMENT = "/events/:eventId/repayment/:repaymentId",
+  INVITE = "/invite/:eventId",
   USER_ME = "/users/me",
   USER = "/users/id/:username",
   CHANGE_PASSWORD = "/change-password",

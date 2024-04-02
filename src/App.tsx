@@ -19,6 +19,7 @@ const EventMember = lazy(() => import("./components/event/EventMember.tsx"))
 const EventSettings = lazy(() => import("./components/event/EventSettings.tsx"))
 const Deposit = lazy(() => import("./components/event/Deposit.tsx"))
 const Repayment = lazy(() => import("./components/event/Repayment.tsx"))
+const Invite = lazy(() => import("./components/Invite.tsx"))
 const ChangePassword = lazy(() => import("./components/user/ChangePassword.tsx"))
 const Template = lazy(() => import("./components/template/Template.tsx"))
 
@@ -37,6 +38,7 @@ function Router() {
           <Route path={UrlsFront.EVENT_MEMBER} element={<EventMember/>}/>
           <Route path={UrlsFront.DEPOSIT} element={<Deposit/>}/>
           <Route path={UrlsFront.REPAYMENT} element={<Repayment/>}/>
+          <Route path={UrlsFront.INVITE} element={<Invite/>}/>
           <Route path={UrlsFront.USER_ME} element={<User/>}/>
           <Route path={UrlsFront.USER} element={<User/>}/>
           <Route path={UrlsFront.CHANGE_PASSWORD} element={<ChangePassword/>}/>
