@@ -83,7 +83,7 @@ export default function Deposit() {
         <h3>{t("Settings")}</h3>
         <Formik
           validationSchema={yup.object().shape({
-            value: yup.number().positive().required(),
+            value: yup.number().positive().lessThan(1e10).required(),
             description: yup.string(),
           })}
           onSubmit={(values) => {

@@ -9,7 +9,6 @@ import {
   CUser
 } from "./dataclasses.ts";
 import {IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
-import {BANK_FORMAT} from "./constants.ts";
 import {FetchError, ResponseError, TokenError} from "./errors.ts";
 import moment from "moment";
 
@@ -170,7 +169,7 @@ export async function createDeposit(inputs: {
   description: string
 }, event: CEvent): Promise<CDeposit> {
   const formData = new FormData();
-  formData.append("value", BANK_FORMAT.format(inputs.value));
+  formData.append("value", inputs.value.toString());
   formData.append("description", inputs.description);
   const url = make_url(UrlsBack.CREATE_DEPOSIT, {eventId: event.id})
   const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
@@ -184,7 +183,7 @@ export async function updateDeposit(inputs: {
   payedAt: string
 }, eventId: string, deposit: CDeposit): Promise<CDeposit> {
   const formData = new FormData();
-  formData.append("value", BANK_FORMAT.format(inputs.value));
+  formData.append("value", inputs.value.toString());
   formData.append("description", inputs.description);
   formData.append("payed_at", moment(inputs.payedAt).format());
   const url = make_url(UrlsBack.RUD_DEPOSIT, {eventId, depositId: deposit.id})
@@ -212,7 +211,7 @@ export async function createRepayment(inputs: {
   user: string,
 }, event: CEvent): Promise<CRepayment> {
   const formData = new FormData();
-  formData.append("value", BANK_FORMAT.format(inputs.value));
+  formData.append("value", inputs.value.toString());
   formData.append("description", inputs.description);
   formData.append((inputs.type == "to" ? "recipient_username" : "payer_username"), inputs.user);
 
@@ -235,7 +234,7 @@ export async function updateRepayment(inputs: {
   payedAt: string,
 }, event: CEvent, repayment: CRepayment): Promise<CRepayment> {
   const formData = new FormData();
-  formData.append("value", BANK_FORMAT.format(inputs.value));
+  formData.append("value", inputs.value.toString());
   formData.append("description", inputs.description);
   formData.append("payed_at", moment(inputs.payedAt).format());
 

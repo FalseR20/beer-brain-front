@@ -19,7 +19,7 @@ export default function NewDepositModal({event, show, setShow}: {
     </Modal.Header>
     <Formik
       validationSchema={yup.object().shape({
-        value: yup.number().positive().required(),
+        value: yup.number().positive().lessThan(1e10).required().lessThan(1e10),
         description: yup.string(),
       })}
       onSubmit={(values) => {
