@@ -1,17 +1,16 @@
 import {useParams} from "react-router-dom";
-import {deleteDeposit, getDeposit, updateDeposit} from "../../fetches.tsx";
+import {deleteDeposit, updateDeposit} from "../../fetches.tsx";
 import {Button, Card, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
 import {BsArrowLeft} from "react-icons/bs";
 import {BANK_FORMAT} from "../../constants.ts";
 import * as yup from "yup";
 import {Formik} from "formik";
-import {lazy, useContext, useEffect, useState} from "react";
+import {lazy, useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import moment from "moment";
-import {CDeposit} from "../../dataclasses.ts";
-import {FetchError} from "../../errors.ts";
 import {useTranslation} from "react-i18next";
-import useGuest from "../useGuest.tsx";
+import {useEvent} from "./UseEvent.tsx";
+import {CDeposit} from "../../dataclasses.ts";
 
 const NotFound = lazy(() => import("../NotFound.tsx"))
 const UserTemplate = lazy(() => import("../user/UserTemplate.tsx"))
@@ -19,25 +18,22 @@ const Template = lazy(() => import("../template/Template.tsx"))
 
 export default function Deposit() {
   const {t} = useTranslation();
-  const [deposit, setDeposit] = useState<CDeposit>()
-  const [is404, setIs404] = useState<boolean>(false)
   const {user} = useContext(AuthContext)
   const params = useParams<{ eventId: string, depositId: string }>();
-  const {redirectGuest} = useGuest()
-
-  useEffect(() => {
-    getDeposit(params.eventId!, params.depositId!)
-      .then(setDeposit)
-      .catch((error: FetchError) => {
-        redirectGuest(error)
-        setIs404(true)
-      })
-  }, [params.depositId, params.eventId]);
-
-  if (!deposit) {
+  const {event, is404} = useEvent()
+  const [deposit, setDeposit] = useState<CDeposit>()
+  if (!event) {
     return is404 ? <NotFound/> : <Template/>;
   }
-  const isUser = user?.equals(deposit.user) || false  //  || user?.equals(event.host)
+  if (!deposit) {
+    const newDeposit = event.deposits.find(value => value.id == params.depositId!)
+    if (newDeposit) {
+      setDeposit(newDeposit)
+    }
+    return <NotFound/>
+  }
+
+  const hasRights = user?.equals(event.host) || user?.equals(deposit.user) || false
 
   return (
     <Template title={deposit.description}>
@@ -104,14 +100,13 @@ export default function Deposit() {
                   <Form.Control
                     type="number"
                     step="0.01"
-                    placeholder="7.62"
                     inputMode={"numeric"}
                     aria-describedby="inputGroupPrepend"
                     name="value"
                     value={values.value}
                     onChange={handleChange}
                     isInvalid={!!errors.value}
-                    disabled={!isUser}
+                    disabled={!hasRights}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.value}
@@ -123,13 +118,12 @@ export default function Deposit() {
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
-                    placeholder="Beer and crisps"
                     aria-describedby="inputGroupPrepend"
                     name="description"
                     value={values.description}
                     onChange={handleChange}
                     isInvalid={!!errors.description}
-                    disabled={!isUser}
+                    disabled={!hasRights}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.description}
@@ -146,7 +140,7 @@ export default function Deposit() {
                     value={values.payedAt}
                     onChange={handleChange}
                     isInvalid={!!errors.payedAt}
-                    disabled={!isUser}
+                    disabled={!hasRights}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.payedAt}
@@ -155,12 +149,12 @@ export default function Deposit() {
               </Form.Group>
               <div className={"d-flex flex-row gap-3"}>
                 <Button variant={"outline-secondary"} onClick={handleReset}
-                        disabled={!isUser}>{t("Reset")}</Button>
+                        disabled={!hasRights}>{t("Reset")}</Button>
                 <Button variant="primary" type="submit"
-                        disabled={!isUser}>{t("Update deposit")}</Button>
+                        disabled={!hasRights}>{t("Update deposit")}</Button>
               </div>
               <div>
-                <Button variant={"danger"} disabled={!isUser} onClick={() => {
+                <Button variant={"danger"} disabled={!hasRights} onClick={() => {
                   deleteDeposit(params.eventId!, deposit.id).then(() => {
                     history.back()
                   })

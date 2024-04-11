@@ -26,12 +26,14 @@ export default function Repayment() {
     return is404 ? <NotFound/> : <Template/>;
   }
   if (!repayment) {
-    setRepayment(event.repayments.find(value => value.id == params.repaymentId!))
-  }
-  if (!repayment) {
+    const newRepayment = event.repayments.find(value => value.id == params.repaymentId!)
+    if (newRepayment) {
+      setRepayment(newRepayment)
+    }
     return <NotFound/>
   }
-  const hasRights = user?.equals(repayment.payer) || user?.equals(repayment.recipient) || false
+
+  const hasRights = user?.equals(event.host) || user?.equals(repayment.payer) || user?.equals(repayment.recipient) || false
 
   return (
     <Template title={repayment.description}>
@@ -112,7 +114,6 @@ export default function Repayment() {
                   <Form.Control
                     type="number"
                     step="0.01"
-                    placeholder="7.62"
                     inputMode={"numeric"}
                     aria-describedby="inputGroupPrepend"
                     name="value"
@@ -131,7 +132,6 @@ export default function Repayment() {
                 <InputGroup hasValidation>
                   <Form.Control
                     type="text"
-                    placeholder="Beer and crisps"
                     aria-describedby="inputGroupPrepend"
                     name="description"
                     value={values.description}
