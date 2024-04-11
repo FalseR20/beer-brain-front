@@ -59,12 +59,14 @@
   "Members": "Участники",
   "Deposits": "Пополнения",
 
+  "Deposit": "Пополнение",
   "Create deposit button": "Пополнение",
   "Create deposit title": "Создать пополнение",
   "Create deposit": "Создать",
   "Value": "Сумма",
   "Deposit description placeholder": "Пиво и чипсы",
 
+  "Repayment": "Выплата",
   "Create repayment button": "Выплата",
   "Create repayment title": "Создать выплату",
   "Create repayment": "Создать",
@@ -86,6 +88,7 @@
   "Update deposit": "Обновить поплонение",
   "Delete repayment": "Удалить выплату",
   "Update repayment": "Обновить выплату",
+  "Unnamed": "Без имени",
 
   "User": "Пользователь",
   "Management": "Управление",

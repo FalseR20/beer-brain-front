@@ -57,7 +57,7 @@ export default function ActionItem(props: ActionItemProps) {
     </div>
 
     <div className={"d-flex flex-column flex-grow-1"}>
-      <span>{action.description}</span>
+      <span>{action.description ? action.description : <i>{t("Unnamed")}</i>}</span>
       {/*<span>{action.payedAt.toLocaleString()}</span>*/}
       {userDiff != 0.0 ? <div>
         <span className={"text-muted"}>{t("Difference: ")}</span>

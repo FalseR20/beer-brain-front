@@ -90,7 +90,7 @@ export default function Repayment() {
           </Card.Body>
         </Card>
 
-        <h3>{t("Settings")}</h3>
+        <h3>{t("Repayment")}</h3>
         <Formik
           validationSchema={yup.object().shape({
             value: yup.number().positive().lessThan(1e10).required(),

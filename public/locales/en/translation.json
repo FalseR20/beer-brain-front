@@ -59,12 +59,14 @@
   "Members": "Members",
   "Deposits": "Deposits",
 
+  "Deposit": "Deposit",
   "Create deposit button": "Deposit",
   "Create deposit title": "Create new deposit",
   "Create deposit": "Create",
   "Value": "Value",
   "Deposit description placeholder": "Beer and crisps",
 
+  "Repayment": "Repayment",
   "Create repayment button": "Repayment",
   "Create repayment title": "Create new repayment",
   "Create repayment": "Create",
@@ -86,6 +88,7 @@
   "Update deposit": "Update deposit",
   "Delete repayment": "Delete repayment",
   "Update repayment": "Update repayment",
+  "Unnamed": "Unnamed",
 
   "User": "User",
   "Management": "Management",
