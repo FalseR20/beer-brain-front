@@ -51,6 +51,18 @@ function Router() {
 }
 
 export default function App() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/serviceWorker.js') // Path to your service worker file
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
   const helmetContext = {};
   return (
     <HelmetProvider context={helmetContext}>
