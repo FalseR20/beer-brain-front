@@ -1,5 +1,20 @@
-import {IAction, IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
+import {IAction, IDeposit, IEvent, IPagination, IRepayment, IUser} from "./interfaces.ts";
 import {make_front_url, UrlsFront} from "./urls.ts";
+
+
+export class CPaginated<C> {
+  count: number
+  next: string | null
+  previous: string | null
+  results: C[]
+
+  constructor(pagination: IPagination, results: C[]) {
+    this.count = pagination.count
+    this.next = pagination.next
+    this.previous = pagination.previous
+    this.results = results
+  }
+}
 
 export class CUser {
   username: string

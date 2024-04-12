@@ -4,11 +4,11 @@ import {
   CDeposit,
   CDetailedEvent,
   CDetailedUser,
-  CEvent,
+  CEvent, CPaginated,
   CRepayment,
   CUser
 } from "./dataclasses.ts";
-import {IDeposit, IEvent, IRepayment, IUser} from "./interfaces.ts";
+import {IDeposit, IEvent, IPaginated, IRepayment, IUser} from "./interfaces.ts";
 import {FetchError, ResponseError, TokenError} from "./errors.ts";
 import moment from "moment";
 
@@ -70,10 +70,11 @@ async function fetchWithAuthorization(input: RequestInfo | URL, init?: RequestIn
   return response
 }
 
-export async function getEventList(): Promise<CDetailedEvent[]> {
-  const response = await fetchWithAuthorization(make_url(UrlsBack.GET_EVENT_LIST))
-  const json: IEvent[] = await response.json()
-  return json.map(event => new CDetailedEvent(event))
+export async function getEventList(page: number = 1, limit: number = 10): Promise<CPaginated<CDetailedEvent>> {
+  const offsetLimit = `?limit=${limit}&offset=${(page - 1) * limit}`
+  const response = await fetchWithAuthorization(make_url(UrlsBack.GET_EVENT_LIST) + offsetLimit);
+  const json: IPaginated<IEvent> = await response.json()
+  return new CPaginated(json, json.results.map(event => new CDetailedEvent(event)))
 }
 
 export async function createEventAPI(inputs: {

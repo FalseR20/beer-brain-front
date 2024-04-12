@@ -2,14 +2,15 @@ import {lazy, useContext, useEffect, useState} from "react";
 import {Alert, Button, Card, Col, Container, Row} from "react-bootstrap";
 import NewEventModal from "./NewEventModal.tsx";
 import JoinEventModal from "./JoinEventModal.tsx";
-import {CDetailedEvent} from "../dataclasses.ts";
+import {CDetailedEvent, CPaginated} from "../dataclasses.ts";
 import {getEventList} from "../fetches.tsx";
 import {make_front_url, UrlsFront} from "../urls.ts";
 import {useTranslation} from "react-i18next";
 import useGuest from "./useGuest.tsx";
-import {Link} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 import {AuthContext} from "../contexts/authContext.tsx";
 import {BALANCE_FORMAT} from "../constants.ts";
+import {PaginationControl} from "../ReactBootstrapPaginationControl.tsx";
 
 const Template = lazy(() => import("./template/Template.tsx"))
 
@@ -17,20 +18,30 @@ const Template = lazy(() => import("./template/Template.tsx"))
 export default function Home() {
   const [showNewEventModal, setShowNewEventModal] = useState(false);
   const [showJoinEventModal, setShowJoinEventModal] = useState(false);
-  const [events, setEvents] = useState<CDetailedEvent[]>();
+  const [paginatedEvents, setPaginatedEvents] = useState<CPaginated<CDetailedEvent>>();
   const {user} = useContext(AuthContext)
   const {t} = useTranslation();
   const {redirectGuest} = useGuest()
+  const [page, setPage] = useState<number>();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    getEventList()
-      .then(setEvents)
-      .catch(redirectGuest)
-  }, []);
+    const searchParamPage = searchParams.get("page")
+    setPage(searchParamPage ? parseInt(searchParamPage) : 1);
+  }, [searchParams]);
 
-  if (!events || !user) {
+  useEffect(() => {
+    if (page) {
+      getEventList(page)
+        .then(setPaginatedEvents)
+        .catch(redirectGuest)
+    }
+  }, [page]);
+
+  if (!paginatedEvents || !user) {
     return <Template/>
   }
+  const events = paginatedEvents.results
   return (
     <Template title={t("Home page")}>
       <Alert variant="light" className={"mb-3 bg-body-tertiary"}>
@@ -114,6 +125,17 @@ export default function Home() {
       <JoinEventModal
         show={showJoinEventModal}
         setShow={setShowJoinEventModal}
+      />
+      <PaginationControl
+        page={page!}
+        between={3}
+        total={paginatedEvents.count}
+        limit={10}
+        changePage={(page) => setSearchParams({page: page.toString()})}
+        next={true}
+        last={false}
+        ellipsis={1}
+        className={"mt-3 justify-content-center"}
       />
     </Template>
   );

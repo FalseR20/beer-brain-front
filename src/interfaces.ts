@@ -1,3 +1,13 @@
+export interface IPagination {
+  count: number
+  next: string | null
+  previous: string | null
+}
+
+export interface IPaginated<T> extends IPagination {
+  results: T[]
+}
+
 export interface IUser {
   username: string
   full_name: string
