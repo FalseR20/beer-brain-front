@@ -28,7 +28,7 @@ export function AvatarOffcanvas({user}: { user?: CUser }) {
         </Offcanvas.Header>
         <Offcanvas.Body className={"d-flex flex-column gap-3"}>
           <Link to={!user ? "" : make_front_url(UrlsFront.USER, {username: user.username})} className={"text-reset"}>
-            <Button variant="outline-secondary" className={"text-reset border-light-subtle"}>
+            <Button variant="outline-secondary" className={"text-reset border-light-subtle w-100"}>
               <span className={"d-flex align-items-center gap-1"}>
                 <BsPerson size={iconsSize}/>&nbsp;{t("Profile")}
               </span>

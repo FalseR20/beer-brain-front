@@ -4,7 +4,8 @@ import {
   CDeposit,
   CDetailedEvent,
   CDetailedUser,
-  CEvent, CPaginated,
+  CEvent,
+  CPaginated,
   CRepayment,
   CUser
 } from "./dataclasses.ts";
