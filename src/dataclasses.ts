@@ -172,8 +172,16 @@ export class CDetailedEvent extends CEvent {
       payer.repayments.push(repayment);
       recipient.backRepayments.push(repayment);
     });
-    this.bankPart = this.bank / this.users.length
-    this.users.map(user => user.balance -= this.bankPart)
+    this.bank = Math.round(this.bank * 100) / 100
+    this.bankPart = Math.floor((this.bank / this.users.length) * 100) / 100;
+    let remainder = this.bank - this.bankPart * this.users.length
+    this.users.forEach(user => {
+      user.balance -= this.bankPart
+      if (remainder > 0.004) {  // > 0
+        user.balance -= 0.01;
+        remainder -= 0.01;
+      }
+    })
     this.sortUsers()
   }
 
