@@ -173,13 +173,12 @@ export class CDetailedEvent extends CEvent {
       recipient.backRepayments.push(repayment);
     });
     this.bank = Math.round(this.bank * 100) / 100
-    this.bankPart = Math.floor((this.bank / this.users.length) * 100) / 100;
-    let remainder = this.bank - this.bankPart * this.users.length
-    this.users.forEach(user => {
+    this.bankPart = Math.ceil((this.bank / this.users.length) * 100) / 100;
+    const centsLeft = Math.round((this.bankPart * this.users.length - this.bank) * 100)
+    this.users.forEach((user, index) => {
       user.balance -= this.bankPart
-      if (remainder > 0.004) {  // > 0
-        user.balance -= 0.01;
-        remainder -= 0.01;
+      if (index < centsLeft) {
+        user.balance += 0.01
       }
     })
     this.sortUsers()
