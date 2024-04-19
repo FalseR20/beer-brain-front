@@ -14,10 +14,12 @@ export interface TemplateProps {
 
 export default function Template(props: TemplateProps) {
   const {t} = useTranslation();
+  const {i18n} = useTranslation();
   return (
     <>
       {props.title ? (
         <Helmet>
+          <html lang={i18n.language}/>
           <title>{props.title}</title>
         </Helmet>
       ) : ""}
