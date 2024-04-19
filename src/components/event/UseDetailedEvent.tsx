@@ -20,5 +20,5 @@ export function useDetailedEvent() {
       })
   }, [params.eventId, setEvent]);
 
-  return {event, is404}
+  return {event, setEvent, is404}
 }
