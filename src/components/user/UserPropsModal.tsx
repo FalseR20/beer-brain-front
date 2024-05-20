@@ -51,7 +51,7 @@ export function UserPropsModal({user, show, setShow}: {
               formikHelpers.setFieldError("username", "User already exists");
             })
         }}
-        initialValues={new CUser({username: user.username, full_name: user.fullName})}
+        initialValues={new CUser({id: user.id, username: user.username, full_name: user.fullName})}
       >
         {({values, handleSubmit, handleReset, handleBlur, handleChange, errors}) => (
           <Form noValidate onSubmit={handleSubmit}>

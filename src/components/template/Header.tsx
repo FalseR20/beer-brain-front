@@ -8,6 +8,7 @@ import {CUser} from "../../dataclasses.ts";
 import {useTranslation} from "react-i18next";
 import {NavLink} from "react-router-dom";
 import Notifications from "./Notifications.tsx";
+import {NotificationsContextWrapper} from "../../contexts/notificationsContext.tsx";
 
 export default function Header() {
   const {user} = useContext(AuthContext)
@@ -23,7 +24,9 @@ export default function Header() {
           <ThemeSwitcher/>
           {(user instanceof CUser || user === undefined) ? (
             <>
-              <Notifications/>
+              <NotificationsContextWrapper>
+                <Notifications/>
+              </NotificationsContextWrapper>
               <AvatarOffcanvas user={user}/>
             </>
           ) : (

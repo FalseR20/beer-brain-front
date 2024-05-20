@@ -295,9 +295,9 @@ export async function changePassword(inputs: {
   await fetchWithAuthorization(url, {method: "PUT", body: formData});
 }
 
-export async function getUnreadNotifications(): Promise<CNotification> {
-  const url = UrlsBack.GET_UNREAD_NOTIFICATIONS;
+export async function getUnreadNotifications(): Promise<CNotification[]> {
+  const url = make_url(UrlsBack.GET_UNREAD_NOTIFICATIONS);
   const response = await fetchWithAuthorization(url, {method: "GET"});
-  const json: INotification = await response.json();
-  return new CNotification(json)
+  const json: INotification[] = await response.json();
+  return json.map(notification => new CNotification(notification))
 }
