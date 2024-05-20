@@ -145,6 +145,13 @@ export async function getUser(username: string): Promise<CUser> {
   return new CUser(json)
 }
 
+export async function getUserById(id: number): Promise<CUser> {
+  const url = make_url(UrlsBack.GET_USER_BY_ID, {id})
+  const response = await fetchWithAuthorization(url);
+  const json: IUser = await response.json()
+  return new CUser(json)
+}
+
 export async function getMyUser(): Promise<CUser> {
   const url = make_url(UrlsBack.MY_USER)
   const response = await fetchWithAuthorization(url);
@@ -300,4 +307,9 @@ export async function getUnreadNotifications(): Promise<CNotification[]> {
   const response = await fetchWithAuthorization(url, {method: "GET"});
   const json: INotification[] = await response.json();
   return json.map(notification => new CNotification(notification))
+}
+
+export async function markNotificationsRead(notificationId: number): Promise<void> {
+  const url = make_url(UrlsBack.MARK_NOTIFICATIONS_READ, {notificationId});
+  await fetchWithAuthorization(url, {method: "PATCH"});
 }

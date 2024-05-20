@@ -37,7 +37,7 @@ export enum UrlsBack {
 
   GET_ALL_NOTIFICATIONS = "notifications/",
   GET_UNREAD_NOTIFICATIONS = "notifications/unread/",
-  MARK_NOTIFICATIONS_READ = "notifications/mark-read/",
+  MARK_NOTIFICATIONS_READ = "notifications/mark-read/:notificationId/",
 }
 
 export enum UrlsFront {
@@ -53,6 +53,7 @@ export enum UrlsFront {
   INVITE = "/invite/:eventId",
   USER_ME = "/users/me",
   USER = "/users/@/:username",
+  USER_BY_ID = "/users/id/:id",
   CHANGE_PASSWORD = "/change-password",
   ABOUT = "/about",
 }
