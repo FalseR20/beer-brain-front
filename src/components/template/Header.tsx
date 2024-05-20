@@ -7,6 +7,7 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 import {CUser} from "../../dataclasses.ts";
 import {useTranslation} from "react-i18next";
 import {NavLink} from "react-router-dom";
+import Notifications from "./Notifications.tsx";
 
 export default function Header() {
   const {user} = useContext(AuthContext)
@@ -21,7 +22,10 @@ export default function Header() {
         <div className={"justify-content-end d-flex gap-3 align-items-center flex-grow-1"}>
           <ThemeSwitcher/>
           {(user instanceof CUser || user === undefined) ? (
-            <AvatarOffcanvas user={user}/>
+            <>
+              <Notifications/>
+              <AvatarOffcanvas user={user}/>
+            </>
           ) : (
             <>
               <NavLink to={UrlsFront.SIGN_IN}>
