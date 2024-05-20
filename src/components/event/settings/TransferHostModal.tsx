@@ -29,7 +29,7 @@ export function TransferHostModal({event, setEvent, state}: {
         </Modal.Title>
       </Modal.Header>
       <Formik
-        initialValues={{newHost: userMe.username}}
+        initialValues={{newHost: userMe.id}}
         onSubmit={(values) => {
           console.log(values.newHost)
           transferHost(event.id, values).then(setEvent).then(
@@ -49,7 +49,7 @@ export function TransferHostModal({event, setEvent, state}: {
                              onChange={props.handleChange}
                              isInvalid={!!props.errors.newHost}>
                   {event.users.map(user => (
-                    <option value={user.username} key={user.username}>
+                    <option value={user.id} key={user.id}>
                       {`@${user.username}${user.fullName == "" ? "" : ` (${user.fullName})`}`}
                     </option>
                   ))}
@@ -63,7 +63,7 @@ export function TransferHostModal({event, setEvent, state}: {
               <Button variant={"outline-secondary"}
                       onClick={() => setShow(false)}>{t("Cancel")}</Button>
               <Button variant="warning" type="submit"
-                      disabled={props.values.newHost == userMe?.username}>{t("Create deposit")}</Button>
+                      disabled={props.values.newHost == userMe?.id}>{t("Create deposit")}</Button>
             </Modal.Footer>
           </Form>
         }

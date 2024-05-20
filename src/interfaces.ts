@@ -9,6 +9,7 @@ export interface IPaginated<T> extends IPagination {
 }
 
 export interface IUser {
+  id: number
   username: string
   full_name: string
 }
@@ -41,4 +42,11 @@ export interface IEvent {
   host: IUser
   deposits: IDeposit[]
   repayments: IRepayment[]
+}
+
+export interface INotification {
+  id: number
+  message: string
+  created_at: string
+  is_read: boolean
 }

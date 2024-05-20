@@ -17,7 +17,8 @@ export enum UrlsBack {
   CREATE_USER = "users/new/",
   MY_USER = "users/me/",
   CHANGE_PASSWORD = "users/me/change-password/",
-  RUD_USER = "users/id/:username/",
+  GET_USER = "users/username/:username/",
+  GET_USER_BY_ID = "users/id/:id/",
 
   GET_EVENT_LIST = "events/",
   CREATE_EVENT = "events/new/",
@@ -33,6 +34,10 @@ export enum UrlsBack {
   GET_REPAYMENT_LIST = "events/:eventId/repayments/",
   CREATE_REPAYMENT = "events/:eventId/repayments/new/",
   RUD_REPAYMENT = "events/:eventId/repayments/:repaymentId/",
+
+  GET_ALL_NOTIFICATIONS = "notifications/",
+  GET_UNREAD_NOTIFICATIONS = "notifications/unread/",
+  MARK_NOTIFICATIONS_READ = "notifications/mark-read/",
 }
 
 export enum UrlsFront {
@@ -47,7 +52,7 @@ export enum UrlsFront {
   REPAYMENT = "/events/:eventId/repayment/:repaymentId",
   INVITE = "/invite/:eventId",
   USER_ME = "/users/me",
-  USER = "/users/id/:username",
+  USER = "/users/@/:username",
   CHANGE_PASSWORD = "/change-password",
   ABOUT = "/about",
 }

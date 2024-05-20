@@ -5,11 +5,12 @@ import {
   CDetailedEvent,
   CDetailedUser,
   CEvent,
+  CNotification,
   CPaginated,
   CRepayment,
   CUser
 } from "./dataclasses.ts";
-import {IDeposit, IEvent, IPaginated, IRepayment, IUser} from "./interfaces.ts";
+import {IDeposit, IEvent, INotification, IPaginated, IRepayment, IUser} from "./interfaces.ts";
 import {FetchError, ResponseError, TokenError} from "./errors.ts";
 import moment from "moment";
 
@@ -118,11 +119,13 @@ export async function leaveEvent(event_id: string): Promise<void> {
   await fetchWithAuthorization(url, {method: "POST"});
 }
 
-export async function transferHost(event_id: string, inputs: {newHost: string}): Promise<CDetailedEvent> {
+export async function transferHost(event_id: string, inputs: {
+  newHost: number
+}): Promise<CDetailedEvent> {
   const url = make_url(UrlsBack.CHANGE_EVENT_HOST, {eventId: event_id})
   const formData = new FormData();
-  formData.append("new_host", inputs.newHost);
-  const response = await fetchWithAuthorization(url, {method: "PUT", body: formData});
+  formData.append("host_id", inputs.newHost.toString());
+  const response = await fetchWithAuthorization(url, {method: "PATCH", body: formData});
   const json: IEvent = await response.json()
   return new CDetailedEvent(json)
 }
@@ -136,7 +139,7 @@ export async function deleteEvent(eventId: string) {
 }
 
 export async function getUser(username: string): Promise<CUser> {
-  const url = make_url(UrlsBack.RUD_USER, {username: username})
+  const url = make_url(UrlsBack.GET_USER, {username: username})
   const response = await fetchWithAuthorization(url);
   const json: IUser = await response.json()
   return new CUser(json)
@@ -219,12 +222,12 @@ export async function createRepayment(inputs: {
   value: number,
   description: string,
   type: string,
-  user: string,
+  user: number,
 }, event: CEvent): Promise<CRepayment> {
   const formData = new FormData();
   formData.append("value", inputs.value.toString());
   formData.append("description", inputs.description);
-  formData.append((inputs.type == "to" ? "recipient_username" : "payer_username"), inputs.user);
+  formData.append((inputs.type == "to" ? "recipient_id" : "payer_id"), inputs.user.toString());
 
   const url = make_url(UrlsBack.CREATE_REPAYMENT, {eventId: event.id})
   const response = await fetchWithAuthorization(url, {method: "POST", body: formData});
@@ -290,4 +293,11 @@ export async function changePassword(inputs: {
   formData.append("new_password", inputs.newPassword);
   const url = make_url(UrlsBack.CHANGE_PASSWORD)
   await fetchWithAuthorization(url, {method: "PUT", body: formData});
+}
+
+export async function getUnreadNotifications(): Promise<CNotification> {
+  const url = UrlsBack.GET_UNREAD_NOTIFICATIONS;
+  const response = await fetchWithAuthorization(url, {method: "GET"});
+  const json: INotification = await response.json();
+  return new CNotification(json)
 }

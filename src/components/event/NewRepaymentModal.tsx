@@ -37,7 +37,7 @@ export default function NewRepaymentModal({event, show, setShow}: {
         value: 0,
         description: "",
         type: "to",
-        user: usersNotMe[0]?.username
+        user: usersNotMe[0]?.id
       }}
     >
       {({handleSubmit, handleChange, values, errors}) => (
@@ -93,7 +93,7 @@ export default function NewRepaymentModal({event, show, setShow}: {
                 <Form.Select name={"user"} value={values.user} onChange={handleChange}
                              isInvalid={!!errors.user}>
                   {usersNotMe.map(user => (
-                    <option value={user.username} key={user.username}>
+                    <option value={user.id} key={user.id}>
                       {`@${user.username}${user.fullName == "" ? "" : ` (${user.fullName})`}`}
                     </option>
                   ))}

@@ -1,4 +1,12 @@
-import {IAction, IDeposit, IEvent, IPagination, IRepayment, IUser} from "./interfaces.ts";
+import {
+  IAction,
+  IDeposit,
+  IEvent,
+  INotification,
+  IPagination,
+  IRepayment,
+  IUser
+} from "./interfaces.ts";
 import {make_front_url, UrlsFront} from "./urls.ts";
 
 
@@ -17,12 +25,14 @@ export class CPaginated<C> {
 }
 
 export class CUser {
+  id: number
   username: string
   fullName: string
 
-  constructor(user: IUser = {username: "", full_name: ""}) {
-    this.username = user.username
-    this.fullName = user.full_name
+  constructor(user?: IUser) {
+    this.id = user?.id || 0
+    this.username = user?.username || ""
+    this.fullName = user?.full_name || ""
   }
 
   public get fullNameOrUsername() {
@@ -192,5 +202,19 @@ export class CDetailedEvent extends CEvent {
     const actions: (CDeposit | CRepayment)[] = [...this.deposits, ...this.repayments]
     actions.sort((a, b) => b.payedAt.getTime() - a.payedAt.getTime())
     return actions
+  }
+}
+
+export class CNotification {
+  id: number
+  message: string
+  createdAt: Date
+  is_read: boolean
+
+  constructor(notification: INotification) {
+    this.id = notification.id
+    this.message = notification.message
+    this.createdAt = new Date(notification.created_at)
+    this.is_read = notification.is_read
   }
 }
