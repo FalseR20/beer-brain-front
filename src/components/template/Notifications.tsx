@@ -22,7 +22,7 @@ export default function Notifications() {
     if (nNotifications == 0 && isShow) {
       setIsShow(false)
     }
-  }, [isShow, notifications]);
+  }, [isShow, nNotifications]);
 
   return <>
     <Button variant={"outline-secondary"} onClick={() => setIsShow(!isShow)}
