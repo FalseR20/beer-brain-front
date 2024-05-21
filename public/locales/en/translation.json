@@ -114,5 +114,7 @@
   "Developer username": "FalseR",
   "Developer fullname": "Bebra Bebrou",
   "Developer description": "I'm developing BeerBrain alone, but you can help me by sending feedback:",
-  "Developer email": "falser.mk@gmail.com"
+  "Developer email": "falser.mk@gmail.com",
+
+  "EVENT_JOINED": "<user/> joined to the <event>event</event>"
 }

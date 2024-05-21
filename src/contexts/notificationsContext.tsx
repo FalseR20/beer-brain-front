@@ -18,6 +18,7 @@ export function NotificationsContextWrapper(props: {
 }) {
   const [notifications, setNotifications] = useState<CNotification[] | undefined>(undefined);
 
+  // Fetch loop can be realized, but it's expensive now
   useEffect(() => {
     getNotifications(false).then(setNotifications)
   }, []);

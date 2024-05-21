@@ -6,14 +6,17 @@ import {Link} from "react-router-dom";
 import {make_front_url, UrlsFront} from "../../urls.ts";
 import {NotificationCacheContext, NotificationCacheWrapper} from "./NotificationsCache.tsx";
 import {getUserById} from "../../fetches.tsx";
+import {Trans, useTranslation} from "react-i18next";
+import {TFunction} from "i18next";
 
 
 export default function Notifications() {
   const [isShow, setIsShow] = useState(false);
   const {notifications, nNotifications, markRead} = useContext(NotificationsContext);
+  // const {t} = useTranslation()
 
   useEffect(() => {
-    if(nNotifications == 0 && isShow) {
+    if (nNotifications == 0 && isShow) {
       setIsShow(false)
     }
   }, [isShow, notifications]);
@@ -35,7 +38,8 @@ export default function Notifications() {
       <ToastContainer position={"top-end"} containerPosition={"absolute"}
                       className={"top-100 mt-3 me-3"}>
         {notifications?.map((notification) => (
-          <Toast key={notification.id} animation={false} show={!notification.is_read && isShow} onClose={() => markRead(notification.id)}>
+          <Toast key={notification.id} animation={false} show={!notification.is_read && isShow}
+                 onClose={() => markRead(notification.id)}>
             <ToastHeader closeButton={true}>
               <strong className={"me-auto"}>Notification</strong>
               <small className={"text-muted"}>{notification.createdAt.toISOString()}</small>
@@ -54,6 +58,7 @@ export default function Notifications() {
 }
 
 function NotificationMessage({message}: { message: string }) {
+  const {t} = useTranslation()
   const elements = new Map<string, string>();
   const regex = /#(\w+)<([^>]+)>/g;
   let match;
@@ -70,12 +75,25 @@ function NotificationMessage({message}: { message: string }) {
     return message
   }
   const linker = new ElementsLinker(elements)
-  return <FormatFunction linker={linker}/>;
+  return <FormatFunction linker={linker} t={t}/>;
 }
 
-const LinksMap: Map<string, ({linker}: { linker: ElementsLinker }) => ReactNode> = new Map([
-  ["#User<{}> joined #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> joined <Link to={linker.eventUrl}>event</Link>
+const LinksMap: Map<string, ({linker, t}: {
+  linker: ElementsLinker,
+  t: TFunction
+}) => ReactNode> = new Map([
+  ["#User<{}> joined #Event<{}>", ({linker, t}) => <>
+    <Trans
+      t={t}
+      i18nKey={"EVENT_JOINED"}
+      components={{
+        user: (
+          <UserLink linker={linker}/>
+        ),
+        event: (
+          <Link to={linker.eventUrl}/>
+        )
+      }}/>
   </>],
   ["#User<{}> left #Event<{}>", ({linker}) => <>
     <UserLink linker={linker}/> left <Link to={linker.eventUrl}>event</Link>
