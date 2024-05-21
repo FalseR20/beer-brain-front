@@ -116,5 +116,16 @@
   "Developer description": "I'm developing BeerBrain alone, but you can help me by sending feedback:",
   "Developer email": "falser.mk@gmail.com",
 
-  "EVENT_JOINED": "<user/> joined to the <event>event</event>"
+  "Notification": "Notification",
+  "User joined Event": "<User/> joined the <Event>event</Event>",
+  "User left Event": "<User/> left the <Event>event</Event>",
+  "User changed Event": "<User/> changed the <Event>event</Event>",
+  "User deleted Event": "<User/> deleted the <Event>event</Event>",
+  "User is new host of Event": "<User/> is new host of <Event>event</Event>",
+  "User created Deposit of Event": "<User/> created <Deposit>deposit</Deposit>",
+  "User updated Deposit of Event": "<User/> updated <Deposit>deposit</Deposit>",
+  "User deleted Deposit of Event": "<User/> deleted <Deposit>deposit</Deposit>",
+  "User created Repayment of Event": "<User/> created <Repayment>repayment</Repayment>",
+  "User updated Repayment of Event": "<User/> updated <Repayment>repayment</Repayment>",
+  "User deleted Repayment of Event": "<User/> deleted <Repayment>repayment</Repayment>"
 }

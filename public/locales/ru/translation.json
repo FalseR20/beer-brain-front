@@ -113,5 +113,16 @@
   "Me": "Я",
   "Developer description": "Дружище, раз ты сюда зашёл, я был бы рад фидбеку с твоей стороны. Вообще любому, хоть кнопку перекрасить. Потом добавлю тебя в список типа отдельное спасибо",
 
-  "EVENT_JOINED": "<user/> присоединился к <event>мероприятию</event>"
+  "Notification": "Уведомление",
+  "User joined Event": "<User/> присоединился к <Event>мероприятию</Event>",
+  "User left Event": "<User/> покинул <Event>мероприятие</Event>",
+  "User changed Event": "<User/> изменил <Event>мероприятие</Event>",
+  "User deleted Event": "<User/> удалил <Event>мероприятие</Event>",
+  "User is new host of Event": "<User/> теперь новый хост <Event>мероприятия</Event>",
+  "User created Deposit of Event": "<User/> создал <Deposit>депозит</Deposit>",
+  "User updated Deposit of Event": "<User/> изменил <Deposit>депозит</Deposit>",
+  "User deleted Deposit of Event": "<User/> удалил <Deposit>депозит</Deposit>",
+  "User created Repayment of Event": "<User/> создал <Repayment>выплату</Repayment>",
+  "User updated Repayment of Event": "<User/> изменил <Repayment>выплату</Repayment>",
+  "User deleted Repayment of Event": "<User/> удалил <Repayment>выплату</Repayment>"
 }

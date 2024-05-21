@@ -8,12 +8,15 @@ import {NotificationCacheContext, NotificationCacheWrapper} from "./Notification
 import {getUserById} from "../../fetches.tsx";
 import {Trans, useTranslation} from "react-i18next";
 import {TFunction} from "i18next";
+import moment from "moment";
 
+moment.locale("ru")
 
 export default function Notifications() {
   const [isShow, setIsShow] = useState(false);
   const {notifications, nNotifications, markRead} = useContext(NotificationsContext);
-  // const {t} = useTranslation()
+  const {t} = useTranslation()
+  // moment.locale(i18n.language)
 
   useEffect(() => {
     if (nNotifications == 0 && isShow) {
@@ -41,12 +44,12 @@ export default function Notifications() {
           <Toast key={notification.id} animation={false} show={!notification.is_read && isShow}
                  onClose={() => markRead(notification.id)}>
             <ToastHeader closeButton={true}>
-              <strong className={"me-auto"}>Notification</strong>
-              <small className={"text-muted"}>{notification.createdAt.toISOString()}</small>
+              <strong className={"me-auto"}>{t("Notification")}</strong>
+              <small className={"text-muted"}>{moment(notification.createdAt).fromNow()}</small>
             </ToastHeader>
             <ToastBody>
               <div className={"fw-bold"}>
-                <NotificationMessage message={notification.message}/>
+                <NotificationMessage message={notification.message} t={t}/>
               </div>
             </ToastBody>
           </Toast>
@@ -57,8 +60,7 @@ export default function Notifications() {
   </>
 }
 
-function NotificationMessage({message}: { message: string }) {
-  const {t} = useTranslation()
+function NotificationMessage({message, t}: { message: string, t: TFunction }) {
   const elements = new Map<string, string>();
   const regex = /#(\w+)<([^>]+)>/g;
   let match;
@@ -67,68 +69,39 @@ function NotificationMessage({message}: { message: string }) {
   while ((match = regex.exec(message)) !== null) {
     const [fullMatch, className, id] = match;
     elements.set(className, id);
-    const link = `#${className}<{}>`
-    formattedString = formattedString.replace(fullMatch, link);
-  }
-  const FormatFunction = LinksMap.get(formattedString)
-  if (!FormatFunction) {
-    return message
+    formattedString = formattedString.replace(fullMatch, className);
   }
   const linker = new ElementsLinker(elements)
-  return <FormatFunction linker={linker} t={t}/>;
+  return <LinkedMessage linker={linker} t={t} formattedString={formattedString}/>;
+
 }
 
-const LinksMap: Map<string, ({linker, t}: {
+function LinkedMessage({linker, t, formattedString}: {
+  linker: ElementsLinker,
+  t: TFunction,
+  formattedString: string
+}) {
+  const entriesMap = new Map([])
+  linker.elements.forEach((_, key) => {
+    entriesMap.set(key, TypeToLinkMap.get(key)!({linker, t}))
+  })
+  const components = Object.fromEntries(entriesMap.entries())
+  // console.log(components)
+  return <Trans
+    t={t}
+    i18nKey={formattedString}
+    components={components}/>
+}
+
+const TypeToLinkMap: Map<string, ({linker, t}: {
   linker: ElementsLinker,
   t: TFunction
 }) => ReactNode> = new Map([
-  ["#User<{}> joined #Event<{}>", ({linker, t}) => <>
-    <Trans
-      t={t}
-      i18nKey={"EVENT_JOINED"}
-      components={{
-        user: (
-          <UserLink linker={linker}/>
-        ),
-        event: (
-          <Link to={linker.eventUrl}/>
-        )
-      }}/>
-  </>],
-  ["#User<{}> left #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> left <Link to={linker.eventUrl}>event</Link>
-  </>],
-  ["#User<{}> changed #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> changed <Link to={linker.eventUrl}>event</Link>
-  </>],
-  ["#User<{}> deleted #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> deleted <Link to={linker.eventUrl}>event</Link>
-  </>],
-  ["#User<{}> is new host of #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> is new host of <Link to={linker.eventUrl}>event</Link>
-  </>],
-
-  ["#User<{}> created #Deposit<{}> of #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> created <Link to={linker.depositUrl}>deposit</Link>
-  </>],
-  ["#User<{}> updated #Deposit<{}> of #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> updated <Link to={linker.depositUrl}>deposit</Link>
-  </>],
-  ["#User<{}> deleted #Deposit<{}> of #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> deleted <Link to={linker.depositUrl}>deposit</Link>
-  </>],
-
-  ["#User<{}> created #Repayment<{}> of #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> created <Link to={linker.repaymentUrl}>repayment</Link>
-  </>],
-  ["#User<{}> updated #Repayment<{}> of #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> updated <Link to={linker.repaymentUrl}>repayment</Link>
-  </>],
-  ["#User<{}> deleted #Repayment<{}> of #Event<{}>", ({linker}) => <>
-    <UserLink linker={linker}/> deleted <Link to={linker.repaymentUrl}>repayment</Link>
-  </>],
+  ["User", UserLink],
+  ["Event", EventLink],
+  ["Deposit", DepositLink],
+  ["Repayment", RepaymentLink],
 ])
-
 
 class ElementsLinker {
   public elements: Map<string, string>;
@@ -183,4 +156,16 @@ function UserLink({linker}: { linker: ElementsLinker }) {
   }
   return <Link
     to={username ? linker.usernameUrl(username) : linker.userUrl}>@{username || `id/${userId}`}</Link>
+}
+
+function EventLink({linker}: { linker: ElementsLinker }) {
+  return <Link to={linker.eventUrl}/>
+}
+
+function DepositLink({linker}: { linker: ElementsLinker }) {
+  return <Link to={linker.depositUrl}/>
+}
+
+function RepaymentLink({linker}: { linker: ElementsLinker }) {
+  return <Link to={linker.repaymentUrl}/>
 }
