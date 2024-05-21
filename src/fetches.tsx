@@ -302,14 +302,19 @@ export async function changePassword(inputs: {
   await fetchWithAuthorization(url, {method: "PUT", body: formData});
 }
 
-export async function getUnreadNotifications(): Promise<CNotification[]> {
-  const url = make_url(UrlsBack.GET_UNREAD_NOTIFICATIONS);
-  const response = await fetchWithAuthorization(url, {method: "GET"});
+export async function getNotifications(isRead: boolean | null = false): Promise<CNotification[]> {
+  const url = make_url(UrlsBack.GET_NOTIFICATIONS);
+  const unread_filter = isRead == null ? "" : `?is_read=${isRead}`
+  const response = await fetchWithAuthorization(url + unread_filter, {method: "GET"});
   const json: INotification[] = await response.json();
   return json.map(notification => new CNotification(notification))
 }
 
-export async function markNotificationsRead(notificationId: number): Promise<void> {
-  const url = make_url(UrlsBack.MARK_NOTIFICATIONS_READ, {notificationId});
-  await fetchWithAuthorization(url, {method: "PATCH"});
+export async function markNotification(notificationId: number, isRead: boolean = false): Promise<CNotification> {
+  const url = make_url(UrlsBack.RUD_NOTIFICATIONS, {notificationId});
+  const formData = new FormData();
+  formData.append("is_read", JSON.stringify(isRead))
+  const response = await fetchWithAuthorization(url, {method: "PATCH"});
+  const json: INotification = await response.json();
+  return new CNotification(json)
 }

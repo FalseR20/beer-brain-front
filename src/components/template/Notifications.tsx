@@ -9,7 +9,7 @@ import {CNotification} from "../../dataclasses.ts";
 
 export default function Notifications() {
   const [isShow, setIsShow] = useState(false);
-  const {notifications, markRead} = useContext(NotificationsContext);
+  const {notifications} = useContext(NotificationsContext);
   const [notificationsOpened, setNotificationsOpened] = useState<CNotification[]>([])
   const nNotifications = notifications?.length || 0;
 
@@ -17,7 +17,6 @@ export default function Notifications() {
     if (nNotifications > 0) {
       setNotificationsOpened(notifications!)
       setIsShow(true);
-      markRead()
     }
   }
 
@@ -26,7 +25,7 @@ export default function Notifications() {
   }
 
   return <>
-    <Button variant={"outline-secondary"} onClick={openNotifications}
+    <Button variant={"outline-secondary"} onClick={openNotifications} disabled={!nNotifications}
             className={"fs-3 text-body p-2 border-0 pb-2"}>
       {nNotifications > 0 && (
         <div className={"fs-6"}>
@@ -55,9 +54,9 @@ export default function Notifications() {
               </div>
             </ListGroup.Item>
           )) : <>
-          <ListGroup.Item>
-            All read!
-          </ListGroup.Item>
+            <ListGroup.Item>
+              All read!
+            </ListGroup.Item>
           </>}
         </ListGroup>
       </Modal.Body>
@@ -174,7 +173,8 @@ function UserLink({linker}: { linker: ElementsLinker }) {
     promise.then(setUsername)
     UsernamesCache.set(userId, promise)
   }
-  return <Link to={username ? linker.usernameUrl(username) : linker.userUrl}>@{username || `id/${userId}`}</Link>
+  return <Link
+    to={username ? linker.usernameUrl(username) : linker.userUrl}>@{username || `id/${userId}`}</Link>
 }
 
 const UsernamesCache: Map<number, Promise<string>> = new Map([])

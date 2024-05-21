@@ -1,50 +1,35 @@
 import {createContext, ReactNode, useEffect, useState} from "react";
 import {CNotification} from "../dataclasses.ts";
-import {getUnreadNotifications, markNotificationsRead} from "../fetches.tsx";
+import {getNotifications, markNotification} from "../fetches.tsx";
 
 export const NotificationsContext = createContext<{
-  notifications?: CNotification[]
-  wasChanged: boolean
-  markRead: () => void
+  notifications?: CNotification[], // unread
+  markRead: (id: number) => void
 }>({
   notifications: undefined,
-  wasChanged: false,
-  markRead: () => {}
+  markRead: () => {
+  }
 })
 
 export function NotificationsContextWrapper(props: {
   children: ReactNode,
 }) {
   const [notifications, setNotifications] = useState<CNotification[] | undefined>(undefined);
-  const [latestId, setLatestId] = useState<number | undefined>(undefined)
-  const [wasChanged, setWasChanged] = useState(false);
 
   useEffect(() => {
-    if (wasChanged) {
-      setWasChanged(false);
-    }
-  }, [wasChanged]);
-
-  useEffect(() => {
-    if (!wasChanged) {
-      getUnreadNotifications().then((newNotifications) => {
-        setNotifications(newNotifications);
-        setLatestId(newNotifications[newNotifications.length - 1].id);
-        setWasChanged(true);
-      })
-    }
+    getNotifications(false).then(setNotifications)
   }, []);
 
-  function markRead() {
-    if (latestId) {
-      markNotificationsRead(latestId).then(() => {
-        setNotifications(undefined)
-      })
-    }
+  function markRead(id: number) {
+    markNotification(id).then(() => {
+      if (notifications) {
+        setNotifications(notifications.filter(notification => notification.id === id))
+      }
+    })
   }
 
   return (
-    <NotificationsContext.Provider value={{notifications, wasChanged, markRead}}>
+    <NotificationsContext.Provider value={{notifications, markRead}}>
       {props.children}
     </NotificationsContext.Provider>
   )

@@ -35,9 +35,8 @@ export enum UrlsBack {
   CREATE_REPAYMENT = "events/:eventId/repayments/new/",
   RUD_REPAYMENT = "events/:eventId/repayments/:repaymentId/",
 
-  GET_ALL_NOTIFICATIONS = "notifications/",
-  GET_UNREAD_NOTIFICATIONS = "notifications/unread/",
-  MARK_NOTIFICATIONS_READ = "notifications/mark-read/:notificationId/",
+  GET_NOTIFICATIONS = "notifications/",
+  RUD_NOTIFICATIONS = "notifications/:notificationId/",
 }
 
 export enum UrlsFront {
