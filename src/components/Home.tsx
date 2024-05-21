@@ -11,6 +11,7 @@ import {Link, useSearchParams} from "react-router-dom";
 import {AuthContext} from "../contexts/authContext.tsx";
 import {BALANCE_FORMAT} from "../constants.ts";
 import {PaginationControl} from "../ReactBootstrapPaginationControl.tsx";
+import moment from "moment/moment";
 
 const Template = lazy(() => import("./template/Template.tsx"))
 
@@ -86,7 +87,7 @@ export default function Home() {
                 <Card.Header>
                   <Row>
                     <Col>
-                      <span>{event.date.toDateString()}</span>
+                      <span>{moment(event.date).fromNow()}</span>
                     </Col>
                     <Col className={"text-end"}>Host: {event.host.username}</Col>
                   </Row>

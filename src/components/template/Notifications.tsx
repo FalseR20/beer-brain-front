@@ -8,15 +8,13 @@ import {NotificationCacheContext, NotificationCacheWrapper} from "./Notification
 import {getUserById} from "../../fetches.tsx";
 import {Trans, useTranslation} from "react-i18next";
 import {TFunction} from "i18next";
-import moment from "moment";
-
-moment.locale("ru")
+import moment from "moment/moment";
 
 export default function Notifications() {
   const [isShow, setIsShow] = useState(false);
   const {notifications, nNotifications, markRead} = useContext(NotificationsContext);
-  const {t} = useTranslation()
-  // moment.locale(i18n.language)
+  const {t, i18n} = useTranslation()
+  moment.locale(i18n.language)
 
   useEffect(() => {
     if (nNotifications == 0 && isShow) {

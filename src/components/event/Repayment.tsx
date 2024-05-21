@@ -8,7 +8,7 @@ import * as yup from "yup";
 import {Formik} from "formik";
 import {lazy, useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
-import moment from "moment";
+import moment from "moment/moment";
 import {CRepayment} from "../../dataclasses.ts";
 import {useTranslation} from "react-i18next";
 

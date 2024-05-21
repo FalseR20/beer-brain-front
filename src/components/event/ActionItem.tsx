@@ -31,8 +31,7 @@ export default function ActionItem(props: ActionItemProps) {
   return <ListGroup.Item as={Link}
                          action={true}
                          className={"d-flex flex-row align-items-center gap-3"}
-                         to={action.makeFrontHref()}
-                         {...props}>
+                         to={action.makeFrontHref()}>
     <div className={"d-flex align-items-center gap-2"}>
       {action instanceof CDeposit ? <>
         <div style={{width: avatarSize, height: avatarSize}}

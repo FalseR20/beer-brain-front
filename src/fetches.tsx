@@ -12,7 +12,7 @@ import {
 } from "./dataclasses.ts";
 import {IDeposit, IEvent, INotification, IPaginated, IRepayment, IUser} from "./interfaces.ts";
 import {FetchError, ResponseError, TokenError} from "./errors.ts";
-import moment from "moment";
+import moment from "moment/moment";
 
 
 export async function fetchSignIn({username, password}: {
