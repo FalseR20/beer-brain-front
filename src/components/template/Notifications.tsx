@@ -1,31 +1,21 @@
 import {BsBell, BsBellFill} from "react-icons/bs";
-import {Badge, Button, ListGroup, Modal} from "react-bootstrap";
+import {Badge, Button, Toast, ToastBody, ToastContainer, ToastHeader} from "react-bootstrap";
 import {ReactNode, useContext, useState} from "react";
 import {NotificationsContext} from "../../contexts/notificationsContext.tsx";
 import {Link} from "react-router-dom";
 import {make_front_url, UrlsFront} from "../../urls.ts";
+import {NotificationCacheContext, NotificationCacheWrapper} from "./NotificationsCache.tsx";
 import {getUserById} from "../../fetches.tsx";
-import {CNotification} from "../../dataclasses.ts";
+
 
 export default function Notifications() {
   const [isShow, setIsShow] = useState(false);
   const {notifications} = useContext(NotificationsContext);
-  const [notificationsOpened, setNotificationsOpened] = useState<CNotification[]>([])
   const nNotifications = notifications?.length || 0;
 
-  function openNotifications() {
-    if (nNotifications > 0) {
-      setNotificationsOpened(notifications!)
-      setIsShow(true);
-    }
-  }
-
-  function closeNotifications() {
-    setIsShow(false);
-  }
-
   return <>
-    <Button variant={"outline-secondary"} onClick={openNotifications} disabled={!nNotifications}
+    <Button variant={"outline-secondary"} onClick={() => setIsShow(!isShow)}
+            disabled={!nNotifications}
             className={"fs-3 text-body p-2 border-0 pb-2"}>
       {nNotifications > 0 && (
         <div className={"fs-6"}>
@@ -36,35 +26,29 @@ export default function Notifications() {
       )}
       {isShow ? <BsBellFill/> : <BsBell/>}
     </Button>
-    <Modal animation={false} size={"lg"} centered={true} show={isShow} onHide={closeNotifications}>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          Notifications
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body className={"p-0"}>
-        <ListGroup variant={"flush"}>
-          {notificationsOpened.length > 0 ? notificationsOpened?.map((notification) => (
-            <ListGroup.Item key={notification.id}>
+    <NotificationCacheWrapper>
+      <ToastContainer position={"top-end"} containerPosition={"absolute"}
+                      className={"top-100 mt-3 me-3"}>
+        {notifications?.map((notification) => (
+          <Toast key={notification.id} show={isShow}>
+            <ToastHeader closeButton={true}>
+              <strong className={"me-auto"}>Notification</strong>
+              <small className={"text-muted"}>{notification.createdAt.toISOString()}</small>
+            </ToastHeader>
+            <ToastBody>
               <div className={"fw-bold"}>
-                {notificationMessage(notification.message)}
+                <NotificationMessage message={notification.message}/>
               </div>
-              <div className={"text-end"}>
-                {notification.createdAt.toISOString()}
-              </div>
-            </ListGroup.Item>
-          )) : <>
-            <ListGroup.Item>
-              All read!
-            </ListGroup.Item>
-          </>}
-        </ListGroup>
-      </Modal.Body>
-    </Modal>
+            </ToastBody>
+          </Toast>
+        ))
+        }
+      </ToastContainer>
+    </NotificationCacheWrapper>
   </>
 }
 
-function notificationMessage(message: string) {
+function NotificationMessage({message}: { message: string }) {
   const elements = new Map<string, string>();
   const regex = /#(\w+)<([^>]+)>/g;
   let match;
@@ -164,17 +148,16 @@ class ElementsLinker {
 
 function UserLink({linker}: { linker: ElementsLinker }) {
   const [username, setUsername] = useState<string>();
+  const {cache} = useContext(NotificationCacheContext)
   const userId = linker.userId
-  const cachedUsernamePromise = UsernamesCache.get(userId)
+  const cachedUsernamePromise = cache.get(userId)
   if (cachedUsernamePromise) {
     cachedUsernamePromise.then(setUsername)
   } else {
     const promise = getUserById(userId).then(user => user.username)
     promise.then(setUsername)
-    UsernamesCache.set(userId, promise)
+    cache.set(userId, promise)
   }
   return <Link
     to={username ? linker.usernameUrl(username) : linker.userUrl}>@{username || `id/${userId}`}</Link>
 }
-
-const UsernamesCache: Map<number, Promise<string>> = new Map([])
