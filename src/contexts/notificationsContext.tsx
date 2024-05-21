@@ -4,9 +4,11 @@ import {getNotifications, markNotification} from "../fetches.tsx";
 
 export const NotificationsContext = createContext<{
   notifications?: CNotification[], // unread
+  nNotifications?: number,
   markRead: (id: number) => void
 }>({
   notifications: undefined,
+  nNotifications: undefined,
   markRead: () => {
   }
 })
@@ -21,15 +23,23 @@ export function NotificationsContextWrapper(props: {
   }, []);
 
   function markRead(id: number) {
-    markNotification(id).then(() => {
+    markNotification(id).then((newNotification) => {
       if (notifications) {
-        setNotifications(notifications.filter(notification => notification.id === id))
+        const newNotifications = notifications.map(value => {
+          if (value.id === id) {
+            return newNotification
+          }
+          return value
+        })
+        setNotifications(newNotifications)
       }
     })
   }
 
+  const nNotifications = notifications?.reduce((accumulator, currentValue) => accumulator + +!currentValue.is_read, 0)
+
   return (
-    <NotificationsContext.Provider value={{notifications, markRead}}>
+    <NotificationsContext.Provider value={{notifications, nNotifications, markRead}}>
       {props.children}
     </NotificationsContext.Provider>
   )

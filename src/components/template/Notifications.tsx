@@ -1,6 +1,6 @@
 import {BsBell, BsBellFill} from "react-icons/bs";
 import {Badge, Button, Toast, ToastBody, ToastContainer, ToastHeader} from "react-bootstrap";
-import {ReactNode, useContext, useState} from "react";
+import {ReactNode, useContext, useEffect, useState} from "react";
 import {NotificationsContext} from "../../contexts/notificationsContext.tsx";
 import {Link} from "react-router-dom";
 import {make_front_url, UrlsFront} from "../../urls.ts";
@@ -10,14 +10,19 @@ import {getUserById} from "../../fetches.tsx";
 
 export default function Notifications() {
   const [isShow, setIsShow] = useState(false);
-  const {notifications} = useContext(NotificationsContext);
-  const nNotifications = notifications?.length || 0;
+  const {notifications, nNotifications, markRead} = useContext(NotificationsContext);
+
+  useEffect(() => {
+    if(nNotifications == 0 && isShow) {
+      setIsShow(false)
+    }
+  }, [isShow, notifications]);
 
   return <>
     <Button variant={"outline-secondary"} onClick={() => setIsShow(!isShow)}
             disabled={!nNotifications}
             className={"fs-3 text-body p-2 border-0 pb-2"}>
-      {nNotifications > 0 && (
+      {nNotifications != undefined && nNotifications > 0 && (
         <div className={"fs-6"}>
           <Badge bg={"danger"} pill style={{position: "absolute", right: "4.4rem", top: "0.8rem"}}>
             {nNotifications > 99 ? ">99" : nNotifications}
@@ -30,7 +35,7 @@ export default function Notifications() {
       <ToastContainer position={"top-end"} containerPosition={"absolute"}
                       className={"top-100 mt-3 me-3"}>
         {notifications?.map((notification) => (
-          <Toast key={notification.id} show={isShow}>
+          <Toast key={notification.id} animation={false} show={!notification.is_read && isShow} onClose={() => markRead(notification.id)}>
             <ToastHeader closeButton={true}>
               <strong className={"me-auto"}>Notification</strong>
               <small className={"text-muted"}>{notification.createdAt.toISOString()}</small>

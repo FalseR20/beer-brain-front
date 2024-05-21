@@ -310,11 +310,11 @@ export async function getNotifications(isRead: boolean | null = false): Promise<
   return json.map(notification => new CNotification(notification))
 }
 
-export async function markNotification(notificationId: number, isRead: boolean = false): Promise<CNotification> {
+export async function markNotification(notificationId: number, isRead: boolean = true): Promise<CNotification> {
   const url = make_url(UrlsBack.RUD_NOTIFICATIONS, {notificationId});
   const formData = new FormData();
   formData.append("is_read", JSON.stringify(isRead))
-  const response = await fetchWithAuthorization(url, {method: "PATCH"});
+  const response = await fetchWithAuthorization(url, {method: "PATCH", body: formData});
   const json: INotification = await response.json();
   return new CNotification(json)
 }
