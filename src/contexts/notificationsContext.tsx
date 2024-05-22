@@ -1,6 +1,6 @@
 import {createContext, ReactNode, useEffect, useState} from "react";
 import {CNotification} from "../dataclasses.ts";
-import {getNotifications, markNotification} from "../fetches.tsx";
+import {deleteNotification, getNotifications} from "../fetches.tsx";
 
 export const NotificationsContext = createContext<{
   notifications?: CNotification[], // unread
@@ -24,11 +24,11 @@ export function NotificationsContextWrapper(props: {
   }, []);
 
   function markRead(id: number) {
-    markNotification(id).then((newNotification) => {
+    deleteNotification(id).then(() => {
       if (notifications) {
         const newNotifications = notifications.map(value => {
           if (value.id === id) {
-            return newNotification
+            value.is_read = true
           }
           return value
         })

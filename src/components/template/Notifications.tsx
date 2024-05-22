@@ -1,5 +1,5 @@
 import {BsBell, BsBellFill} from "react-icons/bs";
-import {Badge, Button, Toast, ToastBody, ToastContainer, ToastHeader} from "react-bootstrap";
+import {Badge, Button, Toast, ToastContainer} from "react-bootstrap";
 import {useContext, useEffect, useState} from "react";
 import {NotificationsContext} from "../../contexts/notificationsContext.tsx";
 import {NotificationCacheWrapper} from "../../contexts/notificationsCache.tsx";
@@ -33,22 +33,22 @@ export default function Notifications() {
     </Button>
     <NotificationCacheWrapper>
       <ToastContainer position={"top-end"} containerPosition={"absolute"}
-                      className={"top-100 mt-3 me-3 z-1"}>
+                      className={"top-100 z-1"}>
         {notifications?.map((notification) => (
           <Toast key={notification.id}
                  animation={true}
                  show={!notification.is_read && isShow}
                  onClose={() => markRead(notification.id)}
+                 className={"mb-3"}
           >
-            <ToastHeader closeButton={true}>
+            <Toast.Header closeButton={true}>
               <strong className={"me-auto"}>{t("Notification")}</strong>
-              <small className={"text-muted"}>{moment(notification.createdAt).fromNow()}</small>
-            </ToastHeader>
-            <ToastBody>
-              <div className={"fw-bold"}>
-                <NotificationMessage message={notification.message}/>
-              </div>
-            </ToastBody>
+              <small
+                className={"text-muted ms-3"}>{moment(notification.createdAt).fromNow()}</small>
+            </Toast.Header>
+            <Toast.Body>
+              <NotificationMessage message={notification.message}/>
+            </Toast.Body>
           </Toast>
         ))
         }

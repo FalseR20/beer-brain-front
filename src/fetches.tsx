@@ -318,3 +318,8 @@ export async function markNotification(notificationId: number, isRead: boolean =
   const json: INotification = await response.json();
   return new CNotification(json)
 }
+
+export async function deleteNotification(notificationId: number): Promise<void> {
+  const url = make_url(UrlsBack.RUD_NOTIFICATIONS, {notificationId});
+  await fetchWithAuthorization(url, {method: "DELETE"});
+}
