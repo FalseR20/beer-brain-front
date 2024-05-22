@@ -3,7 +3,7 @@ import {CNotification} from "../dataclasses.ts";
 import {deleteNotification, getNotifications} from "../fetches.tsx";
 
 export const NotificationsContext = createContext<{
-  notifications?: CNotification[], // unread
+  notifications?: CNotification[] | null, // unread
   nNotifications?: number,
   markRead: (id: number) => void
 }>({
@@ -16,11 +16,13 @@ export const NotificationsContext = createContext<{
 export function NotificationsContextWrapper(props: {
   children: ReactNode,
 }) {
-  const [notifications, setNotifications] = useState<CNotification[] | undefined>(undefined);
+  const [notifications, setNotifications] = useState<CNotification[] | undefined | null>(undefined);
 
   // Fetch loop can be realized, but it's expensive now
   useEffect(() => {
-    getNotifications(false).then(setNotifications)
+    getNotifications(false).
+    then(setNotifications).
+    catch(() => setNotifications(null))
   }, []);
 
   function markRead(id: number) {

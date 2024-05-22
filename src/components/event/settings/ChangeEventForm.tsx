@@ -19,11 +19,9 @@ export function ChangeEventForm({event, isHost}: { event: CEvent, isHost: boolea
         date: yup.date().required(),
       })}
       onSubmit={(values) => {
-        console.log(values);
         updateEvent(event.id, values).then((event) => {
           navigate(make_front_url(UrlsFront.EVENT, {"eventId": event.id}))
         });
-        console.log(values.date)
       }}
       initialValues={{
         name: event.name,

@@ -26,11 +26,9 @@ export default function NewEventModal({show, setShow}: {
           date: yup.date().required(),
         })}
         onSubmit={(values) => {
-          console.log(values);
           createEventAPI(values).then((event) => {
             navigate(make_front_url(UrlsFront.EVENT, {"eventId": event.id}))
           });
-          console.log(values.date)
         }}
         initialValues={{
           name: "",

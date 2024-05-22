@@ -31,7 +31,6 @@ export function TransferHostModal({event, setEvent, state}: {
       <Formik
         initialValues={{newHost: userMe.id}}
         onSubmit={(values) => {
-          console.log(values.newHost)
           transferHost(event.id, values).then(setEvent).then(
             () => setShow(false)
           )
