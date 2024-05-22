@@ -118,7 +118,7 @@
   "User left Event": "<User/> покинул <Event>мероприятие</Event>",
   "User changed Event": "<User/> изменил <Event>мероприятие</Event>",
   "User deleted Event": "<User/> удалил <Event>мероприятие</Event>",
-  "User is new host of Event": "<User/> теперь новый хост <Event>мероприятия</Event>",
+  "User is new host of Event instead of User1": "<User/> теперь новый хост <Event>мероприятия</Event> вместо <User1/>",
   "User created Deposit of Event": "<User/> создал <Deposit>депозит</Deposit>",
   "User updated Deposit of Event": "<User/> изменил <Deposit>депозит</Deposit>",
   "User deleted Deposit of Event": "<User/> удалил <Deposit>депозит</Deposit>",

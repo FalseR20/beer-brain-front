@@ -4,7 +4,7 @@ import {ReactNode, useContext, useEffect, useState} from "react";
 import {NotificationsContext} from "../../contexts/notificationsContext.tsx";
 import {Link} from "react-router-dom";
 import {make_front_url, UrlsFront} from "../../urls.ts";
-import {NotificationCacheContext, NotificationCacheWrapper} from "./NotificationsCache.tsx";
+import {NotificationCacheContext, NotificationCacheWrapper} from "../../contexts/notificationsCache.tsx";
 import {getUserById} from "../../fetches.tsx";
 import {Trans, useTranslation} from "react-i18next";
 import {TFunction} from "i18next";
@@ -60,7 +60,7 @@ export default function Notifications() {
 
 function NotificationMessage({message, t}: { message: string, t: TFunction }) {
   const elements = new Map<string, string>();
-  const regex = /#(\w+)<([^>]+)>/g;
+  const regex = /#([^<]+)<([^>]+)>/g;
   let match;
   let formattedString = message;
 
@@ -96,6 +96,7 @@ const TypeToLinkMap: Map<string, ({linker, t}: {
   t: TFunction
 }) => ReactNode> = new Map([
   ["User", UserLink],
+  ["User1", User1Link],
   ["Event", EventLink],
   ["Deposit", DepositLink],
   ["Repayment", RepaymentLink],
@@ -121,6 +122,10 @@ class ElementsLinker {
     return parseInt(this.elements.get("User")!)
   }
 
+  public get user1Id() {
+    return parseInt(this.elements.get("User1")!)
+  }
+
   public get eventUrl() {
     return make_front_url(UrlsFront.EVENT, {eventId: this.elements.get("Event")!})
   }
@@ -144,6 +149,22 @@ function UserLink({linker}: { linker: ElementsLinker }) {
   const [username, setUsername] = useState<string>();
   const {cache} = useContext(NotificationCacheContext)
   const userId = linker.userId
+  const cachedUsernamePromise = cache.get(userId)
+  if (cachedUsernamePromise) {
+    cachedUsernamePromise.then(setUsername)
+  } else {
+    const promise = getUserById(userId).then(user => user.username)
+    promise.then(setUsername)
+    cache.set(userId, promise)
+  }
+  return <Link
+    to={username ? linker.usernameUrl(username) : linker.userUrl}>@{username || `id/${userId}`}</Link>
+}
+
+function User1Link({linker}: { linker: ElementsLinker }) {
+  const [username, setUsername] = useState<string>();
+  const {cache} = useContext(NotificationCacheContext)
+  const userId = linker.user1Id
   const cachedUsernamePromise = cache.get(userId)
   if (cachedUsernamePromise) {
     cachedUsernamePromise.then(setUsername)
