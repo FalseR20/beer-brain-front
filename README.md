@@ -4,28 +4,28 @@ BeerBrain front-end server uses React with React-Bootstrap css framework.
 
 ## Quickstart
 
-Go to `front` directory:
-
-```shell
-cd front
-```
-
 Install dependencies:
 
 ```shell
-npm isntall
+yarn install
 ```
 
 Run frontend server:
 
 ```shell
-npm run dev
+yarn run dev
 ```
 
-Or for visibility on the network:
+For production:
 
 ```shell
-VITE_DJANGO_URL=http://192.168.100.5:8000/ npm run dev -- --host
+yarn run build
+yarn run preview
 ```
 
-Then you can see the application.
+Docker:
+
+```shell
+docker build . -t "beer-brain-front"
+docker run -p 4173:80 beer-brain-front
+```
