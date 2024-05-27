@@ -8,6 +8,8 @@ import {AuthContextWrapper} from "./contexts/authContext.tsx";
 import {HelmetProvider} from "react-helmet-async";
 import "./i18n/config.ts";
 import About from "./components/About.tsx";
+import {useTranslation} from "react-i18next";
+import moment from "moment/moment";
 
 const NotFound = lazy(() => import("./components/NotFound.tsx"))
 const Home = lazy(() => import("./components/Home.tsx"))
@@ -52,6 +54,8 @@ function Router() {
 
 export default function App() {
   const helmetContext = {};
+  const {i18n} = useTranslation();
+  moment.locale(i18n.language);
   return (
     <HelmetProvider context={helmetContext}>
       <ThemeContextWrapper>
