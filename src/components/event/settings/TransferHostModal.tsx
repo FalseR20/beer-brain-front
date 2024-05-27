@@ -62,7 +62,7 @@ export function TransferHostModal({event, setEvent, state}: {
               <Button variant={"outline-secondary"}
                       onClick={() => setShow(false)}>{t("Cancel")}</Button>
               <Button variant="warning" type="submit"
-                      disabled={props.values.newHost == userMe?.id}>{t("Create deposit")}</Button>
+                      disabled={props.values.newHost == userMe?.id}>{t("Transfer")}</Button>
             </Modal.Footer>
           </Form>
         }

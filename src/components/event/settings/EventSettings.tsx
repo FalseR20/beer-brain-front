@@ -60,7 +60,7 @@ export default function EventSettings() {
             <span className="d-inline-block">
             <Button variant={"danger"} className={"my-2"} disabled={true}
                     style={{pointerEvents: 'none'}}>
-              Leave
+              {t("Leave event")}
             </Button>
             </span>
             </OverlayTrigger>

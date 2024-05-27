@@ -89,7 +89,13 @@ export default function Home() {
                     <Col>
                       <span>{moment(event.date).fromNow()}</span>
                     </Col>
-                    <Col className={"text-end"}>Host: {event.host.username}</Col>
+                    <Col className={"text-end"}>
+                      {t("Host: ")}
+                      <Link to={make_front_url(UrlsFront.USER, {username: event.host.username})}
+                            className={"text-decoration-none"}>
+                        @{event.host.username}
+                      </Link>
+                    </Col>
                   </Row>
                 </Card.Header>
                 <Card.Body>

@@ -24,6 +24,7 @@
   "Look": "Look",
   "members_one": "{{count, number}} members",
   "members": "{{count, number}} members",
+  "Host: ": "Host: ",
 
   "Join event title": "Join event",
   "Join event": "Join",
@@ -49,6 +50,11 @@
   "Leave event description": "Leave this event",
   "Leave event warning": "Are you sure you want to leave this event? You'll be able to return any time.",
   "Leave event host": "The host cannot leave",
+
+  "Transfer host rights": "Transfer host rights",
+  "Transfer host": "Transfer host",
+  "New Host": "New Host",
+  "Transfer": "Transfer",
 
   "Delete event": "Delete",
   "Delete event warning": "Are you sure you want to delete this event? This action cannot be rolled back",

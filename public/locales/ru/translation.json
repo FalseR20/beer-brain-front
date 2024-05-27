@@ -23,7 +23,8 @@
   "All events description": "Здесь все события. Вы можете создать новое или присоединиться к уже имеющемуся",
   "Look": "Подробнее",
   "members_one": "{{count, number}} участник",
-  "members": "{{count, number}} участников",
+  "members": "{{count, number}} участника",
+  "Host: ": "Хост: ",
 
   "Join event title": "Присоединиться к событию",
   "Join event": "Присоединиться",
@@ -49,6 +50,11 @@
   "Leave event description": "Выйти из события",
   "Leave event warning": "Ты уверен, что хотешь покинуть это событие? Ты сможешь вернуться в любое время.",
   "Leave event host": "Хост не может выйти из события",
+
+  "Transfer host rights": "Передать хост-права",
+  "Transfer host": "Передать права",
+  "New Host": "Новый хост",
+  "Transfer": "Передать",
 
   "Delete event": "Удалить",
   "Delete event warning": "Ты уверен, что хочешь удалить это мероприятие? Данное действие нельзя отменить.",
