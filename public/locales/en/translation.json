@@ -119,8 +119,10 @@
   "Me": "Me",
   "Developer username": "FalseR",
   "Developer fullname": "Bebra Bebrou",
-  "Developer description": "I'm developing BeerBrain alone, but you can help me by sending feedback:",
+  "Developer description": "Developer",
   "Developer email": "falser.mk@gmail.com",
+  "Developer telegram": "FalseR20",
+  "Special thanks": "Special thanks to:",
 
   "Notification": "Notification",
   "User joined Event": "<User/> joined the <Event>event</Event>",

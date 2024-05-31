@@ -10,10 +10,10 @@ export default function About() {
   const {t} = useTranslation();
   return (
     <Template title="About">
-      <Container fluid={true} className={"p-0"}>
+      <Container fluid={true} className={"p-0 mb-3"}>
         <Row className="align-items-center">
           <Col sm={5}>
-            <Image src={"me_500x500.png"} alt={t("Me")} fluid={true} className={"rounded-3"}/>
+            <Image src={"me.png"} alt={t("Me")} fluid={true} className={"rounded-3"}/>
           </Col>
           <Col sm={7}>
             <div className="border-bottom mb-2">
@@ -32,10 +32,24 @@ export default function About() {
                 <span>Email: </span>
                 <Link to={`mailto: ${t("Developer email")}`}>{t("Developer email")}</Link>
               </p>
+              <p>
+                <span>Telegram: </span>
+                <Link
+                  to={`https://t.me/${t("Developer telegram")}`}>{t("Developer telegram")}</Link>
+              </p>
             </div>
           </Col>
         </Row>
       </Container>
+
+      <div className={"mt-4"}>
+        <h3>{t("Special thanks")}</h3>
+        <ul>
+          <li>Панкратов Роман</li>
+          <li>Угляница Иван</li>
+          <li>Аксютин Илья</li>
+        </ul>
+      </div>
     </Template>
   )
 }
